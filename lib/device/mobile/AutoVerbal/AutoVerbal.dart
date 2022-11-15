@@ -29,6 +29,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: Text(
+          "AutoVerbal List",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+        ),
+      ),
       body: FutureBuilder<List<AutoVerbal_List>>(
         future: fetchData(),
         builder: (context, snapshot) {
@@ -90,7 +98,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),

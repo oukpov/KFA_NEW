@@ -1,3 +1,4 @@
+import 'package:admin/device/mobile/AutoVerbal/menu.dart';
 import 'package:admin/device/mobile/comparable/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +49,10 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                 if (i == 2) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => MenuComparable()));
+                }
+                if (i == 4) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MenuAutoVerbal()));
                 }
               },
               child: Container(
