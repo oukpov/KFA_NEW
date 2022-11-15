@@ -19,6 +19,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
     return verballist.fromJson(data);
   }
 
+  int k = 0;
+  String l = "gfhghf";
   Map<String, String> propertyID = {
     '1': 'Agriculture',
     '2': 'Apartment',
@@ -70,9 +72,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
             );
           }
           return ListView.builder(
-            itemCount: snapshot.data!.data!.length,
+            // itemCount: snaps
             itemBuilder: (context, index) {
-              final cdt = snapshot.data!.data![index];
+              final cdt = snapshot.data!;
               // Idcom.add(cdt.comparableId!.toString());
               propertyID.forEach(
                 (key, value) {
