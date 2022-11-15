@@ -21,6 +21,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
 
   int k = 0;
   String l = "gfhghf";
+  String p = "sdfhj";
   Map<String, String> propertyID = {
     '1': 'Agriculture',
     '2': 'Apartment',
