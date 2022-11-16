@@ -25,7 +25,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
     }
   }
 
-  static String ch = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +45,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     margin: const EdgeInsets.all(10),
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
@@ -172,11 +171,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                           14)),
                             ],
                           ),
-                        ),
-                        Divider(
-                          height: 2,
-                          color: Colors.black,
-                          thickness: 2,
                         ),
                       ],
                     ),
