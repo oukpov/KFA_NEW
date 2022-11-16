@@ -1,4 +1,5 @@
 import 'package:admin/device/mobile/AutoVerbal/AutoVerbal.dart';
+import 'package:admin/device/mobile/AutoVerbal/Set_Data.dart';
 import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,10 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                 if (i == 1) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Show_autoVerbal()));
+                }
+                if (i == 0) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => SetData()));
                 }
               },
               child: Container(
