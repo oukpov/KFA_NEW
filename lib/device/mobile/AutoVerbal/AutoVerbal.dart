@@ -25,11 +25,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
     }
   }
 
-  static String ch = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        centerTitle: true,
+        title: Text(
+          "Autoverbal List",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+        ),
+      ),
       body: FutureBuilder<List<AutoVerbal_List>>(
+        
         future: fetchData(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -38,7 +48,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     margin: const EdgeInsets.all(10),
                     padding: const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
@@ -51,38 +61,120 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                         ]),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Property Type :",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        MediaQuery.of(context).textScaleFactor *
-                                            15)),
-                            Text(cdt.propertyTypeName.toString(),
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).textScaleFactor *
-                                            14)),
-                          ],
+                         Container(
+                          margin: EdgeInsets.only(top: 4,bottom: 4),
+                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Code :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.verbalId.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                            ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Lang Size :",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        MediaQuery.of(context).textScaleFactor *
-                                            15)),
-                            Text(ch,
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).textScaleFactor *
-                                            14)),
-                          ],
+                         ),
+                        Container(
+                           margin: EdgeInsets.only(top: 4,bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Property Type :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.propertyTypeName.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                            ],
+                          ),
                         ),
+                        Container(
+                           margin: EdgeInsets.only(top: 4,bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Address :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.verbalAddress.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              14)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                           margin: EdgeInsets.only(top: 4,bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Bank :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.bankName.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              14)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                           margin: EdgeInsets.only(top: 4,bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Agency :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.agenttypeName.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              14)),
+                            ],
+                          ),
+                        ),
+                         Container(
+                           margin: EdgeInsets.only(top: 4,bottom: 4),
+                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Create date :",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              15)),
+                              Text(cdt.verbalCreatedDate.toString(),
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).textScaleFactor *
+                                              14)),
+                            ],
+                        ),
+                         ),
                       ],
                     ),
                   );
@@ -90,7 +182,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
