@@ -103,43 +103,43 @@ class _SetDataState extends State<SetData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[50],
-        elevation: 0,
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.save),
-            color: Colors.white,
-            //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            onPressed: () {},
-          ),
-        ],
-        title: const Text.rich(
-          TextSpan(
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
-              TextSpan(
-                text: "ADD ONE CLICK ",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              TextSpan(
-                text: "1\$",
-                style: TextStyle(
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-        toolbarHeight: 80,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.blue[50],
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: const Icon(Icons.save),
+      //       color: Colors.white,
+      //       //style: IconButton.styleFrom(backgroundColor: kImageColor),
+      //       onPressed: () {},
+      //     ),
+      //   ],
+      //   title: const Text.rich(
+      //     TextSpan(
+      //       // ignore: prefer_const_literals_to_create_immutables
+      //       children: [
+      //         TextSpan(
+      //           text: "ADD ONE CLICK ",
+      //           style: TextStyle(
+      //             fontSize: 20.0,
+      //             fontWeight: FontWeight.bold,
+      //             color: Colors.white,
+      //           ),
+      //         ),
+      //         TextSpan(
+      //           text: "1\$",
+      //           style: TextStyle(
+      //             fontSize: 40.0,
+      //             fontWeight: FontWeight.bold,
+      //             color: Colors.white,
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      //   toolbarHeight: 80,
+      // ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
