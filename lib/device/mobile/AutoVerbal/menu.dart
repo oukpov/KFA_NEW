@@ -1,5 +1,5 @@
 import 'package:admin/device/mobile/AutoVerbal/AutoVerbal.dart';
-import 'package:admin/device/mobile/AutoVerbal/Set_Data.dart';
+import 'package:admin/device/mobile/AutoVerbal/Setdata.dart';
 import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
