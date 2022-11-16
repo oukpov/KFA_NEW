@@ -1,3 +1,4 @@
+import 'package:admin/action/print.dart';
 import 'package:admin/data/data.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.red,
         title: Text(
           "AutoVerbal List",
@@ -190,38 +192,41 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                 ),
                               ],
                             )),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Divider(
+                            const Divider(
                                   color: Colors.black,
-                                      thickness: 3,
+                                      thickness: 2,
                                        height: 5,
-                                      endIndent: 20,),
-                              ),
-                              Center(
-                          child: Container(
-                        child: Row(
-                          children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                      Text('Edit', style: TextStyle(color: Colors.white)), 
+                                      endIndent: 4),
+                        Expanded(
+                          flex: 1,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                 ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => const Print()),);
+                        },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children:const [
+                       Text('Print', style: TextStyle(color: Colors.white)), 
                       Icon(
-                        Icons.edit,
+                        Icons.print,
                         size: 24.0,
                       ),
                         ],
                      ),
                       ),
+                       const SizedBox(width: 5,),
                   ElevatedButton(
-                       onPressed: () {},
+                       onPressed: () {
+
+                       },
                       child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children:const [
                       Text('Edit', style: TextStyle(color: Colors.white)), 
                       Icon(
                         Icons.edit,
@@ -230,13 +235,26 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 ],
               ),
               ),
-                    ],
-                  ),
-                ),
+                  const SizedBox(width: 5,),
+               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                       onPressed: () {
+                        
+                       },
+                      child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const[
+                      Text('Delete', style: TextStyle(color: Colors.white)), 
+                      Icon(
+                        Icons.delete,
+                        size: 24.0,
+                      ),
+                ],
               ),
-                            ],
+              ),
+                              ],
+                            ),
                           ),
-                          flex: 1,
                         ),
                         ]
                     )
