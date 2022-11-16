@@ -58,128 +58,153 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                         ]),
                     child: Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Code :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.verbalId.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                            ],
+                        Expanded(
+                            flex: 4,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Code :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                      Text(cdt.verbalId.toString(),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Property Type :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                      Text(cdt.propertyTypeName.toString(),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Address :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                      Text(cdt.verbalAddress.toString(),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  14)),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text("Bank :",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(cdt.bankName.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    14)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Agency :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                      Text(cdt.agenttypeName.toString(),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  14)),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("Create date :",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  15)),
+                                      Text(cdt.verbalCreatedDate.toString(),
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  14)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Expanded(
+                          child: Container(
+                            height: 5,
+                            color: Colors.black,
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Property Type :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.propertyTypeName.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Address :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.verbalAddress.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          14)),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Bank :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.bankName.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          14)),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Agency :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.agenttypeName.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          14)),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4, bottom: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Create date :",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          15)),
-                              Text(cdt.verbalCreatedDate.toString(),
-                                  style: TextStyle(
-                                      fontSize: MediaQuery.of(context)
-                                              .textScaleFactor *
-                                          14)),
-                            ],
-                          ),
+                          flex: 1,
                         ),
                       ],
                     ),
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return const Center(child: Text("Server is not responding"));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
