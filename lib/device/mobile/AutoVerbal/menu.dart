@@ -47,7 +47,7 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                 }
                 if (i == 0) {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => SetData()));
+                      .push(MaterialPageRoute(builder: (context) => Add()));
                 }
               },
               child: Container(

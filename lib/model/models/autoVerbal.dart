@@ -351,7 +351,8 @@ class AutoVerbalRequestModel {
       required this.verbal_com,
       required this.verbal_con,
       //   required this.autoVerbal,
-      required this.data});
+      required this.data,
+      required String SetDataATBress});
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
       "verbal_property_id": property_type_id.trim(),
