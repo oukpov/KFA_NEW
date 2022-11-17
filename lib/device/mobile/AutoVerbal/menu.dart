@@ -43,7 +43,7 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
               onTap: () {
                 if (i == 1) {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Show_autoVerbal()));
+                      builder: (context) => Show_autoVerbals()));
                 }
                 if (i == 0) {
                   Navigator.of(context)

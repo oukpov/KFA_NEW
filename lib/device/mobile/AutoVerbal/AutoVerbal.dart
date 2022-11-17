@@ -1,5 +1,3 @@
-import 'package:admin/action/print.dart';
-import 'package:admin/data/data.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
@@ -7,14 +5,14 @@ import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Show_autoVerbal extends StatefulWidget {
-  const Show_autoVerbal({super.key});
+class Show_autoVerbals extends StatefulWidget {
+  const Show_autoVerbals({super.key});
 
   @override
-  State<Show_autoVerbal> createState() => _Show_autoVerbalState();
+  State<Show_autoVerbals> createState() => _Show_autoVerbalState();
 }
 
-class _Show_autoVerbalState extends State<Show_autoVerbal> {
+class _Show_autoVerbalState extends State<Show_autoVerbals> {
   Future<List<AutoVerbal_List>> fetchData() async {
     final response = await http
         .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
@@ -29,20 +27,31 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
   }
 
 //delete id
-  void deleteDataId({required String verbalId}) async {
+  void deleteDataId({required String verbalIds}) async {
     final response = await http
-        .delete(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${'verbalId'}'));
+        // ignore: unnecessary_brace_in_string_interps
+        .delete(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(
-      //     content: Text('${verbalId['verbalId']} deleted successfully')
+      //     content: Text('${verbalIds['verbalId']} deleted successfully')
       //   ),
       // );
     } else {
       throw Exception('Delete error occured!');
     }
   }
+// Future<http.Response> deleteDataId({required verbalIds}) async {
+//   //assert(verbalIds != null);
+//   final http.Response response = await http.delete(
+//     Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/{verbal_id}'),
+//     headers: <String, String>{
+//      // 'Content-Type': 'application/json; charset=UTF-8',
+//     },
+//   );
 
+  //return response;
+//}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,7 +243,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.blue,
                                 onPressed: () {
-                                  //Navigator.push(context,MaterialPageRoute(builder: builder));
+                                  // Navigator.push(
+                                  //   context,
+                                  //     MaterialPageRoute(builder: (context) => const Print()),
+                                  //             );
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => const Print(),));
                                 },
                                 text: 'Print',
                                 icon: const Icon(Icons.print),
@@ -243,9 +256,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.red,
                                 onPressed: () {
-                                  deleteDataId(verbalId: cdt.verbalId.toString());
+                                  
                                   setState(() {
-                                    fetchData();
+                                    deleteDataId(verbalIds: cdt.verbalId.toString());
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Show_autoVerbals()));
                                   });
                                 },
                                 text: 'Delete',
