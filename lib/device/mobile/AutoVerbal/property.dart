@@ -101,7 +101,7 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
 
       setState(() {
         _list = jsonData['property'];
-
+        print(_list[0]);
         //print(_list);
       });
     }

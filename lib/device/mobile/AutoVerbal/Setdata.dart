@@ -53,54 +53,54 @@ class _AddState extends State<Add> {
   @override
   void initState() {
     super.initState();
-    requestModelVerbal = VerbalTypeRequestModel(
-        verbal_land_area: '123',
-        verbal_land_des: 'fgf',
-        verbal_land_dp: '12',
-        verbal_land_maxsqm: '12',
-        verbal_land_maxvalue: '23',
-        verbal_land_minsqm: '13',
-        verbal_land_minvalue: '13',
-        //   verbal_land_type: 'ls',
-        verbal_landid: '12',
-        verbal_land_type: 'LS');
-    requestModelVerbal = VerbalTypeRequestModel(
-        verbal_land_area: '122222222',
-        verbal_land_des: 'fgf',
-        verbal_land_dp: '12',
-        verbal_land_maxsqm: '12',
-        verbal_land_maxvalue: '23',
-        verbal_land_minsqm: '13',
-        verbal_land_minvalue: '13',
-        //   verbal_land_type: 'ls',
-        verbal_landid: '12',
-        verbal_land_type: 'LS');
-    requestModelAuto = AutoVerbalRequestModel(
-      property_type_id: "1234",
-      lat: "12",
-      lng: "12",
-      address: 'gdhfgd',
-      approve_id: "dfhdf",
-      bank_branch_id: "12",
-      bank_contact: "1787424",
-      bank_id: "12",
-      bank_officer: "ffgf",
-      code: "343645",
-      comment: "dfgdf",
-      contact: "jdhfj",
-      date: "8843",
-      image: "",
-      option: "12",
-      owner: "jgkjhg",
-      user: "1",
-      verbal_com: 'gfjgh',
-      verbal_con: "fgf",
-      data: requestModelVerbal, SetDataATBress: '',
-      // autoVerbal: [requestModelVerbal],
-      // data: requestModelVerbal,
-    );
-    print(requestModelVerbal.toJson());
-    print(requestModelAuto.toJson());
+    // requestModelVerbal = VerbalTypeRequestModel(
+    //     verbal_land_area: '123',
+    //     verbal_land_des: 'fgf',
+    //     verbal_land_dp: '12',
+    //     verbal_land_maxsqm: '12',
+    //     verbal_land_maxvalue: '23',
+    //     verbal_land_minsqm: '13',
+    //     verbal_land_minvalue: '13',
+    //     //   verbal_land_type: 'ls',
+    //     verbal_landid: '12',
+    //     verbal_land_type: 'LS');
+    // requestModelVerbal = VerbalTypeRequestModel(
+    //     verbal_land_area: '122222222',
+    //     verbal_land_des: 'fgf',
+    //     verbal_land_dp: '12',
+    //     verbal_land_maxsqm: '12',
+    //     verbal_land_maxvalue: '23',
+    //     verbal_land_minsqm: '13',
+    //     verbal_land_minvalue: '13',
+    //     //   verbal_land_type: 'ls',
+    //     verbal_landid: '12',
+    //     verbal_land_type: 'LS');
+    // requestModelAuto = AutoVerbalRequestModel(
+    //   property_type_id: "1234",
+    //   lat: "12",
+    //   lng: "12",
+    //   address: 'gdhfgd',
+    //   approve_id: "dfhdf",
+    //   bank_branch_id: "12",
+    //   bank_contact: "1787424",
+    //   bank_id: "12",
+    //   bank_officer: "ffgf",
+    //   code: "343645",
+    //   comment: "dfgdf",
+    //   contact: "jdhfj",
+    //   date: "8843",
+    //   image: "",
+    //   option: "12",
+    //   owner: "jgkjhg",
+    //   user: "1",
+    //   verbal_com: 'gfjgh',
+    //   verbal_con: "fgf",
+    //   data: requestModelVerbal, SetDataATBress: '',
+    //   // autoVerbal: [requestModelVerbal],
+    //   // data: requestModelVerbal,
+    // );
+    // print(requestModelVerbal.toJson());
+    // print(requestModelAuto.toJson());
   }
 
   @override
@@ -205,9 +205,11 @@ class _AddState extends State<Add> {
             child: Column(
               children: [
                 Code(),
-                // ignore: sized_box_for_whitespace
-                //dropdown(),
-                // PropertyDropdown(),
+                // dropdown(),
+                PropertyDropdown(
+                  id: (value) {},
+                  name: (value) {},
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -261,7 +263,6 @@ class _AddState extends State<Add> {
                     color: kImageColor,
                   ),
                 ),
-
                 SizedBox(
                   height: 10,
                 ),
