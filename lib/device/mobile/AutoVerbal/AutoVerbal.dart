@@ -49,7 +49,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   return Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
+                      height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
                       padding: const EdgeInsets.all(20),
                       decoration: const BoxDecoration(
@@ -129,7 +129,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                   margin: EdgeInsets.only(top: 4, bottom: 4),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Expanded(
                                         flex: 2,
@@ -144,9 +144,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                         flex: 3,
                                         child: Text(cdt.bankName.toString(),
                                             style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    14)),
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  12,
+                                              fontWeight: FontWeight.bold,
+                                            )),
                                       ),
                                     ],
                                   ),
@@ -196,7 +198,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                         const Divider(
                           color: Colors.black,
                           thickness: 3,
-                          height: 5,
+                          height: 2,
                           endIndent: 20,
                         ),
                         Expanded(
