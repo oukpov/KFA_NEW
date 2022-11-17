@@ -2,6 +2,8 @@ import 'package:admin/action/print.dart';
 import 'package:admin/data/data.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -47,19 +49,18 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(color: Colors.black, blurRadius: 5)
-                        ]),
-                    child: Column(
-                      children: [
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(20),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              bottomRight: Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black, blurRadius: 5)
+                          ]),
+                      child: Column(children: [
                         Expanded(
                             flex: 4,
                             child: Column(
@@ -192,57 +193,43 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                 ),
                               ],
                             )),
+                        const Divider(
+                          color: Colors.black,
+                          thickness: 3,
+                          height: 5,
+                          endIndent: 20,
+                        ),
                         Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Divider(
-                                  color: Colors.black,
-                                      thickness: 3,
-                                       height: 5,
-                                      endIndent: 20,),
-                              ),
-                              Center(
-                          child: Container(
-                        child: Row(
-                          children: [
-                      ElevatedButton(
-                        onPressed: () {},
+                          // ignore: sort_child_properties_last
                           child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                      Text('Edit', style: TextStyle(color: Colors.white)), 
-                      Icon(
-                        Icons.edit,
-                        size: 24.0,
-                      ),
-                        ],
-                     ),
-                      ),
-                  ElevatedButton(
-                       onPressed: () {},
-                      child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                      Text('Edit', style: TextStyle(color: Colors.white)), 
-                      Icon(
-                        Icons.edit,
-                        size: 24.0,
-                      ),
-                ],
-              ),
-              ),
-                    ],
-                  ),
-                ),
-              ),
+                              GFButton(
+                                shape: GFButtonShape.pills,
+                                color: Colors.green,
+                                onPressed: () {},
+                                text: 'Edit',
+                                icon: const Icon(Icons.edit),
+                              ),
+                              GFButton(
+                                shape: GFButtonShape.pills,
+                                color: Colors.blue,
+                                onPressed: () {},
+                                text: 'Print',
+                                icon: const Icon(Icons.print),
+                              ),
+                              GFButton(
+                                shape: GFButtonShape.pills,
+                                color: Colors.red,
+                                onPressed: () {},
+                                text: 'Delete',
+                                icon: const Icon(Icons.delete),
+                              ),
                             ],
                           ),
                           flex: 1,
                         ),
-                        ]
-                    )
-                  );
+                      ]));
                 });
           } else if (snapshot.hasError) {
             return const Center(child: Text("Server is not responding"));
