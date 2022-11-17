@@ -1,5 +1,6 @@
 import 'package:admin/device/mobile/AutoVerbal/AutoVerbal.dart';
 import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
+import 'package:admin/device/mobile/on_home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'interface/homepage.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Show_autoVerbal(),
+      home: Hompage(),
     );
   }
 }
