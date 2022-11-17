@@ -28,6 +28,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
     }
   }
 
+//delete id
+  void deleteDataId({required String verbalId}) async {
+    final response = await http
+        .delete(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${'verbalId'}'));
+    if (response.statusCode == 200) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('${verbalId['verbalId']} deleted successfully')
+      //   ),
+      // );
+    } else {
+      throw Exception('Delete error occured!');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +74,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                               bottomRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(color: Colors.black, blurRadius: 5)
-                          ]),
+                          ]
+                          ),
                       child: Column(children: [
                         Expanded(
                             flex: 4,
@@ -194,7 +210,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                   ),
                                 ),
                               ],
-                            )),
+                            )
+                            ),
                         const Divider(
                           color: Colors.black,
                           thickness: 3,
@@ -216,14 +233,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                               GFButton(
                                 shape: GFButtonShape.pills,
                                 color: Colors.blue,
-                                onPressed: () {},
+                                onPressed: () {
+                                  //Navigator.push(context,MaterialPageRoute(builder: builder));
+                                },
                                 text: 'Print',
                                 icon: const Icon(Icons.print),
                               ),
                               GFButton(
                                 shape: GFButtonShape.pills,
                                 color: Colors.red,
-                                onPressed: () {},
+                                onPressed: () {
+                                  deleteDataId(verbalId: cdt.verbalId.toString());
+                                  setState(() {
+                                    fetchData();
+                                  });
+                                },
                                 text: 'Delete',
                                 icon: const Icon(Icons.delete),
                               ),
