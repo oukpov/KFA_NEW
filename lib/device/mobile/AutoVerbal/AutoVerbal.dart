@@ -192,41 +192,38 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                                 ),
                               ],
                             )),
-                            const Divider(
-                                  color: Colors.black,
-                                      thickness: 2,
-                                       height: 5,
-                                      endIndent: 4),
                         Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                 ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const Print()),);
-                        },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children:const [
-                       Text('Print', style: TextStyle(color: Colors.white)), 
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Divider(
+                                  color: Colors.black,
+                                      thickness: 3,
+                                       height: 5,
+                                      endIndent: 20,),
+                              ),
+                              Center(
+                          child: Container(
+                        child: Row(
+                          children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                      Text('Edit', style: TextStyle(color: Colors.white)), 
                       Icon(
-                        Icons.print,
+                        Icons.edit,
                         size: 24.0,
                       ),
                         ],
                      ),
                       ),
-                       const SizedBox(width: 5,),
                   ElevatedButton(
-                       onPressed: () {
-
-                       },
+                       onPressed: () {},
                       child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children:const [
+                children: [
                       Text('Edit', style: TextStyle(color: Colors.white)), 
                       Icon(
                         Icons.edit,
@@ -235,35 +232,22 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
                 ],
               ),
               ),
-                  const SizedBox(width: 5,),
-               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                       onPressed: () {
-                        
-                       },
-                      child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const[
-                      Text('Delete', style: TextStyle(color: Colors.white)), 
-                      Icon(
-                        Icons.delete,
-                        size: 24.0,
-                      ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-              ),
-                              ],
-                            ),
+                            ],
                           ),
+                          flex: 1,
                         ),
                         ]
                     )
                   );
                 });
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return const Center(child: Text("Server is not responding"));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),

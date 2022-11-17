@@ -53,8 +53,7 @@ class _CodeState extends State<Code> {
       alignment: Alignment.topLeft,
       child: loading
           ? Center(child: CircularProgressIndicator())
-          : //if loading == true, show progress indicator
-          Row(
+          : Row(
               children: [
                 SizedBox(width: 40),
                 Icon(
