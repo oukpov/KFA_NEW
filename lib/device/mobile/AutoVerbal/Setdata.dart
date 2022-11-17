@@ -1,5 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names
 
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:admin/Customs/form.dart';
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/components/ApprovebyAndVerifyby.dart';
@@ -16,7 +19,7 @@ import 'package:admin/device/mobile/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/respon.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../components/contants.dart';
 
 class Add extends StatefulWidget {
@@ -49,9 +52,22 @@ class _AddState extends State<Add> {
     'Male',
     'Other',
   ];
-
+  var _list = [];
+  var _branch = [];
+  static String? bankvalue;
+  late String branchvalue;
+  var bank = [
+    'Bank',
+    'Private',
+    'Other',
+  ];
   @override
   void initState() {
+    bankvalue = "";
+    branchvalue = "";
+    // ignore: unnecessary_new
+    Load();
+    branch(bankvalue as String);
     super.initState();
     // requestModelVerbal = VerbalTypeRequestModel(
     //     verbal_land_area: '123',
@@ -101,6 +117,22 @@ class _AddState extends State<Add> {
     // );
     // print(requestModelVerbal.toJson());
     // print(requestModelAuto.toJson());
+  }
+
+  List<Bankbranchlist> parsePhotos(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed
+        .map<Bankbranchlist>((json) => Bankbranchlist.fromJson(json))
+        .toList();
+  }
+
+  Future<List<Bankbranchlist>> fetchPhotos(http.Client client) async {
+    final response = await client
+        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/bankbranchlist'));
+
+    // Use the compute function to run parsePhotos in a separate isolate.
+    return parsePhotos(response.body);
   }
 
   @override
@@ -206,10 +238,10 @@ class _AddState extends State<Add> {
               children: [
                 Code(),
                 // dropdown(),
-                PropertyDropdown(
-                  id: (value) {},
-                  name: (value) {},
-                ),
+                // PropertyDropdown(
+                //   id: (value) {},
+                //   name: (value) {},
+                // ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -221,10 +253,116 @@ class _AddState extends State<Add> {
                     propertyTypeValue = value;
                   },
                 ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // BankDropdown(),
+                Container(
+                  height: 55,
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  child: DropdownButtonFormField<String>(
+                    isExpanded: true,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
+                    onChanged: (newValue) {
+                      setState(() {
+                        bankvalue = newValue;
+                        // ignore: avoid_print
+                        print(bankvalue);
+                        branch(bankvalue);
+                        print("Value of bank  ${newValue as String}");
+                      });
+                    },
+                    validator: (String? value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'Please select bank';
+                      }
+                      return null;
+                    },
+                    items: _list
+                        .map<DropdownMenuItem<String>>(
+                          (value) => DropdownMenuItem<String>(
+                            value: value["bank_id"].toString(),
+                            child: Text(
+                              value["bank_acronym"],
+                              style: TextStyle(
+                                  height: 1,
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          12),
+                              // maxLines: 9,
+                              overflow: TextOverflow.clip,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    // add extra sugar..
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: kImageColor,
+                    ),
+
+                    decoration: InputDecoration(
+                      fillColor: kwhite,
+                      filled: true,
+                      labelText: 'Bank',
+                      hintText: 'Select',
+
+                      prefixIcon: Icon(
+                        Icons.home_work,
+                        color: kImageColor,
+                        size: 20,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: kPrimaryColor, width: 2.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: kPrimaryColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: kerror,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 5,
+                          color: kerror,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      //   decoration: InputDecoration(
+                      //       labelText: 'From',
+                      //       prefixIcon: Icon(Icons.business_outlined)),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
-                BankDropdown(),
+                FutureBuilder<List<Bankbranchlist>>(
+                  future: fetchPhotos(http.Client()),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('An error has occurred!123'),
+                      );
+                    } else if (snapshot.hasData) {
+                      return PhotosList(item: snapshot.data!);
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -236,10 +374,12 @@ class _AddState extends State<Add> {
                   icon1: Icon(
                     Icons.person,
                     color: kImageColor,
+                    size: 20,
                   ),
                   icon2: Icon(
                     Icons.phone,
                     color: kImageColor,
+                    size: 20,
                   ),
                 ),
                 SizedBox(
@@ -376,4 +516,164 @@ class _AddState extends State<Add> {
     asking_price = result[0]['adding_price'];
     address = result[0]['address'];
   }
+
+  void Load() async {
+    setState(() {});
+    var rs =
+        await http.get(Uri.parse('https://kfahrm.cc/Laravel/public/api/bank'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+      // print(jsonData);
+      // print(jsonData);
+
+      setState(() {
+        _list = jsonData['banks'];
+      });
+    }
+  }
+
+  void branch(String? value) async {
+    setState(() {});
+    var rs = await http.get(Uri.parse(
+        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=${value!}'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body.toString());
+      // print(jsonData);
+      setState(() {
+        _branch = jsonData['bank_branches'];
+      });
+    }
+  }
+}
+
+class PhotosList extends StatelessWidget {
+  const PhotosList({super.key, required this.item});
+
+  final List<Bankbranchlist> item;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        crossAxisSpacing: 2.0,
+      ),
+      itemCount: item.length,
+      itemBuilder: (context, index) {
+        return Container(
+          height: 700,
+          decoration: BoxDecoration(
+              color: Colors.blue[100], borderRadius: BorderRadius.circular(20)),
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(bottom: 10),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  item[index].bankBranchId.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+                ),
+                subtitle:
+                    Text("Job : ${item[index].bankBranchName.toString()}"),
+                trailing: Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                  size: 40,
+                ),
+              ),
+              // Container(
+              //   height: MediaQuery.of(context).size.height * 0.5,
+              //   width: double.infinity,
+              //   decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //           fit: BoxFit.cover,
+              //           image: NetworkImage(item[index].photo.toString()))),
+              // ),
+              // Text("This is My ex number ${item[index].id.toString()}"),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class Bankbranchlist {
+  Bankbranchlist({
+    this.bankBranchId,
+    this.bankBranchDetailsId,
+    this.bankBranchName,
+    this.bankBrandOfficer,
+    this.bankBrandContact,
+    this.bankBranchProvinceId,
+    this.bankBranchDistrictId,
+    this.bankBranchCommuneId,
+    this.bankBranchVillage,
+    this.bankBranchPublished,
+    this.bankBranchCreatedBy,
+    this.bankBranchCreatedDate,
+    this.bankBranchModifyBy,
+    this.bankBranchModifyDate,
+    this.rememberToken,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  String? bankBranchId;
+  String? bankBranchDetailsId;
+  String? bankBranchName;
+  String? bankBrandOfficer;
+  String? bankBrandContact;
+  String? bankBranchProvinceId;
+  String? bankBranchDistrictId;
+  String? bankBranchCommuneId;
+  String? bankBranchVillage;
+  String? bankBranchPublished;
+  dynamic bankBranchCreatedBy;
+  DateTime? bankBranchCreatedDate;
+  dynamic bankBranchModifyBy;
+  dynamic bankBranchModifyDate;
+  dynamic rememberToken;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  factory Bankbranchlist.fromJson(Map<String, dynamic> json) => Bankbranchlist(
+        bankBranchId: json["bank_branch_id"],
+        bankBranchDetailsId: json["bank_branch_details_id"],
+        bankBranchName: json["bank_branch_name"],
+        bankBrandOfficer: json["bank_brand_officer"],
+        bankBrandContact: json["bank_brand_contact"],
+        bankBranchProvinceId: json["bank_branch_province_id"],
+        bankBranchDistrictId: json["bank_branch_district_id"],
+        bankBranchCommuneId: json["bank_branch_commune_id"],
+        bankBranchVillage: json["bank_branch_village"],
+        bankBranchPublished: json["bank_branch_published"],
+        bankBranchCreatedBy: json["bank_branch_created_by"],
+        bankBranchCreatedDate: DateTime.parse(json["bank_branch_created_date"]),
+        bankBranchModifyBy: json["bank_branch_modify_by"],
+        bankBranchModifyDate: json["bank_branch_modify_date"],
+        rememberToken: json["remember_token"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "bank_branch_id": bankBranchId,
+        "bank_branch_details_id": bankBranchDetailsId,
+        "bank_branch_name": bankBranchName,
+        "bank_brand_officer": bankBrandOfficer,
+        "bank_brand_contact": bankBrandContact,
+        "bank_branch_province_id": bankBranchProvinceId,
+        "bank_branch_district_id": bankBranchDistrictId,
+        "bank_branch_commune_id": bankBranchCommuneId,
+        "bank_branch_village": bankBranchVillage,
+        "bank_branch_published": bankBranchPublished,
+        "bank_branch_created_by": bankBranchCreatedBy,
+        "bank_branch_created_date": bankBranchCreatedDate?.toIso8601String(),
+        "bank_branch_modify_by": bankBranchModifyBy,
+        "bank_branch_modify_date": bankBranchModifyDate,
+        "remember_token": rememberToken,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
