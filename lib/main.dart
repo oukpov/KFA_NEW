@@ -21,11 +21,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-<<<<<<< HEAD
-      home: const Hompage(), 
-=======
-      home: Show_autoVerbals(),
->>>>>>> bc5f6e39ac59204a821b97bd2000a2ab24abf5c1
+
+      home: const Hompage(),
+
+      // home: Show_autoVerbals(),
     );
   }
 }
