@@ -1,5 +1,5 @@
 import 'package:admin/model/models/autoVerbal.dart';
-import 'package:admin/model/models/auverbal.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,17 +12,20 @@ class Show_autoVerbal extends StatefulWidget {
 }
 
 class _Show_autoVerbalState extends State<Show_autoVerbal> {
-  Future<verballist> atb() async {
-    final response = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/verbal'));
-    final data = jsonDecode(response.body);
-    return verballist.fromJson(data);
+  List<autoverbal> parsePhotos(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<autoverbal>((json) => autoverbal.fromJson(json)).toList();
   }
 
-  int k = 0;
-  String l = "gfhghf";
-  String p = "7485";
-  int f=8;
+  Future<List<autoverbal>> fetchPhotos(http.Client client) async {
+    final response = await client
+        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
+
+    // Use the compute function to run parsePhotos in a separate isolate.
+    return parsePhotos(response.body);
+  }
+
   Map<String, String> propertyID = {
     '1': 'Agriculture',
     '2': 'Apartment',
@@ -64,78 +67,35 @@ class _Show_autoVerbalState extends State<Show_autoVerbal> {
   static String ch = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder(
-        future: atb(),
-        builder: (context, AsyncSnapshot<verballist> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.builder(
-            // itemCount: snaps
-            itemBuilder: (context, index) {
-              final cdt = snapshot.data!;
-              // Idcom.add(cdt.comparableId!.toString());
-              propertyID.forEach(
-                (key, value) {
-                  if (key == cdt.verbalPropertyId) {
-                    ch = value;
-                  }
-                },
-              );
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30)),
-                    boxShadow: [BoxShadow(color: Colors.black, blurRadius: 5)]),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Property Type :",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        15)),
-                        Text(ch,
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        14)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Lang Size :",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        15)),
-                        Text(cdt.verbalCreatedBy.toString(),
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).textScaleFactor *
-                                        14)),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
+    return FutureBuilder(
+      future: fetchPhotos(http.Client()),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        },
+        }
+        return PhotosList(photos: snapshot.data!);
+      },
+    );
+  }
+}
+
+class PhotosList extends StatelessWidget {
+  const PhotosList({super.key, required this.photos});
+
+  final List<autoverbal> photos;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
       ),
+      itemCount: photos.length,
+      itemBuilder: (context, index) {
+        return Text(photos[index].verbalId.toString());
+      },
     );
   }
 }
