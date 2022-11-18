@@ -55,7 +55,10 @@ class _CommentAndOptionState extends State<CommentAndOption> {
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
                       value: value["opt_value"] + " " + value["opt_des"],
-                      child: Text(value["opt_des"]),
+                      child: Text(
+                        value["opt_des"],
+                        style: TextStyle(fontSize: 14),
+                      ),
                     ),
                   )
                   .toList(),

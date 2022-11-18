@@ -48,7 +48,10 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
                       value: value["agenttype_name"],
-                      child: Text(value["agenttype_name"]),
+                      child: Text(
+                        value["agenttype_name"],
+                        style: TextStyle(fontSize: 14),
+                      ),
                     ),
                   )
                   .toList(),
@@ -104,7 +107,8 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
                       value: value["approve_name"],
-                      child: Text(value["approve_name"]),
+                      child: Text(value["approve_name"],
+                          style: TextStyle(fontSize: 14)),
                     ),
                   )
                   .toList(),
