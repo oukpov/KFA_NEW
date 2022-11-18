@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 <<<<<<< HEAD
-      home: Hompage(),
+      home: Hompage(), sa
 =======
       home: Show_autoVerbals(),
 >>>>>>> bc5f6e39ac59204a821b97bd2000a2ab24abf5c1
