@@ -8,7 +8,6 @@ import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/components/ApprovebyAndVerifyby.dart';
 import 'package:admin/components/FileOpen.dart';
 import 'package:admin/components/LandBuilding.dart';
-import 'package:admin/components/bank.dart';
 import 'package:admin/components/comment.dart';
 import 'package:admin/components/date.dart';
 import 'package:admin/components/forceSale.dart';
@@ -53,9 +52,9 @@ class _AddState extends State<Add> {
     'Other',
   ];
   var _list = [];
-  var _branch = [];
-  static String? bankvalue;
-  static String branchvalue = "6467";
+  List<dynamic> _branch = [];
+  static String bankvalue = "6480";
+  static String branchvalue = "";
   var bank = [
     'Bank',
     'Private',
@@ -66,7 +65,9 @@ class _AddState extends State<Add> {
     bankvalue = "";
     // ignore: unnecessary_new
     Load();
-    branch();
+    branch(bankvalue);
+    _list;
+    _branch;
     super.initState();
     // requestModelVerbal = VerbalTypeRequestModel(
     //     verbal_land_area: '123',
@@ -241,15 +242,18 @@ class _AddState extends State<Add> {
                 // ),
                 // BankDropdown(),
                 Container(
-                  height: 55,
+                  height: 60,
                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: DropdownButtonFormField<String>(
                     isExpanded: true,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.65,
                     onChanged: (newValue) {
                       setState(() {
-                        bankvalue = newValue;
+                        bankvalue = newValue!;
                         // ignore: avoid_print
+                        setState(() {
+                          branch(bankvalue);
+                        });
                         print(bankvalue);
                         print("Value of bank  ${newValue}");
                       });
@@ -333,21 +337,15 @@ class _AddState extends State<Add> {
                   height: 55,
                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
-                    onChanged: (newValue) {
+                    isExpanded: false,
+
+                    onChanged: (String? newValue) {
                       setState(() {
-                        // bankvalue = newValue;
-                        // // ignore: avoid_print
-                        // print(bankvalue);
-                        // print("Value of bank  ${newValue}");
+                        branchvalue = newValue!;
+                        // ignore: avoid_print
+                        print(newValue);
                       });
-                    },
-                    validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Please select bank';
-                      }
-                      return null;
+                      ;
                     },
                     items: _branch
                         .map<DropdownMenuItem<String>>(
@@ -355,13 +353,7 @@ class _AddState extends State<Add> {
                             value: value["bank_branch_id"].toString(),
                             child: Text(
                               value["bank_branch_name"],
-                              style: TextStyle(
-                                  height: 1,
-                                  fontSize:
-                                      MediaQuery.of(context).textScaleFactor *
-                                          12),
-                              // maxLines: 9,
-                              overflow: TextOverflow.clip,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         )
@@ -375,13 +367,12 @@ class _AddState extends State<Add> {
                     decoration: InputDecoration(
                       fillColor: kwhite,
                       filled: true,
-                      labelText: 'Bank',
+                      labelText: 'Branch',
                       hintText: 'Select',
 
                       prefixIcon: Icon(
-                        Icons.home_work,
+                        Icons.account_tree_rounded,
                         color: kImageColor,
-                        size: 20,
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
@@ -580,15 +571,15 @@ class _AddState extends State<Add> {
 
       setState(() {
         _list = jsonData['banks'];
+        print(_list[0]);
       });
     }
   }
 
-  void branch() async {
+  void branch(String value) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        // ignore: unnecessary_brace_in_string_interps
-        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=${branchvalue}'));
+        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=$value'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body.toString());
       // print(jsonData);
