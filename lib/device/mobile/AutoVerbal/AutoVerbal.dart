@@ -1,9 +1,14 @@
+import 'package:admin/device/mobile/AutoVerbal/pdf.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:pdf/pdf.dart';
 import 'dart:convert';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class Show_autoVerbals extends StatefulWidget {
   const Show_autoVerbals({super.key});
@@ -30,7 +35,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   void deleteDataId({required String verbalIds}) async {
     final response = await http
         // ignore: unnecessary_brace_in_string_interps
-        .delete(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
+        .delete(Uri.parse(
+            'https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(
@@ -52,6 +58,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
   //return response;
 //}
+//1
+  List<AutoVerbal_List> data_pdf = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +80,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+                  //1
+                  data_pdf.add(cdt);
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
@@ -83,8 +93,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               bottomRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(color: Colors.black, blurRadius: 5)
-                          ]
-                          ),
+                          ]),
                       child: Column(children: [
                         Expanded(
                             flex: 4,
@@ -219,8 +228,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                   ),
                                 ),
                               ],
-                            )
-                            ),
+                            )),
                         const Divider(
                           color: Colors.black,
                           thickness: 3,
@@ -243,6 +251,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.blue,
                                 onPressed: () {
+                                  setState(() {
+                                    _createPdf();
+                                  });
+                                  // Get.to(PrintPdf());
                                   // Navigator.push(
                                   //   context,
                                   //     MaterialPageRoute(builder: (context) => const Print()),
@@ -256,10 +268,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.red,
                                 onPressed: () {
-                                  
                                   setState(() {
-                                    deleteDataId(verbalIds: cdt.verbalId.toString());
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Show_autoVerbals()));
+                                    deleteDataId(
+                                        verbalIds: cdt.verbalId.toString());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Show_autoVerbals()));
                                   });
                                 },
                                 text: 'Delete',
@@ -278,6 +293,65 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           }
         },
       ),
+    );
+  }
+
+  void _createPdf() async {
+    final doc = pw.Document();
+
+    doc.addPage(pw.Page(
+      build: (pw.Context context) {
+        return pw.Text('dkdkdkdkd');
+      },
+    ));
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+  }
+
+  //disPlay pdf
+  void _displayPdf() {
+    final docd = pw.Document();
+    docd.addPage(pw.Page(build: (pw.Context context) {
+      return pw.Center(
+        child: pw.Text(
+          'Hello World',
+        ),
+      );
+    }));
+    // Navigator.push(context,
+    // MaterialPageRoute(builder: (context) => PreviewPdf(doc: doc),));
+  }
+}
+
+class PreviewPdf extends StatelessWidget {
+  final pw.Document doc;
+  const PreviewPdf({super.key, required this.doc});
+  void _createPdf() async {
+    final doc = pw.Document();
+
+    doc.addPage(pw.Page(
+      build: (pw.Context context) {
+        return pw.Text('dkdkdkdkd');
+      },
+    ));
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => doc.save());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _bodyPdf(),
+    );
+  }
+
+  Widget _bodyPdf() {
+    return PdfPreview(
+      build: (format) => doc.save(),
+      allowPrinting: true,
+      allowSharing: true,
+      //initialPageFormat: PreviewPdf,
+      pdfFileName: "ppppp.pdf",
     );
   }
 }
