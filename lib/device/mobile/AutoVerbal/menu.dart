@@ -28,11 +28,11 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.lightBlueAccent[800],
         title: Text(
           " Auto Verbal",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
       ),
       body: Column(
