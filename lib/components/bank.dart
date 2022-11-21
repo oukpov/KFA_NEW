@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -62,6 +63,10 @@ class _BankDropdownState extends State<BankDropdown> {
                       value: value["bank_id"].toString(),
                       child: Text(
                         value["bank_name"],
+                        maxLines: 90,
+                        style: TextStyle(
+                            color: Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)]),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -82,6 +87,7 @@ class _BankDropdownState extends State<BankDropdown> {
                 prefixIcon: Icon(
                   Icons.home_work,
                   color: kImageColor,
+                  size: 20,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
@@ -104,7 +110,7 @@ class _BankDropdownState extends State<BankDropdown> {
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    width: 2,
+                    width: 5,
                     color: kerror,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
@@ -124,7 +130,7 @@ class _BankDropdownState extends State<BankDropdown> {
             height: 55,
             padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
             child: DropdownButtonFormField<String>(
-              isExpanded: true,
+              isExpanded: false,
 
               onChanged: (String? newValue) {
                 setState(() {

@@ -43,7 +43,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   rxdart: ^0.27.5
-
+  dropdown_search: ^3.0.1
   #Use to hide text and read more text
   readmore: ^2.0.1
 

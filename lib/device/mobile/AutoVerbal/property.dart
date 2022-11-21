@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 import 'dart:convert';
+import 'package:admin/components/contants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,8 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
+      height: 57,
+      margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: DropdownButtonFormField<String>(
         isExpanded: true,
@@ -57,33 +59,50 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
                 value: value["property_type_id"].toString() +
                     " " +
                     value["property_type_name"],
-                child: Text(value["property_type_name"]),
+                child: Text(
+                  value["property_type_name"],
+                  style: TextStyle(height: 0.1),
+                ),
               ),
             )
             .toList(),
         // add extra sugar..
         icon: Icon(
           Icons.arrow_drop_down,
-          color: Colors.white,
+          color: kImageColor,
         ),
 
         decoration: InputDecoration(
-          fillColor: Colors.white,
           filled: true,
           labelText: 'Property',
           hintText: 'Select one',
+          labelStyle: TextStyle(color: Colors.black54),
           prefixIcon: Icon(
             Icons.business_outlined,
-            color: Colors.white,
+            color: kImageColor,
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: 2.0),
+            borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
             borderRadius: BorderRadius.circular(10.0),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               width: 1,
-              color: Colors.white,
+              color: kPrimaryColor,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: kerror,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 5,
+              color: kerror,
             ),
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -101,7 +120,7 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
 
       setState(() {
         _list = jsonData['property'];
-        print(_list[0]);
+        // print(_list[0]);
         //print(_list);
       });
     }

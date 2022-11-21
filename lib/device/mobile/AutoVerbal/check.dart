@@ -14,9 +14,10 @@ class Code extends StatefulWidget {
 }
 
 class _CodeState extends State<Code> {
-  late List code;
+  late List<dynamic> code;
   bool loading = false;
   late int codedisplay;
+  late int check_num;
   @override
   void initState() {
     Load();
@@ -29,22 +30,29 @@ class _CodeState extends State<Code> {
     setState(() {
       loading = true; //make loading true to show progressindicator
     });
-    var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/verbal?verbal_published=0'));
+    var rs = await http
+        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/verbal'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
       setState(() {
         loading = false;
         code = jsonData['data'];
-        codedisplay = int.parse(code[0]['verbal_id']) + 1;
-        print(code[0]['verbal_id']);
-        print(codedisplay);
+        check_num = int.parse(code[0]['verbal_id']);
+        // print(code[0]['verbal_id']);
 
         // print(_list);
       });
       // print(list.length);
     }
+    // print(code.length);
+    for (int i = 1; i < code.length; i++) {
+      if (check_num < int.parse(code[i]['verbal_id'])) {
+        check_num = int.parse(code[i]['verbal_id']);
+      }
+    }
+    codedisplay = check_num + 1;
+    print(codedisplay);
   }
 
   @override
@@ -58,7 +66,7 @@ class _CodeState extends State<Code> {
                 SizedBox(width: 40),
                 Icon(
                   Icons.qr_code,
-                  color: Colors.white,
+                  color: Colors.black,
                   size: 30,
                 ),
                 SizedBox(width: 10),
@@ -67,7 +75,7 @@ class _CodeState extends State<Code> {
                   style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ],
