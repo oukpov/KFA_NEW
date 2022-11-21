@@ -79,17 +79,17 @@ class _AddState extends State<Add> {
     _list;
     _branch;
     super.initState();
-    // requestModelVerbal = VerbalTypeRequestModel(
-    //     verbal_land_area: '123',
-    //     verbal_land_des: 'fgf',
-    //     verbal_land_dp: '12',
-    //     verbal_land_maxsqm: '12',
-    //     verbal_land_maxvalue: '23',
-    //     verbal_land_minsqm: '13',
-    //     verbal_land_minvalue: '13',
-    //     //   verbal_land_type: 'ls',
-    //     verbal_landid: '12',
-    //     verbal_land_type: 'LS');
+    requestModelVerbal = VerbalTypeRequestModel(
+        verbal_land_area: '123',
+        verbal_land_des: 'fgf',
+        verbal_land_dp: '12',
+        verbal_land_maxsqm: '12',
+        verbal_land_maxvalue: '23',
+        verbal_land_minsqm: '13',
+        verbal_land_minvalue: '13',
+        //   verbal_land_type: 'ls',
+        verbal_landid: '12',
+        verbal_land_type: 'LS');
     // requestModelVerbal = VerbalTypeRequestModel(
     //     verbal_land_area: '122222222',
     //     verbal_land_des: 'fgf',
@@ -531,14 +531,13 @@ class _AddState extends State<Add> {
                   height: 10,
                 ),
                 ImageOpen(),
-                SizedBox(
-                  height: 330,
-                  child: LandBuilding(
-                    asking_price: asking_price,
-                    opt: opt,
-                    address: address,
-                  ),
+                SizedBox(height: 10),
+                LandBuilding(
+                  asking_price: asking_price,
+                  opt: opt,
+                  address: address,
                 ),
+                SizedBox(height: 10),
                 TextButton(
                     onPressed: () {
                       // APIservice apIservice = APIservice();

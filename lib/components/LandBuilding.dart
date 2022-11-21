@@ -255,194 +255,195 @@ class _LandBuildingState extends State<LandBuilding> {
             )
           ],
         ),
-        Container(
-          padding: EdgeInsets.only(left: 22, right: 22),
-          width: double.infinity,
-          height: 270,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: list.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Container(
-                  width: 260,
-                  //height: 210,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: kPrimaryColor),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  list[index]["Property"],
-                                  style: NameProperty(),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                      size: 30,
-                                    ),
-                                    onPressed: () {
-                                      deleteItemToList(index);
-                                      print(list);
-                                    },
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                  child: Icon(
-                                Icons.location_on_sharp,
-                                color: kPrimaryColor,
-                                size: 14,
-                              )),
-                              TextSpan(text: list[index]["address"]),
-                            ],
-                          ),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 3.0,
-                      ),
-                      Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: kPrimaryColor,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          list[index]["Description"],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(width: 10),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Depreciation",
-                                style: Label(),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                "Area",
-                                style: Label(),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                'Min Value/Sqm',
-                                style: Label(),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                'Max Value/Sqm',
-                                style: Label(),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                'Min Value',
-                                style: Label(),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                'Min Value',
-                                style: Label(),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 15),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 4),
-                              Text(
-                                ':   ' + list[index]["Depreciation"],
-                                style: Name(),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                ':   ' +
-                                    (list[index]["Area"].toInt()).toString() +
-                                    'm' +
-                                    '\u00B2',
-                                style: Name(),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                ':   ' +
-                                    (list[index]["minSqm"]).toString() +
-                                    '\$',
-                                style: Name(),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                ':   ' +
-                                    (list[index]["maxSqm"]).toString() +
-                                    '\$',
-                                style: Name(),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                ':   ' +
-                                    (list[index]["totalMin"]).toString() +
-                                    '\$',
-                                style: Name(),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                ':   ' +
-                                    (list[index]["totalMax"].toString() + '\$'),
-                                style: Name(),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-          ),
-        ),
+        // Container(
+        //   padding: EdgeInsets.only(left: 22, right: 22),
+        //   width: double.infinity,
+        //   height: 270,
+        //   color: Colors.red,
+        //   child: ListView.separated(
+        //     scrollDirection: Axis.horizontal,
+        //     shrinkWrap: true,
+        //     itemCount: list.length,
+        //     itemBuilder: (BuildContext ctxt, int index) {
+        //       return Padding(
+        //         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        //         child: Container(
+        //           width: 260,
+        //           //height: 210,
+        //           padding: EdgeInsets.all(10),
+        //           decoration: BoxDecoration(
+        //             border: Border.all(width: 1, color: kPrimaryColor),
+        //             borderRadius: BorderRadius.all(Radius.circular(15)),
+        //           ),
+        //           child: Column(
+        //             children: [
+        //               Stack(
+        //                 children: [
+        //                   Row(
+        //                     children: [
+        //                       SizedBox(
+        //                         width: 10,
+        //                       ),
+        //                       Expanded(
+        //                         flex: 1,
+        //                         child: Text(
+        //                           list[index]["Property"],
+        //                           style: NameProperty(),
+        //                         ),
+        //                       ),
+        //                       Expanded(
+        //                         flex: 1,
+        //                         child: Align(
+        //                           alignment: Alignment.centerRight,
+        //                           child: IconButton(
+        //                             icon: Icon(
+        //                               Icons.delete,
+        //                               color: Colors.red,
+        //                               size: 30,
+        //                             ),
+        //                             onPressed: () {
+        //                               deleteItemToList(index);
+        //                               print(list);
+        //                             },
+        //                           ),
+        //                         ),
+        //                       )
+        //                     ],
+        //                   ),
+        //                 ],
+        //               ),
+        //               Padding(
+        //                 padding: const EdgeInsets.only(left: 10, right: 10),
+        //                 child: Text.rich(
+        //                   TextSpan(
+        //                     children: <InlineSpan>[
+        //                       WidgetSpan(
+        //                           child: Icon(
+        //                         Icons.location_on_sharp,
+        //                         color: kPrimaryColor,
+        //                         size: 14,
+        //                       )),
+        //                       TextSpan(text: list[index]["address"]),
+        //                     ],
+        //                   ),
+        //                   textAlign: TextAlign.left,
+        //                   style: TextStyle(fontSize: 12),
+        //                 ),
+        //               ),
+        //               SizedBox(
+        //                 height: 3.0,
+        //               ),
+        //               Divider(
+        //                 height: 1,
+        //                 thickness: 1,
+        //                 color: kPrimaryColor,
+        //               ),
+        //               SizedBox(
+        //                 height: 5,
+        //               ),
+        //               Container(
+        //                 padding: EdgeInsets.only(left: 10),
+        //                 alignment: Alignment.centerLeft,
+        //                 child: Text(
+        //                   list[index]["Description"],
+        //                 ),
+        //               ),
+        //               Row(
+        //                 children: [
+        //                   SizedBox(width: 10),
+        //                   Column(
+        //                     mainAxisAlignment: MainAxisAlignment.start,
+        //                     crossAxisAlignment: CrossAxisAlignment.start,
+        //                     children: [
+        //                       Text(
+        //                         "Depreciation",
+        //                         style: Label(),
+        //                       ),
+        //                       SizedBox(height: 3),
+        //                       Text(
+        //                         "Area",
+        //                         style: Label(),
+        //                       ),
+        //                       SizedBox(height: 3),
+        //                       Text(
+        //                         'Min Value/Sqm',
+        //                         style: Label(),
+        //                       ),
+        //                       SizedBox(height: 3),
+        //                       Text(
+        //                         'Max Value/Sqm',
+        //                         style: Label(),
+        //                       ),
+        //                       SizedBox(height: 3),
+        //                       Text(
+        //                         'Min Value',
+        //                         style: Label(),
+        //                       ),
+        //                       SizedBox(height: 3),
+        //                       Text(
+        //                         'Min Value',
+        //                         style: Label(),
+        //                       ),
+        //                     ],
+        //                   ),
+        //                   SizedBox(width: 15),
+        //                   Column(
+        //                     mainAxisAlignment: MainAxisAlignment.start,
+        //                     crossAxisAlignment: CrossAxisAlignment.start,
+        //                     children: [
+        //                       SizedBox(height: 4),
+        //                       Text(
+        //                         ':   ' + list[index]["Depreciation"],
+        //                         style: Name(),
+        //                       ),
+        //                       SizedBox(height: 2),
+        //                       Text(
+        //                         ':   ' +
+        //                             (list[index]["Area"].toInt()).toString() +
+        //                             'm' +
+        //                             '\u00B2',
+        //                         style: Name(),
+        //                       ),
+        //                       SizedBox(height: 2),
+        //                       Text(
+        //                         ':   ' +
+        //                             (list[index]["minSqm"]).toString() +
+        //                             '\$',
+        //                         style: Name(),
+        //                       ),
+        //                       SizedBox(height: 2),
+        //                       Text(
+        //                         ':   ' +
+        //                             (list[index]["maxSqm"]).toString() +
+        //                             '\$',
+        //                         style: Name(),
+        //                       ),
+        //                       SizedBox(height: 2),
+        //                       Text(
+        //                         ':   ' +
+        //                             (list[index]["totalMin"]).toString() +
+        //                             '\$',
+        //                         style: Name(),
+        //                       ),
+        //                       SizedBox(height: 2),
+        //                       Text(
+        //                         ':   ' +
+        //                             (list[index]["totalMax"].toString() + '\$'),
+        //                         style: Name(),
+        //                       ),
+        //                     ],
+        //                   ),
+        //                 ],
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //     separatorBuilder: (BuildContext context, int index) =>
+        //         const Divider(),
+        //   ),
+        // ),
       ],
     );
   }

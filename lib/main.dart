@@ -2,7 +2,7 @@ import 'package:admin/device/mobile/AutoVerbal/AutoVerbal.dart';
 import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
 import 'package:admin/device/mobile/on_home_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fvm/fvm.dart';
 import 'interface/homepage.dart';
 
 void main() {
