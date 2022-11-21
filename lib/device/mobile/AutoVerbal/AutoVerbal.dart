@@ -1,10 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 class Show_autoVerbals extends StatefulWidget {
   const Show_autoVerbals({super.key});
 
@@ -41,17 +45,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       throw Exception('Delete error occured!');
     }
   }
-// Future<http.Response> deleteDataId({required verbalIds}) async {
-//   //assert(verbalIds != null);
-//   final http.Response response = await http.delete(
-//     Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/{verbal_id}'),
-//     headers: <String, String>{
-//      // 'Content-Type': 'application/json; charset=UTF-8',
-//     },
-//   );
+ 
 
-  //return response;
-//}
+List<AutoVerbal_List> data_pdf=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +68,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+                  data_pdf.add(cdt);
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
@@ -243,11 +240,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.blue,
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //     MaterialPageRoute(builder: (context) => const Print()),
-                                  //             );
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => const Print(),));
+                                  setState(() {
+                                    generatePdf();
+                                    print("go");
+                                  });
                                 },
                                 text: 'Print',
                                 icon: const Icon(Icons.print),
@@ -278,6 +274,64 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           }
         },
       ),
+    );
+  }  
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async{
+final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+final font = await PdfGoogleFonts.nunitoExtraLight();
+
+pdf.addPage(
+  pw.Page(build: (context) {
+    return pw.Column(children: [
+      pw.SizedBox(
+        child: pw.FittedBox(
+          child: pw.Text(title,style: pw.TextStyle(font: font))
+        )
+        ),
+        pw.SizedBox(height: 20),
+        pw.Flexible(child: pw.Text(data_pdf[0].verbalId.toString()))
+    ]
+    );
+  }
+  
+  )
+);
+return pdf.save();
+}
+void generatePdf() async{
+  const title = 'Flutter Demo';
+  await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
+}
+
+}
+class PreviewPdf extends StatelessWidget {
+  final pw.Document doc;
+  const PreviewPdf({super.key, required this.doc});
+ void _createPdf() async{
+    final doc = pw.Document();
+
+    doc.addPage(
+      pw.Page(build: (pw.Context context){
+        return pw.Text('dkdkdkdkd');
+      },
+      )
+    );
+    await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => doc.save());
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _bodyPdf(),
+    );
+  }
+
+  Widget _bodyPdf(){
+    return PdfPreview(
+     build: (format) => doc.save(),
+     allowPrinting: true,
+     allowSharing: true,
+     //initialPageFormat: PreviewPdf,
+     pdfFileName: "ppppp.pdf",
     );
   }
 }
