@@ -17,7 +17,9 @@ import 'package:admin/device/mobile/AutoVerbal/check.dart';
 import 'package:admin/device/mobile/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/respon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
 import '../../../components/contants.dart';
 
@@ -35,7 +37,7 @@ class _AddState extends State<Add> {
   String fromValue = 'Bank';
   String genderValue = 'Female';
   int opt = 0;
-  double asking_price = 1;
+  static double asking_price = 1;
   String address = '';
   String propertyType = '', propertyTypeValue = '';
   TextEditingController dateinput = TextEditingController();
@@ -72,6 +74,7 @@ class _AddState extends State<Add> {
 
   @override
   void initState() {
+    asking_price;
     bankvalue = "";
     // ignore: unnecessary_new
     Load();
@@ -538,17 +541,26 @@ class _AddState extends State<Add> {
                   address: address,
                 ),
                 SizedBox(height: 10),
-                TextButton(
+                Container(
+                  margin: EdgeInsets.all(20),
+                  child: GFButton(
+                    text: "Submit",
                     onPressed: () {
-                      // APIservice apIservice = APIservice();
-                      // apIservice.saveAutoVerbal(requestModelAuto).then(
-                      //   (value) {
-                      print(requestModelVerbal.toJson());
-                      print(requestModelAuto.toJson());
-                      //   },
-                      // );
+                      print("asndjhjsadasd");
                     },
-                    child: Text('test')),
+                  ),
+                )
+                // TextButton(
+                //     onPressed: () {
+                //       // APIservice apIservice = APIservice();
+                //       // apIservice.saveAutoVerbal(requestModelAuto).then(
+                //       //   (value) {
+                //       print(requestModelVerbal.toJson());
+                //       print(requestModelAuto.toJson());
+                //       //   },
+                //       // );
+                //     },
+                //     child: Text('test')),
               ],
             ),
           ),
