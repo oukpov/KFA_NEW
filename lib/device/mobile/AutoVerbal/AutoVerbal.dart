@@ -242,7 +242,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 onPressed: () {
                                   setState(() {
                                     generatePdf();
-                                    print("go");
+                                    //print("go");
                                   });
                                 },
                                 text: 'Print',
