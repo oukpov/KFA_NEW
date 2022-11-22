@@ -17,6 +17,7 @@ import 'package:admin/device/mobile/AutoVerbal/check.dart';
 import 'package:admin/device/mobile/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/respon.dart';
+import 'package:admin/server/api_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
@@ -90,44 +91,42 @@ class _AddState extends State<Add> {
         verbal_land_maxvalue: '23',
         verbal_land_minsqm: '13',
         verbal_land_minvalue: '13',
-        //   verbal_land_type: 'ls',
         verbal_landid: '12',
         verbal_land_type: 'LS');
-    // requestModelVerbal = VerbalTypeRequestModel(
-    //     verbal_land_area: '122222222',
-    //     verbal_land_des: 'fgf',
-    //     verbal_land_dp: '12',
-    //     verbal_land_maxsqm: '12',
-    //     verbal_land_maxvalue: '23',
-    //     verbal_land_minsqm: '13',
-    //     verbal_land_minvalue: '13',
-    //     //   verbal_land_type: 'ls',
-    //     verbal_landid: '12',
-    //     verbal_land_type: 'LS');
-    // requestModelAuto = AutoVerbalRequestModel(
-    //   property_type_id: "1234",
-    //   lat: "12",
-    //   lng: "12",
-    //   address: 'gdhfgd',
-    //   approve_id: "dfhdf",
-    //   bank_branch_id: "12",
-    //   bank_contact: "1787424",
-    //   bank_id: "12",
-    //   bank_officer: "ffgf",
-    //   code: "343645",
-    //   comment: "dfgdf",
-    //   contact: "jdhfj",
-    //   date: "8843",
-    //   image: "",
-    //   option: "12",
-    //   owner: "jgkjhg",
-    //   user: "1",
-    //   verbal_com: 'gfjgh',
-    //   verbal_con: "fgf",
-    //   data: requestModelVerbal, SetDataATBress: '',
-    //   // autoVerbal: [requestModelVerbal],
-    //   // data: requestModelVerbal,
-    // );
+    requestModelVerbal = VerbalTypeRequestModel(
+        verbal_land_area: '122222222',
+        verbal_land_des: 'fgf',
+        verbal_land_dp: '12',
+        verbal_land_maxsqm: '12',
+        verbal_land_maxvalue: '23',
+        verbal_land_minsqm: '13',
+        verbal_land_minvalue: '13',
+        verbal_landid: '12',
+        verbal_land_type: 'LS');
+    requestModelAuto = AutoVerbalRequestModel(
+      property_type_id: "1234",
+      lat: "12",
+      lng: "12",
+      address: 'gdhfgd',
+      approve_id: "dfhdf",
+      bank_branch_id: "12",
+      bank_contact: "1787424",
+      bank_id: "12",
+      bank_officer: "ffgf",
+      code: "343645",
+      comment: "dfgdf",
+      contact: "jdhfj",
+      date: "8843",
+      image: "",
+      option: "12",
+      owner: "jgkjhg",
+      user: "1",
+      verbal_com: 'gfjgh',
+      verbal_con: "fgf",
+      data: requestModelVerbal, SetDataATBress: '',
+      // autoVerbal: [requestModelVerbal],
+      // data: requestModelVerbal,
+    );
     // print(requestModelVerbal.toJson());
     // print(requestModelAuto.toJson());
   }
@@ -547,6 +546,13 @@ class _AddState extends State<Add> {
                     text: "Submit",
                     onPressed: () {
                       print("asndjhjsadasd");
+                      APIservice apIservice = APIservice();
+                      apIservice.saveAutoVerbal(requestModelAuto).then(
+                        (value) {
+                          print(requestModelVerbal.toJson());
+                          print(requestModelAuto.toJson());
+                        },
+                      );
                     },
                   ),
                 )
