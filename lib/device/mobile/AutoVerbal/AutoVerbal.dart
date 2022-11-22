@@ -19,6 +19,7 @@ class Show_autoVerbals extends StatefulWidget {
 }
 
 class _Show_autoVerbalState extends State<Show_autoVerbals> {
+  static int Num = 0;
   Future<List<AutoVerbal_List>> fetchData() async {
     final response = await http
         .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
@@ -71,6 +72,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   data_pdf.add(cdt);
+                  Num = index + 1;
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
@@ -276,6 +278,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
             return const Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Text(Num.toString()),
       ),
     );
   }

@@ -1,8 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names
 
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:admin/Customs/form.dart';
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/components/ApprovebyAndVerifyby.dart';
@@ -18,7 +16,7 @@ import 'package:admin/device/mobile/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/respon.dart';
 import 'package:admin/server/api_service.dart';
-import 'package:flutter/foundation.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
@@ -33,17 +31,13 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  String fromValue = 'Bank';
-  String genderValue = 'Female';
   int opt = 0;
   static double asking_price = 1;
   String address = '';
   String propertyType = '', propertyTypeValue = '';
   TextEditingController dateinput = TextEditingController();
   late AutoVerbalRequestModel requestModelAuto;
-  late VerbalTypeRequestModel requestModelVerbal;
+  String userID = '17';
   var from = [
     'Bank',
     'Private',
@@ -83,52 +77,30 @@ class _AddState extends State<Add> {
     _list;
     _branch;
     super.initState();
-    requestModelVerbal = VerbalTypeRequestModel(
-        verbal_land_area: '123',
-        verbal_land_des: 'fgf',
-        verbal_land_dp: '12',
-        verbal_land_maxsqm: '12',
-        verbal_land_maxvalue: '23',
-        verbal_land_minsqm: '13',
-        verbal_land_minvalue: '13',
-        verbal_landid: '12',
-        verbal_land_type: 'LS');
-    requestModelVerbal = VerbalTypeRequestModel(
-        verbal_land_area: '122222222',
-        verbal_land_des: 'fgf',
-        verbal_land_dp: '12',
-        verbal_land_maxsqm: '12',
-        verbal_land_maxvalue: '23',
-        verbal_land_minsqm: '13',
-        verbal_land_minvalue: '13',
-        verbal_landid: '12',
-        verbal_land_type: 'LS');
     requestModelAuto = AutoVerbalRequestModel(
-      property_type_id: "1234",
-      lat: "12",
-      lng: "12",
-      address: 'gdhfgd',
-      approve_id: "dfhdf",
-      bank_branch_id: "12",
-      bank_contact: "1787424",
-      bank_id: "12",
-      bank_officer: "ffgf",
-      code: "343645",
-      comment: "dfgdf",
-      contact: "jdhfj",
-      date: "8843",
+      property_type_id: "",
+      lat: "",
+      lng: "",
+      address: '',
+      approve_id: "", agent: "",
+      bank_branch_id: "",
+      bank_contact: "",
+      bank_id: "",
+      bank_officer: "",
+      code: "",
+      comment: "",
+      contact: "",
+      date: "",
       image: "",
-      option: "12",
-      owner: "jgkjhg",
-      user: "1",
-      verbal_com: 'gfjgh',
-      verbal_con: "fgf",
-      data: requestModelVerbal, SetDataATBress: '',
+      option: "",
+      owner: "",
+      user: "10",
+      verbal_com: '',
+      verbal_con: "",
+      verbal: [],
       // autoVerbal: [requestModelVerbal],
       // data: requestModelVerbal,
     );
-    // print(requestModelVerbal.toJson());
-    // print(requestModelAuto.toJson());
   }
 
   @override
@@ -143,7 +115,58 @@ class _AddState extends State<Add> {
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            onPressed: () {},
+            onPressed: () {
+              requestModelAuto.user = userID.toString();
+              if (validateAndSave()) {
+                APIservice apIservice = APIservice();
+                apIservice.saveAutoVerbal(requestModelAuto).then(
+                  (value) {
+                    print('Error');
+                    print(json.encode(requestModelAuto.toJson()));
+                    if (requestModelAuto.verbal.isEmpty) {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.error,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: 'Error',
+                        desc: "Please add Land/Building at least 1!",
+                        btnOkOnPress: () {},
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: Colors.red,
+                      ).show();
+                    } else {
+                      if (value.message == "Save Successfully") {
+                        AwesomeDialog(
+                            context: context,
+                            animType: AnimType.leftSlide,
+                            headerAnimationLoop: false,
+                            dialogType: DialogType.success,
+                            showCloseIcon: false,
+                            title: value.message,
+                            autoHide: Duration(seconds: 3),
+                            onDismissCallback: (type) {
+                              Navigator.pop(context);
+                            }).show();
+                      } else {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          animType: AnimType.rightSlide,
+                          headerAnimationLoop: false,
+                          title: 'Error',
+                          desc: value.message,
+                          btnOkOnPress: () {},
+                          btnOkIcon: Icons.cancel,
+                          btnOkColor: Colors.red,
+                        ).show();
+                        print(value.message);
+                      }
+                    }
+                  },
+                );
+              }
+            },
           ),
         ],
         title: Text.rich(
@@ -545,14 +568,56 @@ class _AddState extends State<Add> {
                   child: GFButton(
                     text: "Submit",
                     onPressed: () {
-                      print("asndjhjsadasd");
-                      APIservice apIservice = APIservice();
-                      apIservice.saveAutoVerbal(requestModelAuto).then(
-                        (value) {
-                          print(requestModelVerbal.toJson());
-                          print(requestModelAuto.toJson());
-                        },
-                      );
+                      requestModelAuto.user = userID.toString();
+                      if (validateAndSave()) {
+                        APIservice apIservice = APIservice();
+                        apIservice.saveAutoVerbal(requestModelAuto).then(
+                          (value) {
+                            print('Error');
+                            print(json.encode(requestModelAuto.toJson()));
+                            if (requestModelAuto.verbal.isEmpty) {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.error,
+                                animType: AnimType.rightSlide,
+                                headerAnimationLoop: false,
+                                title: 'Error',
+                                desc: "Please add Land/Building at least 1!",
+                                btnOkOnPress: () {},
+                                btnOkIcon: Icons.cancel,
+                                btnOkColor: Colors.red,
+                              ).show();
+                            } else {
+                              if (value.message == "Save Successfully") {
+                                AwesomeDialog(
+                                    context: context,
+                                    animType: AnimType.leftSlide,
+                                    headerAnimationLoop: false,
+                                    dialogType: DialogType.success,
+                                    showCloseIcon: false,
+                                    title: value.message,
+                                    autoHide: Duration(seconds: 3),
+                                    onDismissCallback: (type) {
+                                      Navigator.pop(context);
+                                    }).show();
+                              } else {
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.error,
+                                  animType: AnimType.rightSlide,
+                                  headerAnimationLoop: false,
+                                  title: 'Error',
+                                  desc: value.message,
+                                  btnOkOnPress: () {},
+                                  btnOkIcon: Icons.cancel,
+                                  btnOkColor: Colors.red,
+                                ).show();
+                                print(value.message);
+                              }
+                            }
+                          },
+                        );
+                      }
                     },
                   ),
                 )
@@ -612,6 +677,15 @@ class _AddState extends State<Add> {
         _branch = jsonData['bank_branches'];
       });
     }
+  }
+
+  bool validateAndSave() {
+    final form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }
 
