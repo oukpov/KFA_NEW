@@ -8,7 +8,6 @@ import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/components/ApprovebyAndVerifyby.dart';
 import 'package:admin/components/FileOpen.dart';
 import 'package:admin/components/LandBuilding.dart';
-import 'package:admin/components/bank.dart';
 import 'package:admin/components/comment.dart';
 import 'package:admin/components/date.dart';
 import 'package:admin/components/forceSale.dart';
@@ -18,7 +17,9 @@ import 'package:admin/device/mobile/AutoVerbal/check.dart';
 import 'package:admin/device/mobile/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/respon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
 import '../../../components/contants.dart';
 
@@ -36,7 +37,7 @@ class _AddState extends State<Add> {
   String fromValue = 'Bank';
   String genderValue = 'Female';
   int opt = 0;
-  double asking_price = 1;
+  static double asking_price = 1;
   String address = '';
   String propertyType = '', propertyTypeValue = '';
   TextEditingController dateinput = TextEditingController();
@@ -53,32 +54,45 @@ class _AddState extends State<Add> {
     'Other',
   ];
   var _list = [];
-  var _branch = [];
-  static String? bankvalue;
-  static String branchvalue = "6467";
+  List<dynamic> _branch = [];
+  static String bankvalue = "6480";
+  static String branchvalue = "";
   var bank = [
     'Bank',
     'Private',
     'Other',
   ];
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("USA"), value: "USA"),
+      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
+      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
+      DropdownMenuItem(child: Text("England"), value: "England"),
+    ];
+    return menuItems;
+  }
+
   @override
   void initState() {
+    asking_price;
     bankvalue = "";
     // ignore: unnecessary_new
     Load();
-    branch();
+    branch(bankvalue);
+    _list;
+    _branch;
     super.initState();
-    // requestModelVerbal = VerbalTypeRequestModel(
-    //     verbal_land_area: '123',
-    //     verbal_land_des: 'fgf',
-    //     verbal_land_dp: '12',
-    //     verbal_land_maxsqm: '12',
-    //     verbal_land_maxvalue: '23',
-    //     verbal_land_minsqm: '13',
-    //     verbal_land_minvalue: '13',
-    //     //   verbal_land_type: 'ls',
-    //     verbal_landid: '12',
-    //     verbal_land_type: 'LS');
+    requestModelVerbal = VerbalTypeRequestModel(
+        verbal_land_area: '123',
+        verbal_land_des: 'fgf',
+        verbal_land_dp: '12',
+        verbal_land_maxsqm: '12',
+        verbal_land_maxvalue: '23',
+        verbal_land_minsqm: '13',
+        verbal_land_minvalue: '13',
+        //   verbal_land_type: 'ls',
+        verbal_landid: '12',
+        verbal_land_type: 'LS');
     // requestModelVerbal = VerbalTypeRequestModel(
     //     verbal_land_area: '122222222',
     //     verbal_land_des: 'fgf',
@@ -241,15 +255,18 @@ class _AddState extends State<Add> {
                 // ),
                 // BankDropdown(),
                 Container(
-                  height: 55,
+                  height: 70,
                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                   child: DropdownButtonFormField<String>(
                     isExpanded: true,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.65,
                     onChanged: (newValue) {
                       setState(() {
-                        bankvalue = newValue;
+                        bankvalue = newValue!;
                         // ignore: avoid_print
+                        setState(() {
+                          branch(bankvalue);
+                        });
                         print(bankvalue);
                         print("Value of bank  ${newValue}");
                       });
@@ -264,16 +281,7 @@ class _AddState extends State<Add> {
                         .map<DropdownMenuItem<String>>(
                           (value) => DropdownMenuItem<String>(
                             value: value["bank_id"].toString(),
-                            child: Text(
-                              value["bank_acronym"],
-                              style: TextStyle(
-                                  height: 1,
-                                  fontSize:
-                                      MediaQuery.of(context).textScaleFactor *
-                                          12),
-                              // maxLines: 9,
-                              overflow: TextOverflow.clip,
-                            ),
+                            child: Text(value["bank_name"]),
                           ),
                         )
                         .toList(),
@@ -326,95 +334,89 @@ class _AddState extends State<Add> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  height: 55,
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.7,
-                    onChanged: (newValue) {
-                      setState(() {
-                        // bankvalue = newValue;
-                        // // ignore: avoid_print
-                        // print(bankvalue);
-                        // print("Value of bank  ${newValue}");
-                      });
-                    },
-                    validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Please select bank';
-                      }
-                      return null;
-                    },
-                    items: _branch
-                        .map<DropdownMenuItem<String>>(
-                          (value) => DropdownMenuItem<String>(
-                            value: value["bank_branch_id"].toString(),
-                            child: Text(
-                              value["bank_branch_name"],
-                              style: TextStyle(
-                                  height: 1,
-                                  fontSize:
-                                      MediaQuery.of(context).textScaleFactor *
-                                          12),
-                              // maxLines: 9,
-                              overflow: TextOverflow.clip,
-                            ),
+
+                ((_branch.length <= 1)
+                    ? SizedBox(
+                        height: 0.1,
+                      )
+                    : Container(
+                        height: 70,
+                        margin: EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        child: DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          // autofocus: true,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              branchvalue = newValue!;
+                              // ignore: avoid_print
+                              print("This id in branch ${newValue}");
+                            });
+                            ;
+                          },
+                          items: _branch
+                              .map<DropdownMenuItem<String>>(
+                                (value) => DropdownMenuItem<String>(
+                                  value: value["bank_branch_id"].toString(),
+                                  child: Text(
+                                    value["bank_branch_name"],
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        fontSize: MediaQuery.of(context)
+                                                .textScaleFactor *
+                                            14),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          // add extra sugar..
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: kImageColor,
                           ),
-                        )
-                        .toList(),
-                    // add extra sugar..
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: kImageColor,
-                    ),
 
-                    decoration: InputDecoration(
-                      fillColor: kwhite,
-                      filled: true,
-                      labelText: 'Bank',
-                      hintText: 'Select',
+                          decoration: InputDecoration(
+                            fillColor: kwhite,
+                            filled: true,
+                            labelText: 'Branch',
+                            hintText: 'Select',
 
-                      prefixIcon: Icon(
-                        Icons.home_work,
-                        color: kImageColor,
-                        size: 20,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: kPrimaryColor, width: 2.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: kPrimaryColor,
+                            prefixIcon: Icon(
+                              Icons.account_tree_rounded,
+                              color: kImageColor,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: kPrimaryColor, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 5,
+                                color: kerror,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            //   decoration: InputDecoration(
+                            //       labelText: 'From',
+                            //       prefixIcon: Icon(Icons.business_outlined)),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: kerror,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 5,
-                          color: kerror,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      //   decoration: InputDecoration(
-                      //       labelText: 'From',
-                      //       prefixIcon: Icon(Icons.business_outlined)),
-                    ),
-                  ),
-                ),
+                      )),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -532,25 +534,33 @@ class _AddState extends State<Add> {
                   height: 10,
                 ),
                 ImageOpen(),
-                SizedBox(
-                  height: 330,
-                  child: LandBuilding(
-                    asking_price: asking_price,
-                    opt: opt,
-                    address: address,
-                  ),
+                SizedBox(height: 10),
+                LandBuilding(
+                  asking_price: asking_price,
+                  opt: opt,
+                  address: address,
                 ),
-                TextButton(
+                SizedBox(height: 10),
+                Container(
+                  margin: EdgeInsets.all(20),
+                  child: GFButton(
+                    text: "Submit",
                     onPressed: () {
-                      // APIservice apIservice = APIservice();
-                      // apIservice.saveAutoVerbal(requestModelAuto).then(
-                      //   (value) {
-                      print(requestModelVerbal.toJson());
-                      print(requestModelAuto.toJson());
-                      //   },
-                      // );
+                      print("asndjhjsadasd");
                     },
-                    child: Text('test')),
+                  ),
+                )
+                // TextButton(
+                //     onPressed: () {
+                //       // APIservice apIservice = APIservice();
+                //       // apIservice.saveAutoVerbal(requestModelAuto).then(
+                //       //   (value) {
+                //       print(requestModelVerbal.toJson());
+                //       print(requestModelAuto.toJson());
+                //       //   },
+                //       // );
+                //     },
+                //     child: Text('test')),
               ],
             ),
           ),
@@ -580,15 +590,15 @@ class _AddState extends State<Add> {
 
       setState(() {
         _list = jsonData['banks'];
+        print(_list[0]);
       });
     }
   }
 
-  void branch() async {
+  void branch(String pm) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        // ignore: unnecessary_brace_in_string_interps
-        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=${branchvalue}'));
+        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=$pm'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body.toString());
       // print(jsonData);

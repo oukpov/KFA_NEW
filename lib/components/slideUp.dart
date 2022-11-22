@@ -288,7 +288,7 @@ class _HomePageState extends State<HomePage> {
             target: LatLng(latitude, longitude), //initial position
             zoom: 10.0, //initial zoom level
           ),
-          mapType: MapType.normal, //map type
+          mapType: MapType.hybrid, //map type
           onMapCreated: (controller) {
             //method called when map is created
             setState(() {

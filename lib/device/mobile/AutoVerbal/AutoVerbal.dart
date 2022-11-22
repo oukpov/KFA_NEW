@@ -34,7 +34,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   void deleteDataId({required String verbalIds}) async {
     final response = await http
         // ignore: unnecessary_brace_in_string_interps
-        .delete(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
+        .delete(Uri.parse(
+            'https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(
@@ -53,11 +54,11 @@ List<AutoVerbal_List> data_pdf=[];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.lightBlue[900],
         title: Text(
           "AutoVerbal List",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
       ),
       body: FutureBuilder<List<AutoVerbal_List>>(
@@ -80,8 +81,7 @@ List<AutoVerbal_List> data_pdf=[];
                               bottomRight: Radius.circular(30)),
                           boxShadow: [
                             BoxShadow(color: Colors.black, blurRadius: 5)
-                          ]
-                          ),
+                          ]),
                       child: Column(children: [
                         Expanded(
                             flex: 4,
@@ -216,8 +216,7 @@ List<AutoVerbal_List> data_pdf=[];
                                   ),
                                 ),
                               ],
-                            )
-                            ),
+                            )),
                         const Divider(
                           color: Colors.black,
                           thickness: 3,
@@ -252,10 +251,13 @@ List<AutoVerbal_List> data_pdf=[];
                                 shape: GFButtonShape.pills,
                                 color: Colors.red,
                                 onPressed: () {
-                                  
                                   setState(() {
-                                    deleteDataId(verbalIds: cdt.verbalId.toString());
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Show_autoVerbals()));
+                                    deleteDataId(
+                                        verbalIds: cdt.verbalId.toString());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Show_autoVerbals()));
                                   });
                                 },
                                 text: 'Delete',
