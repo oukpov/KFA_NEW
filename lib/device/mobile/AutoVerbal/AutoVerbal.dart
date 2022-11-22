@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import 'dart:convert';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+
 class Show_autoVerbals extends StatefulWidget {
   const Show_autoVerbals({super.key});
 
@@ -46,9 +48,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       throw Exception('Delete error occured!');
     }
   }
- 
 
-List<AutoVerbal_List> data_pdf=[];
+  List<AutoVerbal_List> data_pdf = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -277,63 +278,32 @@ List<AutoVerbal_List> data_pdf=[];
         },
       ),
     );
-  }  
-  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async{
-final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
-final font = await PdfGoogleFonts.nunitoExtraLight();
+  }
 
-pdf.addPage(
-  pw.Page(build: (context) {
-    return pw.Column(children: [
-      pw.SizedBox(
-        child: pw.FittedBox(
-          child: pw.Text(title,style: pw.TextStyle(font: font))
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final font = await PdfGoogleFonts.nunitoExtraLight();
+    final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
+    final Uint8List byteList = bytes.buffer.asUint8List();
+    pdf.addPage(pw.Page(build: (context) {
+      return pw.Column(children: [
+        pw.Container(
+          alignment: pw.Alignment.topLeft,
+          height: 50,
+          width: 150,
+          child: pw.Image(
+              pw.MemoryImage(
+                byteList,
+              ),
+              fit: pw.BoxFit.fill),
         )
-        ),
-        pw.SizedBox(height: 20),
-        pw.Flexible(child: pw.Text(data_pdf[0].verbalId.toString()))
-    ]
-    );
-  }
-  
-  )
-);
-return pdf.save();
-}
-void generatePdf() async{
-  const title = 'Flutter Demo';
-  await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
-}
-
-}
-class PreviewPdf extends StatelessWidget {
-  final pw.Document doc;
-  const PreviewPdf({super.key, required this.doc});
- void _createPdf() async{
-    final doc = pw.Document();
-
-    doc.addPage(
-      pw.Page(build: (pw.Context context){
-        return pw.Text('dkdkdkdkd');
-      },
-      )
-    );
-    await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => doc.save());
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _bodyPdf(),
-    );
+      ]);
+    }));
+    return pdf.save();
   }
 
-  Widget _bodyPdf(){
-    return PdfPreview(
-     build: (format) => doc.save(),
-     allowPrinting: true,
-     allowSharing: true,
-     //initialPageFormat: PreviewPdf,
-     pdfFileName: "ppppp.pdf",
-    );
+  void generatePdf() async {
+    const title = 'Flutter Demo';
+    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
   }
 }
