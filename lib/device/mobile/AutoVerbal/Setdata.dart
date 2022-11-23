@@ -38,6 +38,7 @@ class _AddState extends State<Add> {
   TextEditingController dateinput = TextEditingController();
   late AutoVerbalRequestModel requestModelAuto;
   String userID = '17';
+  var code;
   var from = [
     'Bank',
     'Private',
@@ -115,58 +116,7 @@ class _AddState extends State<Add> {
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            onPressed: () {
-              requestModelAuto.user = userID.toString();
-              if (validateAndSave()) {
-                APIservice apIservice = APIservice();
-                apIservice.saveAutoVerbal(requestModelAuto).then(
-                  (value) {
-                    print('Error');
-                    print(json.encode(requestModelAuto.toJson()));
-                    if (requestModelAuto.verbal.isEmpty) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.error,
-                        animType: AnimType.rightSlide,
-                        headerAnimationLoop: false,
-                        title: 'Error',
-                        desc: "Please add Land/Building at least 1!",
-                        btnOkOnPress: () {},
-                        btnOkIcon: Icons.cancel,
-                        btnOkColor: Colors.red,
-                      ).show();
-                    } else {
-                      if (value.message == "Save Successfully") {
-                        AwesomeDialog(
-                            context: context,
-                            animType: AnimType.leftSlide,
-                            headerAnimationLoop: false,
-                            dialogType: DialogType.success,
-                            showCloseIcon: false,
-                            title: value.message,
-                            autoHide: Duration(seconds: 3),
-                            onDismissCallback: (type) {
-                              Navigator.pop(context);
-                            }).show();
-                      } else {
-                        AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.error,
-                          animType: AnimType.rightSlide,
-                          headerAnimationLoop: false,
-                          title: 'Error',
-                          desc: value.message,
-                          btnOkOnPress: () {},
-                          btnOkIcon: Icons.cancel,
-                          btnOkColor: Colors.red,
-                        ).show();
-                        print(value.message);
-                      }
-                    }
-                  },
-                );
-              }
-            },
+            onPressed: () {},
           ),
         ],
         title: Text.rich(
@@ -255,7 +205,11 @@ class _AddState extends State<Add> {
             key: _formKey,
             child: Column(
               children: [
-                Code(),
+                Code(
+                  code: (value) {
+                    code = value;
+                  },
+                ),
                 // dropdown(),
                 // PropertyDropdown(
                 //   id: (value) {},
@@ -269,7 +223,7 @@ class _AddState extends State<Add> {
                     propertyType = value;
                   },
                   id: (value) {
-                    propertyTypeValue = value;
+                    requestModelAuto.property_type_id = value;
                   },
                 ),
                 // SizedBox(
@@ -288,6 +242,7 @@ class _AddState extends State<Add> {
                         // ignore: avoid_print
                         setState(() {
                           branch(bankvalue);
+                          requestModelAuto.bank_id = bankvalue;
                         });
                         print(bankvalue);
                         print("Value of bank  ${newValue}");
@@ -372,6 +327,7 @@ class _AddState extends State<Add> {
                             setState(() {
                               branchvalue = newValue!;
                               // ignore: avoid_print
+                              requestModelAuto.bank_branch_id = branchvalue;
                               print("This id in branch ${newValue}");
                             });
                             ;
@@ -445,8 +401,12 @@ class _AddState extends State<Add> {
                 FormTwinN(
                   Label1: 'Owner',
                   Label2: 'Contact',
-                  onSaved1: (input) {},
-                  onSaved2: (input) {},
+                  onSaved1: (input) {
+                    requestModelAuto.owner = input!;
+                  },
+                  onSaved2: (input) {
+                    requestModelAuto.contact = input!;
+                  },
                   icon1: Icon(
                     Icons.person,
                     color: kImageColor,
@@ -461,15 +421,23 @@ class _AddState extends State<Add> {
                 SizedBox(
                   height: 10.0,
                 ),
-                DateComponents(),
+                DateComponents(
+                  date: (value) {
+                    requestModelAuto.date = value;
+                  },
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
                 FormTwinN(
                   Label1: 'Bank Officer',
                   Label2: 'Contact',
-                  onSaved1: (input) {},
-                  onSaved2: (input) {},
+                  onSaved1: (input) {
+                    requestModelAuto.bank_officer = input!;
+                  },
+                  onSaved2: (input) {
+                    requestModelAuto.bank_contact = input!;
+                  },
                   icon1: Icon(
                     Icons.work,
                     color: kImageColor,
@@ -490,18 +458,32 @@ class _AddState extends State<Add> {
                   value: (value) {
                     opt = int.parse(value);
                   },
-                  name: (value) {},
+                  id: (value) {
+                    requestModelAuto.option = value;
+                  },
+                  comment: (String? newValue) {
+                    requestModelAuto.comment = newValue!;
+                  },
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                ApprovebyAndVerifyby(),
+                ApprovebyAndVerifyby(
+                  approve: (value) {
+                    requestModelAuto.approve_id = value;
+                  },
+                  verify: (value) {
+                    requestModelAuto.agent = value;
+                  },
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
                 FormS(
                   label: 'Address',
-                  onSaved: (input) {},
+                  onSaved: (input) {
+                    requestModelAuto.address = input!;
+                  },
                   iconname: Icon(
                     Icons.location_on_rounded,
                     color: kImageColor,
@@ -561,13 +543,16 @@ class _AddState extends State<Add> {
                   asking_price: asking_price,
                   opt: opt,
                   address: address,
+                  list: (value) {
+                    requestModelAuto.verbal = value;
+                  },
+                  landId: code.toString(),
                 ),
                 SizedBox(height: 10),
-                Container(
-                  margin: EdgeInsets.all(20),
-                  child: GFButton(
-                    text: "Submit",
-                    onPressed: () {
+                GFButton(
+                  text: "Submit",
+                  onPressed: () {
+                    setState(() {
                       requestModelAuto.user = userID.toString();
                       if (validateAndSave()) {
                         APIservice apIservice = APIservice();
@@ -618,9 +603,9 @@ class _AddState extends State<Add> {
                           },
                         );
                       }
-                    },
-                  ),
-                )
+                    });
+                  },
+                ),
                 // TextButton(
                 //     onPressed: () {
                 //       // APIservice apIservice = APIservice();
@@ -648,6 +633,8 @@ class _AddState extends State<Add> {
     if (!mounted) return;
     asking_price = result[0]['adding_price'];
     address = result[0]['address'];
+    requestModelAuto.lat = result[0]['lat'];
+    requestModelAuto.lng = result[0]['lng'];
   }
 
   void Load() async {
@@ -688,135 +675,3 @@ class _AddState extends State<Add> {
     return false;
   }
 }
-
-// class PhotosList extends StatelessWidget {
-//   const PhotosList({super.key, required this.item});
-
-//   final List<Bankbranchlist> item;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GridView.builder(
-//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//         crossAxisCount: 1,
-//         crossAxisSpacing: 2.0,
-//       ),
-//       itemCount: item.length,
-//       itemBuilder: (context, index) {
-//         return Container(
-//           height: 700,
-//           decoration: BoxDecoration(
-//               color: Colors.blue[100], borderRadius: BorderRadius.circular(20)),
-//           padding: EdgeInsets.all(10),
-//           margin: EdgeInsets.only(bottom: 10),
-//           child: Column(
-//             children: [
-//               ListTile(
-//                 title: Text(
-//                   item[index].bankBranchId.toString(),
-//                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
-//                 ),
-//                 subtitle:
-//                     Text("Job : ${item[index].bankBranchName.toString()}"),
-//                 trailing: Icon(
-//                   Icons.favorite_border,
-//                   color: Colors.red,
-//                   size: 40,
-//                 ),
-//               ),
-//               // Container(
-//               //   height: MediaQuery.of(context).size.height * 0.5,
-//               //   width: double.infinity,
-//               //   decoration: BoxDecoration(
-//               //       image: DecorationImage(
-//               //           fit: BoxFit.cover,
-//               //           image: NetworkImage(item[index].photo.toString()))),
-//               // ),
-//               // Text("This is My ex number ${item[index].id.toString()}"),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class Bankbranchlist {
-//   Bankbranchlist({
-//     this.bankBranchId,
-//     this.bankBranchDetailsId,
-//     this.bankBranchName,
-//     this.bankBrandOfficer,
-//     this.bankBrandContact,
-//     this.bankBranchProvinceId,
-//     this.bankBranchDistrictId,
-//     this.bankBranchCommuneId,
-//     this.bankBranchVillage,
-//     this.bankBranchPublished,
-//     this.bankBranchCreatedBy,
-//     this.bankBranchCreatedDate,
-//     this.bankBranchModifyBy,
-//     this.bankBranchModifyDate,
-//     this.rememberToken,
-//     this.createdAt,
-//     this.updatedAt,
-//   });
-
-//   String? bankBranchId;
-//   String? bankBranchDetailsId;
-//   String? bankBranchName;
-//   String? bankBrandOfficer;
-//   String? bankBrandContact;
-//   String? bankBranchProvinceId;
-//   String? bankBranchDistrictId;
-//   String? bankBranchCommuneId;
-//   String? bankBranchVillage;
-//   String? bankBranchPublished;
-//   dynamic bankBranchCreatedBy;
-//   DateTime? bankBranchCreatedDate;
-//   dynamic bankBranchModifyBy;
-//   dynamic bankBranchModifyDate;
-//   dynamic rememberToken;
-//   dynamic createdAt;
-//   dynamic updatedAt;
-
-//   factory Bankbranchlist.fromJson(Map<String, dynamic> json) => Bankbranchlist(
-//         bankBranchId: json["bank_branch_id"],
-//         bankBranchDetailsId: json["bank_branch_details_id"],
-//         bankBranchName: json["bank_branch_name"],
-//         bankBrandOfficer: json["bank_brand_officer"],
-//         bankBrandContact: json["bank_brand_contact"],
-//         bankBranchProvinceId: json["bank_branch_province_id"],
-//         bankBranchDistrictId: json["bank_branch_district_id"],
-//         bankBranchCommuneId: json["bank_branch_commune_id"],
-//         bankBranchVillage: json["bank_branch_village"],
-//         bankBranchPublished: json["bank_branch_published"],
-//         bankBranchCreatedBy: json["bank_branch_created_by"],
-//         bankBranchCreatedDate: DateTime.parse(json["bank_branch_created_date"]),
-//         bankBranchModifyBy: json["bank_branch_modify_by"],
-//         bankBranchModifyDate: json["bank_branch_modify_date"],
-//         rememberToken: json["remember_token"],
-//         createdAt: json["created_at"],
-//         updatedAt: json["updated_at"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "bank_branch_id": bankBranchId,
-//         "bank_branch_details_id": bankBranchDetailsId,
-//         "bank_branch_name": bankBranchName,
-//         "bank_brand_officer": bankBrandOfficer,
-//         "bank_brand_contact": bankBrandContact,
-//         "bank_branch_province_id": bankBranchProvinceId,
-//         "bank_branch_district_id": bankBranchDistrictId,
-//         "bank_branch_commune_id": bankBranchCommuneId,
-//         "bank_branch_village": bankBranchVillage,
-//         "bank_branch_published": bankBranchPublished,
-//         "bank_branch_created_by": bankBranchCreatedBy,
-//         "bank_branch_created_date": bankBranchCreatedDate?.toIso8601String(),
-//         "bank_branch_modify_by": bankBranchModifyBy,
-//         "bank_branch_modify_date": bankBranchModifyDate,
-//         "remember_token": rememberToken,
-//         "created_at": createdAt,
-//         "updated_at": updatedAt,
-//       };
-// }

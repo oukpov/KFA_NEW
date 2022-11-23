@@ -18,11 +18,16 @@ class LandBuilding extends StatefulWidget {
   final double asking_price;
   final String address;
   final int opt;
-  const LandBuilding(
-      {super.key,
-      required this.asking_price,
-      required this.opt,
-      required this.address});
+  final String landId;
+  final OnChangeCallback list;
+  const LandBuilding({
+    super.key,
+    required this.asking_price,
+    required this.opt,
+    required this.address,
+    required this.list,
+    required this.landId,
+  });
 
   @override
   State<LandBuilding> createState() => _LandBuildingState();
@@ -124,7 +129,7 @@ class _LandBuildingState extends State<LandBuilding> {
                           top: -40.0,
                           child: InkResponse(
                             onTap: () {
-                              Navigator.of(context).pop();
+                              Navigator.pop(context, list);
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.red,
@@ -234,7 +239,6 @@ class _LandBuildingState extends State<LandBuilding> {
                                           }
                                         }
                                       }
-                                      print(list);
                                     },
                                   ),
                                 )
