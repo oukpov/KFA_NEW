@@ -7,6 +7,7 @@ import 'package:admin/components/ApprovebyAndVerifyby.dart';
 import 'package:admin/components/FileOpen.dart';
 import 'package:admin/components/LandBuilding.dart';
 import 'package:admin/components/comment.dart';
+import 'package:admin/components/contants.dart';
 import 'package:admin/components/date.dart';
 import 'package:admin/components/forceSale.dart';
 import 'package:admin/components/imageOpen.dart';
@@ -20,7 +21,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:http/http.dart' as http;
-import '../../../components/contants.dart';
 
 class Add extends StatefulWidget {
   const Add({super.key});
@@ -31,6 +31,7 @@ class Add extends StatefulWidget {
 
 class _AddState extends State<Add> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  APIservice apIservice = APIservice();
   int opt = 0;
   static double asking_price = 1;
   String address = '';
@@ -116,7 +117,58 @@ class _AddState extends State<Add> {
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                requestModelAuto.user = "17";
+                print(requestModelAuto.user);
+                APIservice apIservice = APIservice();
+                apIservice.saveAutoVerbal(requestModelAuto).then(
+                  (value) {
+                    // print('Error');
+                    if (requestModelAuto.verbal.isEmpty) {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.error,
+                        animType: AnimType.rightSlide,
+                        headerAnimationLoop: false,
+                        title: 'Error',
+                        desc: "Please add Land/Building at least 1!",
+                        btnOkOnPress: () {},
+                        btnOkIcon: Icons.cancel,
+                        btnOkColor: Colors.red,
+                      ).show();
+                    } else {
+                      if (value.message == "Save Successfully") {
+                        AwesomeDialog(
+                            context: context,
+                            animType: AnimType.leftSlide,
+                            headerAnimationLoop: false,
+                            dialogType: DialogType.success,
+                            showCloseIcon: false,
+                            title: value.message,
+                            autoHide: Duration(seconds: 3),
+                            onDismissCallback: (type) {
+                              Navigator.pop(context);
+                            }).show();
+                      } else {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          animType: AnimType.rightSlide,
+                          headerAnimationLoop: false,
+                          title: 'Error',
+                          desc: value.message,
+                          btnOkOnPress: () {},
+                          btnOkIcon: Icons.cancel,
+                          btnOkColor: Colors.red,
+                        ).show();
+                        print(value.message);
+                      }
+                    }
+                  },
+                );
+              });
+            },
           ),
         ],
         title: Text.rich(
@@ -539,73 +591,76 @@ class _AddState extends State<Add> {
                 ),
                 ImageOpen(),
                 SizedBox(height: 10),
-                LandBuilding(
-                  asking_price: asking_price,
-                  opt: opt,
-                  address: address,
-                  list: (value) {
-                    requestModelAuto.verbal = value;
-                  },
-                  landId: code.toString(),
+                SizedBox(
+                  height: 330,
+                  child: LandBuilding(
+                    asking_price: asking_price,
+                    opt: opt,
+                    address: address,
+                    list: (value) {
+                      requestModelAuto.verbal = value;
+                    },
+                    landId: code.toString(),
+                  ),
                 ),
                 SizedBox(height: 10),
-                GFButton(
-                  text: "Submit",
-                  onPressed: () {
-                    setState(() {
-                      requestModelAuto.user = userID.toString();
-                      if (validateAndSave()) {
-                        APIservice apIservice = APIservice();
-                        apIservice.saveAutoVerbal(requestModelAuto).then(
-                          (value) {
-                            print('Error');
-                            print(json.encode(requestModelAuto.toJson()));
-                            if (requestModelAuto.verbal.isEmpty) {
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.error,
-                                animType: AnimType.rightSlide,
-                                headerAnimationLoop: false,
-                                title: 'Error',
-                                desc: "Please add Land/Building at least 1!",
-                                btnOkOnPress: () {},
-                                btnOkIcon: Icons.cancel,
-                                btnOkColor: Colors.red,
-                              ).show();
-                            } else {
-                              if (value.message == "Save Successfully") {
-                                AwesomeDialog(
-                                    context: context,
-                                    animType: AnimType.leftSlide,
-                                    headerAnimationLoop: false,
-                                    dialogType: DialogType.success,
-                                    showCloseIcon: false,
-                                    title: value.message,
-                                    autoHide: Duration(seconds: 3),
-                                    onDismissCallback: (type) {
-                                      Navigator.pop(context);
-                                    }).show();
-                              } else {
-                                AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.error,
-                                  animType: AnimType.rightSlide,
-                                  headerAnimationLoop: false,
-                                  title: 'Error',
-                                  desc: value.message,
-                                  btnOkOnPress: () {},
-                                  btnOkIcon: Icons.cancel,
-                                  btnOkColor: Colors.red,
-                                ).show();
-                                print(value.message);
-                              }
-                            }
-                          },
-                        );
-                      }
-                    });
-                  },
-                ),
+                // GFButton(
+                //   text: "Submit",
+                //   onPressed: () {
+                //     setState(() {
+                //       print("\nkokasd\n");
+                //       requestModelAuto.user = userID.toString();
+                //       if (validateAndSave()) {
+                //         apIservice.saveAutoVerbal(requestModelAuto).then(
+                //           (value) {
+                //             print('Error');
+                //             print(json.encode(requestModelAuto.toJson()));
+                //             if (requestModelAuto.verbal.isEmpty) {
+                //               AwesomeDialog(
+                //                 context: context,
+                //                 dialogType: DialogType.error,
+                //                 animType: AnimType.rightSlide,
+                //                 headerAnimationLoop: false,
+                //                 title: 'Error',
+                //                 desc: "Please add Land/Building at least 1!",
+                //                 btnOkOnPress: () {},
+                //                 btnOkIcon: Icons.cancel,
+                //                 btnOkColor: Colors.red,
+                //               ).show();
+                //             } else {
+                //               if (value.message == "Save Successfully") {
+                //                 AwesomeDialog(
+                //                     context: context,
+                //                     animType: AnimType.leftSlide,
+                //                     headerAnimationLoop: false,
+                //                     dialogType: DialogType.success,
+                //                     showCloseIcon: false,
+                //                     title: value.message,
+                //                     autoHide: Duration(seconds: 3),
+                //                     onDismissCallback: (type) {
+                //                       Navigator.pop(context);
+                //                     }).show();
+                //               } else {
+                //                 AwesomeDialog(
+                //                   context: context,
+                //                   dialogType: DialogType.error,
+                //                   animType: AnimType.rightSlide,
+                //                   headerAnimationLoop: false,
+                //                   title: 'Error',
+                //                   desc: value.message,
+                //                   btnOkOnPress: () {},
+                //                   btnOkIcon: Icons.cancel,
+                //                   btnOkColor: Colors.red,
+                //                 ).show();
+                //                 print(value.message);
+                //               }
+                //             }
+                //           },
+                //         );
+                //       }
+                //     });
+                //   },
+                // ),
                 // TextButton(
                 //     onPressed: () {
                 //       // APIservice apIservice = APIservice();
