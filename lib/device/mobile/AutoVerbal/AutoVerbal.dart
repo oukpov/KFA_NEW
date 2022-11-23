@@ -1,12 +1,24 @@
+<<<<<<< HEAD
 import 'package:admin/device/mobile/AutoVerbal/pdf.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+=======
+import 'dart:typed_data';
+
+import 'package:admin/model/models/autoVerbal.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdf/pdf.dart';
 import 'dart:convert';
+<<<<<<< HEAD
+=======
+import 'package:pdf/pdf.dart';
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
@@ -18,6 +30,7 @@ class Show_autoVerbals extends StatefulWidget {
 }
 
 class _Show_autoVerbalState extends State<Show_autoVerbals> {
+  static int Num = 0;
   Future<List<AutoVerbal_List>> fetchData() async {
     final response = await http
         .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
@@ -47,29 +60,24 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       throw Exception('Delete error occured!');
     }
   }
-// Future<http.Response> deleteDataId({required verbalIds}) async {
-//   //assert(verbalIds != null);
-//   final http.Response response = await http.delete(
-//     Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/delete/{verbal_id}'),
-//     headers: <String, String>{
-//      // 'Content-Type': 'application/json; charset=UTF-8',
-//     },
-//   );
 
+<<<<<<< HEAD
   //return response;
 //}
 //1
+=======
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
   List<AutoVerbal_List> data_pdf = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.lightBlue[900],
         title: Text(
           "AutoVerbal List",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
       ),
       body: FutureBuilder<List<AutoVerbal_List>>(
@@ -80,8 +88,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+<<<<<<< HEAD
                   //1
                   data_pdf.add(cdt);
+=======
+                  data_pdf.add(cdt);
+                  Num = index + 1;
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
@@ -252,6 +265,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 color: Colors.blue,
                                 onPressed: () {
                                   setState(() {
+<<<<<<< HEAD
                                     _createPdf();
                                   });
                                   // Get.to(PrintPdf());
@@ -260,6 +274,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                   //     MaterialPageRoute(builder: (context) => const Print()),
                                   //             );
                                   //Navigator.push(context, MaterialPageRoute(builder: (context) => const Print(),));
+=======
+                                    generatePdf();
+                                    //print("go");
+                                  });
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
                                 },
                                 text: 'Print',
                                 icon: const Icon(Icons.print),
@@ -293,9 +312,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Text(Num.toString()),
+      ),
     );
   }
 
+<<<<<<< HEAD
   void _createPdf() async {
     final doc = pw.Document();
 
@@ -353,5 +377,32 @@ class PreviewPdf extends StatelessWidget {
       //initialPageFormat: PreviewPdf,
       pdfFileName: "ppppp.pdf",
     );
+=======
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final font = await PdfGoogleFonts.nunitoExtraLight();
+    final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
+    final Uint8List byteList = bytes.buffer.asUint8List();
+    pdf.addPage(pw.Page(build: (context) {
+      return pw.Column(children: [
+        pw.Container(
+          alignment: pw.Alignment.topLeft,
+          height: 50,
+          width: 150,
+          child: pw.Image(
+              pw.MemoryImage(
+                byteList,
+              ),
+              fit: pw.BoxFit.fill),
+        )
+      ]);
+    }));
+    return pdf.save();
+  }
+
+  void generatePdf() async {
+    const title = 'Flutter Demo';
+    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
   }
 }

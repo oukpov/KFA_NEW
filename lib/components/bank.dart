@@ -208,8 +208,7 @@ class _BankDropdownState extends State<BankDropdown> {
   void branch(String value) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=' +
-            value));
+        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=$value'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body.toString());
       // print(jsonData);

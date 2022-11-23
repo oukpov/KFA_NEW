@@ -21,6 +21,7 @@ class FormShN extends StatelessWidget {
     return SizedBox(
       height: 40,
       child: TextFormField(
+        style: TextStyle(fontSize: MediaQuery.of(context).textScaleFactor * 12),
         // controller: controller,
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[

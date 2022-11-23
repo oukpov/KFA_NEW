@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
-import 'package:admin/Customs/Contants.dart';
-import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/Customs/formVLDN.dart';
 import 'package:admin/Customs/formnum.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -10,18 +8,28 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+import '../Customs/Contants.dart';
+import '../Customs/ProgressHUD.dart';
 import '../customs/form.dart';
+
 import 'autoVerbalType.dart';
+
+typedef OnChangeCallback = void Function(dynamic value);
 
 class LandBuilding extends StatefulWidget {
   final double asking_price;
   final String address;
   final int opt;
-  const LandBuilding(
-      {super.key,
-      required this.asking_price,
-      required this.opt,
-      required this.address});
+  final String landId;
+  final OnChangeCallback list;
+  const LandBuilding({
+    super.key,
+    required this.asking_price,
+    required this.opt,
+    required this.address,
+    required this.list,
+    required this.landId,
+  });
 
   @override
   State<LandBuilding> createState() => _LandBuildingState();
@@ -44,21 +52,27 @@ class _LandBuildingState extends State<LandBuilding> {
     print(widget.asking_price);
     setState(() {
       list.add({
-        "Property": autoverbalType,
-        "Description": des,
-        "Depreciation": dep,
-        "Area": area,
-        "minSqm": minSqm.toStringAsFixed(0),
-        "maxSqm": maxSqm.toStringAsFixed(0),
-        "totalMin": totalMin.toStringAsFixed(0),
-        "totalMax": totalMax.toStringAsFixed(0),
-        "address": widget.address
+        "verbal_land_type": autoverbalType,
+        "verbal_land_des": des,
+        "verbal_land_dp": dep,
+        "verbal_land_area": area,
+        "verbal_land_minsqm": minSqm.toStringAsFixed(0),
+        "verbal_land_maxsqm": maxSqm.toStringAsFixed(0),
+        "verbal_land_minvalue": totalMin.toStringAsFixed(0),
+        "verbal_land_maxvalue": totalMax.toStringAsFixed(0),
+        "address": widget.address,
+        "verbal_landid": widget.landId
       });
+      widget.list(list);
       minSqm = 0;
       maxSqm = 0;
       totalMax = 0;
       totalMin = 0;
       area = 0;
+
+      print('list:');
+      print(list);
+      print('listAuto:');
     });
     //  print(id);
   }
@@ -124,7 +138,7 @@ class _LandBuildingState extends State<LandBuilding> {
                               top: -40.0,
                               child: InkResponse(
                                 onTap: () {
-                                  Navigator.of(context).pop();
+                                  Navigator.pop(context, list);
                                 },
                                 child: CircleAvatar(
                                   backgroundColor: Colors.red,
@@ -235,7 +249,6 @@ class _LandBuildingState extends State<LandBuilding> {
                                             }
                                           }
                                           ;
-                                          print(list);
                                         },
                                       ),
                                     )
@@ -286,7 +299,7 @@ class _LandBuildingState extends State<LandBuilding> {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  list[index]["Property"],
+                                  list[index]["verbal_land_type"],
                                   style: NameProperty(),
                                 ),
                               ),
@@ -344,7 +357,7 @@ class _LandBuildingState extends State<LandBuilding> {
                         padding: EdgeInsets.only(left: 10),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          list[index]["Description"],
+                          list[index]["verbal_land_des"],
                         ),
                       ),
                       Row(
@@ -392,13 +405,14 @@ class _LandBuildingState extends State<LandBuilding> {
                             children: [
                               SizedBox(height: 4),
                               Text(
-                                ':   ' + list[index]["Depreciation"],
+                                ':   ' + list[index]["verbal_land_dp"],
                                 style: Name(),
                               ),
                               SizedBox(height: 2),
                               Text(
                                 ':   ' +
-                                    (list[index]["Area"].toInt()).toString() +
+                                    (list[index]["verbal_land_area"].toInt())
+                                        .toString() +
                                     'm' +
                                     '\u00B2',
                                 style: Name(),
@@ -406,28 +420,33 @@ class _LandBuildingState extends State<LandBuilding> {
                               SizedBox(height: 2),
                               Text(
                                 ':   ' +
-                                    (list[index]["minSqm"]).toString() +
+                                    (list[index]["verbal_land_minsqm"])
+                                        .toString() +
                                     '\$',
                                 style: Name(),
                               ),
                               SizedBox(height: 2),
                               Text(
                                 ':   ' +
-                                    (list[index]["maxSqm"]).toString() +
+                                    (list[index]["verbal_land_maxsqm"])
+                                        .toString() +
                                     '\$',
                                 style: Name(),
                               ),
                               SizedBox(height: 2),
                               Text(
                                 ':   ' +
-                                    (list[index]["totalMin"]).toString() +
+                                    (list[index]["verbal_land_minvalue"])
+                                        .toString() +
                                     '\$',
                                 style: Name(),
                               ),
                               SizedBox(height: 2),
                               Text(
                                 ':   ' +
-                                    (list[index]["totalMax"].toString() + '\$'),
+                                    (list[index]["verbal_land_maxvalue"]
+                                            .toString() +
+                                        '\$'),
                                 style: Name(),
                               ),
                             ],

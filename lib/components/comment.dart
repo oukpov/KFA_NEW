@@ -2,6 +2,7 @@
 
 import 'package:admin/Customs/formSh.dart';
 import 'package:flutter/material.dart';
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'contants.dart';
@@ -10,8 +11,10 @@ typedef OnChangeCallback = void Function(dynamic value);
 
 class CommentAndOption extends StatefulWidget {
   final OnChangeCallback value;
-  final OnChangeCallback name;
-  const CommentAndOption({Key? key, required this.value, required this.name})
+  final FormFieldSetter<String> comment;
+  final OnChangeCallback id;
+  const CommentAndOption(
+      {Key? key, required this.value, required this.comment, required this.id})
       : super(key: key);
 
   @override
@@ -24,7 +27,6 @@ class _CommentAndOptionState extends State<CommentAndOption> {
   @override
   void initState() {
     super.initState();
-    Value = "";
     _list = [];
     // ignore: unnecessary_new
     Load();
@@ -44,17 +46,19 @@ class _CommentAndOptionState extends State<CommentAndOption> {
               onChanged: (String? newValue) {
                 setState(() {
                   Value = newValue!;
-                  widget.name(newValue.split(" ")[1]);
+
                   widget.value(newValue.split(" ")[0]);
+                  widget.id(newValue.split(" ")[1]);
                   // ignore: avoid_print
+                  print(_list.toString());
                   print(newValue);
                 });
               },
-              value: _list[0]["opt_value"] + " " + _list[0]["opt_des"],
+
               items: _list
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["opt_value"] + " " + value["opt_des"],
+                      value: value["opt_value"] + " " + value["opt_id"],
                       child: Text(value["opt_des"]),
                     ),
                   )
@@ -68,7 +72,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
-                labelText: 'Option Type',
+                labelText: 'OptionType',
                 hintText: 'Select one',
                 prefixIcon: Icon(
                   Icons.my_library_books_rounded,
@@ -99,7 +103,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
             padding: EdgeInsets.only(right: 30),
             child: FormSh(
               label: 'Comment',
-              onSaved: (input) {},
+              onSaved: widget.comment,
               iconname: Icon(
                 Icons.comment_sharp,
                 color: kImageColor,
@@ -120,7 +124,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
 
       setState(() {
         _list = jsonData;
-        Value = _list[0]["opt_des"];
+
         // print(_list);
       });
     }

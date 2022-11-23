@@ -77,11 +77,17 @@ dependencies:
   pdf: ^3.8.3
   open_file: ^3.2.1
   path_provider: ^2.0.11
+  printing: ^5.9.3
   file_picker: ^4.6.1
   uuid: ^3.0.6
   anim_search_bar: ^2.0.2
+<<<<<<< HEAD
   printing: ^5.9.3
 
+=======
+  fvm: ^2.4.1
+  share: ^2.0.4
+>>>>>>> 0203833afdc6c8a3127ff772e565ef3d3d4497b2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 

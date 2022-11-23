@@ -4,16 +4,21 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'contants.dart';
 
-class ApprovebyAndVerifyby extends StatefulWidget {
-  const ApprovebyAndVerifyby({Key? key}) : super(key: key);
+typedef OnChangeCallback = void Function(dynamic value);
 
+class ApprovebyAndVerifyby extends StatefulWidget {
+  const ApprovebyAndVerifyby(
+      {Key? key, required this.approve, required this.verify})
+      : super(key: key);
+  final OnChangeCallback approve;
+  final OnChangeCallback verify;
   @override
   State<ApprovebyAndVerifyby> createState() => _ApprovebyAndVerifybyState();
 }
 
 class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
-  String Value = '30';
-  var forceSale = ['10', '20', '30', '40', '50', '0'];
+  String valueapp = '';
+  String valueagent = '';
   late List<dynamic> listApprove;
   late List<dynamic> listVerify;
   @override
@@ -39,15 +44,16 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
-                  Value = newValue!;
+                  valueagent = newValue!;
                   // ignore: avoid_print
+                  widget.verify(valueagent);
                   print(newValue);
                 });
               },
               items: listVerify
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["agenttype_name"],
+                      value: value["agenttype_id"],
                       child: Text(value["agenttype_name"]),
                     ),
                   )
@@ -95,15 +101,16 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
-                  Value = newValue!;
+                  valueapp = newValue!;
                   // ignore: avoid_print
+                  widget.approve(valueapp);
                   print(newValue);
                 });
               },
               items: listApprove
                   .map<DropdownMenuItem<String>>(
                     (value) => DropdownMenuItem<String>(
-                      value: value["approve_name"],
+                      value: value["approve_id"],
                       child: Text(value["approve_name"]),
                     ),
                   )

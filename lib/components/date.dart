@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'contants.dart';
 
-class DateComponents extends StatefulWidget {
-  const DateComponents({Key? key}) : super(key: key);
+typedef OnChangeCallback = void Function(dynamic value);
 
+class DateComponents extends StatefulWidget {
+  const DateComponents({Key? key, required this.date}) : super(key: key);
+  final OnChangeCallback date;
   @override
   State<DateComponents> createState() => _DateComponentsState();
 }
@@ -68,8 +70,9 @@ class _DateComponentsState extends State<DateComponents> {
               //you can implement different kind of Date Format here according to your requirement
 
               setState(() {
-                dateinput.text =
-                    formattedDate; //set output date to TextField value.
+                dateinput.text = formattedDate;
+                widget
+                    .date(formattedDate); //set output date to TextField value.
               });
             } else {
               print("Date is not selected");

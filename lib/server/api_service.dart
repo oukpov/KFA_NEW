@@ -46,24 +46,27 @@ class APIservice {
     }
   }
 
-  // Future<AutoVerbalReponseModel> saveAutoVerbal(
-  //     AutoVerbalRequestModel requestModel) async {
-  //   final response = await http.post(
-  //       Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/save'),
-  //       headers: {
-  //         "Accept": "application/json",
-  //         "Content-Type": "application/x-www-form-urlencoded"
-  //       },
-  //       body: requestModel.toJson());
+  Future<AutoVerbalReponseModel> saveAutoVerbal(
+      AutoVerbalRequestModel requestModel) async {
+    final response = await http.post(
+      Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/save'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
 
-  //   if (response.statusCode == 200 || response.statusCode == 422) {
-  //     return AutoVerbalReponseModel.fromJson(json.decode(response.body));
-  //   } else if (response.statusCode == 201 || response.statusCode == 401) {
-  //     return AutoVerbalReponseModel.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to load Data');
-  //   }
-  // }
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return AutoVerbalReponseModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return AutoVerbalReponseModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
 
   // Future<dynamic> com_data() async {
   //   final response =
