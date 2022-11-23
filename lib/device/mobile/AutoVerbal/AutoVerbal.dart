@@ -552,6 +552,17 @@ pdf.addPage(
                     //color: Colors.blue,
                   ),
                 ),
+                pw.Expanded(
+                  flex: 2,
+                  child: pw.Container(
+                    padding: pw.EdgeInsets.all(2),
+                      alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("Requested Date: ",style: pw.TextStyle(fontSize: 12)),
+                            height: 30,
+                    //color: Colors.blue,
+                  ),
+                ),
               ],
             ),
           ),

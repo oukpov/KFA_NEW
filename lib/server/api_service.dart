@@ -49,12 +49,15 @@ class APIservice {
   Future<AutoVerbalReponseModel> saveAutoVerbal(
       AutoVerbalRequestModel requestModel) async {
     final response = await http.post(
-        Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/save'),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: requestModel.toJson());
+      Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/save'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
 
     if (response.statusCode == 200 || response.statusCode == 422) {
       return AutoVerbalReponseModel.fromJson(json.decode(response.body));
