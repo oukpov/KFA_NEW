@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:admin/data/data.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,32 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   Future<List<AutoVerbal_List>> fetchData() async {
     final response = await http
         .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map((data) => new AutoVerbal_List.fromJson(data))
+          .toList();
+    } else {
+      throw Exception('Unexpected error occured!');
+    }
+  }
+
+  // Future<List<AutoVerbal_List>> fetchData1() async {
+  //   final response = await http
+  //       .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/type'));
+  //   if (response.statusCode == 200) {
+  //     List jsonResponse = json.decode(response.body);
+  //     return jsonResponse
+  //         .map((data1) => new AutoVerbal_List.fromJson(data1))
+  //         .toList();
+  //   } else {
+  //     throw Exception('Unexpected error occured!');
+  //   }
+  // }
+
+  Future<List<AutoVerbal_List>> datatpe() async {
+    final response = await http
+        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/type'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse
@@ -302,34 +329,47 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     final Uint8List byteList = bytes.buffer.asUint8List();
 
     pdf.addPage(pw.Page(build: (context) {
-      pw.TableRow buildRow(List<String> cells) => pw.TableRow(
-            children: cells.map((cell) {
-              return pw.Padding(
-                padding: const pw.EdgeInsets.all(12),
-                child: pw.Center(
-                    child: pw.Text(
-                  cell,
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                )),
-              );
-            }).toList(),
-          );
+      // pw.TableRow buildRow(List<String> cells) => pw.TableRow(
+      //       children: cells.map((cell) {
+      //         return pw.Padding(
+      //           padding: const pw.EdgeInsets.all(12),
+      //           child: pw.Center(
+      //               child: pw.Text(
+      //             cell,
+      //             style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+      //           )),
+      //         );
+      //       }).toList(),
+      //     );
+
       return pw.Column(children: [
-        pw.Container(
-          alignment: pw.Alignment.topLeft,
-          height: 50,
-          width: 150,
-          child: pw.Image(
-              pw.MemoryImage(
-                byteList,
+        pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          children: [
+            pw.Container(
+              height: 50,
+              width: 150,
+              child: pw.Image(
+                  pw.MemoryImage(
+                    byteList,
+                  ),
+                  fit: pw.BoxFit.fill),
+            ),
+            pw.Container(
+              height: 90,
+              width: 90,
+              child: pw.BarcodeWidget(
+                barcode: pw.Barcode.qrCode(),
+                data: "https://www.youtube.com/",
               ),
-              fit: pw.BoxFit.fill),
+            ),
+          ],
         ),
-        pw.SizedBox(
-            child: pw.FittedBox(
-                child: pw.Text(data_pdf.elementAt(i).verbalId.toString(),
-                    style: pw.TextStyle(font: font)))),
-        pw.SizedBox(height: 20),
+        // pw.SizedBox(
+        //     child: pw.FittedBox(
+        //         child: pw.Text(data_pdf.elementAt(i).verbalId.toString(),
+        //             style: pw.TextStyle(font: font)))),
+        pw.SizedBox(height: 10),
         pw.Container(
           // pw.padding: const EdgeInsets.all(9),
           child: pw.Column(
@@ -378,7 +418,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Requested Date: ",
+                        child: pw.Text(
+                            "Requested Date :${data_pdf.elementAt(i).verbalCreatedDate.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -396,7 +437,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Requested Date: ",
+                        child: pw.Text(
+                            "Referring to your request letter for verbal check by PPCBank, we estimated the value of property as below.",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -426,7 +468,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Building ",
+                        child: pw.Text(
+                            "${data_pdf.elementAt(i).verbalPropertyId.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -444,7 +487,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Address ",
+                        child: pw.Text("Address : ",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -456,7 +499,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(",, ",
+                        child: pw.Text(
+                            "${data_pdf.elementAt(i).verbalAddress.toString()} ",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -487,7 +531,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child:
-                            pw.Text("N/A ", style: pw.TextStyle(fontSize: 12)),
+                            // name rest with api
+                            pw.Text(
+                                "${data_pdf.elementAt(i).verbalOwner.toString()}",
+                                style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
                       ),
@@ -498,7 +545,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Contact No. ",
+                        // name rest with api
+                        child: pw.Text(
+                            "Contact No : ${data_pdf.elementAt(i).verbalContact.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -528,8 +577,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child:
-                            pw.Text("N/A ", style: pw.TextStyle(fontSize: 12)),
+                        child: pw.Text(
+                            "${data_pdf.elementAt(i).bankofficer.toString()}",
+                            style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
                       ),
@@ -540,7 +590,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Contact No",
+                        child: pw.Text(
+                            "Contact No : ${data_pdf.elementAt(i).bankcontact.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -570,7 +621,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("11.5489 ",
+                        child: pw.Text(
+                            "${data_pdf.elementAt(i).latlongLa.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -594,7 +646,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("Requested Date: ",
+                        child: pw.Text(
+                            "${data_pdf.elementAt(i).latlongLog.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -604,6 +657,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 ),
               ),
               pw.SizedBox(height: 5),
+
               pw.Container(
                 child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
                     style: pw.TextStyle(fontSize: 15)),
@@ -635,7 +689,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("AREA/sqm: ",
+                          child: pw.Text("AREA/sqm:${data_pdf.elementAt(i)} ",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
@@ -677,7 +731,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MIN-VALUE: ",
+                          child: pw.Text("MIN-VALUE:} ",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
@@ -889,7 +943,65 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               ),
             ],
           ),
-        )
+        ),
+        pw.SizedBox(height: 10),
+        pw.Text(
+            '*Note : The land building size based on the bank officer provided, in case the land and building size are wrong provided when we have the actual size inspect, we are not response on this case.'),
+        pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+              pw.Text('Verbal Check Replied By :',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+              pw.Text('${data_pdf.elementAt(i).verbalOwner.toString()}',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            ]),
+            pw.SizedBox(width: 10),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+              pw.Text('${data_pdf.elementAt(i).verbalContact.toString()}',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            ]),
+          ],
+        ),
+        pw.Row(mainAxisAlignment: pw.MainAxisAlignment.start, children: [
+          pw.Text('KHMER FOUNDATION APPRAISALS Co.,Ltd',
+              style: pw.TextStyle(color: PdfColors.blue)),
+        ]),
+        pw.Row(
+          children: [
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text('Hotline: 077 997 888',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                pw.Row(children: [
+                  pw.Text('H/P :',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('(+855)23 988 855/(+855)23 999 761'),
+                ]),
+                pw.Row(children: [
+                  pw.Text('Email :',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('info@kfa.com.kh'),
+                ]),
+                pw.Row(children: [
+                  pw.Text('Website:',
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text('www.kfa.com.kh'),
+                ]),
+              ],
+            ),
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text('Villa #36A, Street No4, (Borey Peng Hout The Star'),
+                pw.Text('Natural 371) Sangkat Chak Angrae Leu,'),
+                pw.Text('Khan Mean Chey, Phnom Penh City, Cambodia,'),
+              ],
+            ),
+          ],
+        ),
+
         // pw.Flexible(
         //   child: pw.Table(
         //   border: pw.TableBorder.all(),
