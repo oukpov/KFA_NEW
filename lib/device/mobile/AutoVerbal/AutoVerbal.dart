@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -77,6 +74,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+                  data_pdf.add(snapshot.data![index]);
                   data_pdf[index] = snapshot.data![index];
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
