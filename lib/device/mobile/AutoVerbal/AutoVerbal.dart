@@ -50,7 +50,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   }
 
   List<AutoVerbal_List> data_pdf = [];
-  static int i = 0;
+  int i = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,8 +242,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 color: Colors.blue,
                                 onPressed: () {
                                   setState(() {
-                                    generatePdf(index);
-                                    //print("go");
+                                    print("asfdjghjsfjgsdfhgjghj");
+                                    // generatePdf(index);
                                   });
                                 },
                                 text: 'Print',
@@ -277,6 +277,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
             return const Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Text(i.toString()),
       ),
     );
   }
