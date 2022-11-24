@@ -46,10 +46,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  List<AutoVerbal_List> data_pdf = [];
+  static List<AutoVerbal_List> data_pdf = [];
   @override
   void initState() {
-    data_pdf;
+    // data_pdf;
     // TODO: implement initState
     super.initState();
   }
@@ -247,12 +247,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 onPressed: () {
                                   setState(() {
                                     print("Number of index =  ${index}");
+
                                     // data_pdf.add(snapshot.data![index]);
 
-                                    for (int i = 0; i < index; i++) {
-                                      print(
-                                          "${data_pdf.elementAt(index).verbalId}\n");
-                                    }
+                                    // for (int i = 0; i < index; i++) {
+                                    //   print(
+                                    //       "${data_pdf.elementAt(index).verbalId}\n");
+                                    // }
                                     generatePdf(index);
                                     //print("go");
                                   });
