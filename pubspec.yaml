@@ -74,13 +74,14 @@ dependencies:
   search_map_location: ^0.0.6
   sliding_up_panel: ^2.0.0+1
   fluttertoast: ^8.0.9
-  pdf: ^3.8.3
+  pdf: any
   open_file: ^3.2.1
   path_provider: ^2.0.11
-  printing: ^5.9.3
   file_picker: ^4.6.1
   uuid: ^3.0.6
   anim_search_bar: ^2.0.2
+  # qr: ^3.0.1
+  qr_flutter: ^4.0.0
 
   fvm: ^2.4.1
   share: ^2.0.4

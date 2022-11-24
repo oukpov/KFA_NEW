@@ -49,10 +49,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  List<AutoVerbal_List> data_pdf = [];
+  static List<AutoVerbal_List> data_pdf = [];
   @override
   void initState() {
-    data_pdf;
+    // data_pdf;
     // TODO: implement initState
     super.initState();
   }
@@ -77,6 +77,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+                  data_pdf.add(snapshot.data![index]);
                   data_pdf[index] = snapshot.data![index];
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
@@ -249,12 +250,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 onPressed: () {
                                   setState(() {
                                     print("Number of index =  ${index}");
+
                                     // data_pdf.add(snapshot.data![index]);
 
-                                    for (int i = 0; i < index; i++) {
-                                      print(
-                                          "${data_pdf.elementAt(index).verbalId}\n");
-                                    }
+                                    // for (int i = 0; i < index; i++) {
+                                    //   print(
+                                    //       "${data_pdf.elementAt(index).verbalId}\n");
+                                    // }
                                     generatePdf(index);
                                     //print("go");
                                   });
