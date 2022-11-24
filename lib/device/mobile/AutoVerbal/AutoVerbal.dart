@@ -51,6 +51,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
   List<AutoVerbal_List> data_pdf = [];
   @override
+  void initState() {
+    data_pdf;
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +77,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
-                  data_pdf.add(cdt);
+                  data_pdf[index] = snapshot.data![index];
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
                       margin: const EdgeInsets.all(10),
@@ -241,7 +248,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 color: Colors.blue,
                                 onPressed: () {
                                   setState(() {
-                                    generatePdf();
+                                    print("Number of index =  ${index}");
+                                    // data_pdf.add(snapshot.data![index]);
+
+                                    for (int i = 0; i < index; i++) {
+                                      print(
+                                          "${data_pdf.elementAt(index).verbalId}\n");
+                                    }
+                                    generatePdf(index);
                                     //print("go");
                                   });
                                 },
@@ -280,7 +294,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     );
   }
 
-  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+  Future<Uint8List> _generatePdf(PdfPageFormat format, int i) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
     final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
@@ -312,7 +326,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         ),
         pw.SizedBox(
             child: pw.FittedBox(
-                child: pw.Text(title, style: pw.TextStyle(font: font)))),
+                child: pw.Text(data_pdf.elementAt(i).verbalId.toString(),
+                    style: pw.TextStyle(font: font)))),
         pw.SizedBox(height: 20),
         pw.Container(
           // pw.padding: const EdgeInsets.all(9),
@@ -328,7 +343,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         //color: Colors.red,
-                        child: pw.Text("DATE: ",
+                        child: pw.Text(
+                            "DATE: ${data_pdf.elementAt(i).verbalDate}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
                         height: 30,
@@ -341,7 +357,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("CODE: ",
+                        child: pw.Text(
+                            "CODE: ${data_pdf.elementAt(i).verbalId.toString()}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
                         height: 30,
@@ -423,11 +440,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 2,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Address ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
                       ),
@@ -435,11 +452,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 6,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child:
-                            pw.Text(",, ", style: pw.TextStyle(fontSize: 12)),
+                        child: pw.Text(",, ",
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
                       ),
@@ -453,7 +470,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 2,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Owner Name ",
@@ -893,8 +910,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     return pdf.save();
   }
 
-  void generatePdf() async {
+  void generatePdf(int i) async {
     const title = 'Flutter Demo';
-    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
+    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, i));
   }
 }
