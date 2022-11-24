@@ -77,6 +77,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 itemCount: snapshot.data?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
+                  data_pdf.add(snapshot.data![index]);
                   data_pdf[index] = snapshot.data![index];
                   return Container(
                       height: MediaQuery.of(context).size.height * 0.41,
