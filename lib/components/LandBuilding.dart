@@ -474,7 +474,7 @@ class _LandBuildingState extends State<LandBuilding> {
           (((widget.asking_price * (100 - min)) / 100) * (widget.opt / 100)));
       totalMin = (minSqm * area);
       totalMax = (maxSqm * area);
-      print(widget.asking_price);
+      print("asking_price on Land & biule =  ${widget.asking_price}");
       print(minSqm);
       print(maxSqm);
       print(totalMin);

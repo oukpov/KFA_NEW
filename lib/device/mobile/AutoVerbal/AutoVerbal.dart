@@ -280,26 +280,27 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     );
   }
 
-Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async{
-final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
-final font = await PdfGoogleFonts.nunitoExtraLight();
-final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
-final Uint8List byteList = bytes.buffer.asUint8List();
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final font = await PdfGoogleFonts.nunitoExtraLight();
+    final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
+    final Uint8List byteList = bytes.buffer.asUint8List();
 
-pdf.addPage(
-  pw.Page(build: (context) {
-    pw.TableRow buildRow(List<String> cells) => pw.TableRow(
-      children: cells.map((cell){
-       
-        return pw.Padding(
-          padding: const pw.EdgeInsets.all(12),
-          child: pw.Center(
-            child: pw.Text(cell,style: pw.TextStyle(fontWeight: pw.FontWeight.bold),)),
+    pdf.addPage(pw.Page(build: (context) {
+      pw.TableRow buildRow(List<String> cells) => pw.TableRow(
+            children: cells.map((cell) {
+              return pw.Padding(
+                padding: const pw.EdgeInsets.all(12),
+                child: pw.Center(
+                    child: pw.Text(
+                  cell,
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                )),
+              );
+            }).toList(),
           );
-      }).toList(),
-    );
-    return pw.Column(children: [
-       pw.Container(
+      return pw.Column(children: [
+        pw.Container(
           alignment: pw.Alignment.topLeft,
           height: 50,
           width: 150,
@@ -309,525 +310,567 @@ pdf.addPage(
               ),
               fit: pw.BoxFit.fill),
         ),
-      pw.SizedBox(
-        child: pw.FittedBox(
-          child: pw.Text(title,style: pw.TextStyle(font: font))
-        )
-        ),
+        pw.SizedBox(
+            child: pw.FittedBox(
+                child: pw.Text(title, style: pw.TextStyle(font: font)))),
         pw.SizedBox(height: 20),
         pw.Container(
-         // pw.padding: const EdgeInsets.all(9),
-      child: pw.Column(
-        children: [
-          pw.Container(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 4,
-                  child: pw.Container(
-                     padding: pw.EdgeInsets.all(2),
-                    alignment: pw.Alignment.centerLeft,
-                     decoration: pw.BoxDecoration(border: pw.Border.all()),
-                    //color: Colors.red,
-                    child: pw.Text("DATE: ",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
-                    height: 30,
-                    //color: Colors.white,
-                  ),
-                ),
-                pw.Expanded(
-            flex: 4,
-            child: pw.Container(
-              padding: pw.EdgeInsets.all(2),
-              alignment: pw.Alignment.centerLeft,
-              decoration: pw.BoxDecoration(border: pw.Border.all()),
-              child: pw.Text("CODE: ",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
-              height: 30,
-              //color: Colors.yellow,
-            ),
-            )
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 8,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Requested Date: ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 8,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Requested Date: ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Property Information: ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 6,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Building ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Address ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 6,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text(",, ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Owner Name ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("N/A ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Contact No. ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Bank Officer ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("N/A ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Contact No",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(
-            child: pw.Row(
-              children: [
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Latitude ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("11.5489 ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Longtitude ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Requested Date: ",style: pw.TextStyle(fontSize: 12)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          pw.SizedBox(height: 5),
-          pw.Container(
-            child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",style: pw.TextStyle(fontSize: 15)),
-          ),
-          pw.SizedBox(height: 5),
-
-          //After Google Map
-          pw.Container(
-            child: pw.Column(
-              children: [
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("DESCRIPTION: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("AREA/sqm: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MIN/sqm: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MAX/sqm: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MIN-VALUE: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MAX-VALUE: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-
+          // pw.padding: const EdgeInsets.all(9),
+          child: pw.Column(
+            children: [
               pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 9,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 4,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Property Value(Estimate) ",style: pw.TextStyle(fontSize: 11,)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
+                        //color: Colors.red,
+                        child: pw.Text("DATE: ",
+                            style: pw.TextStyle(
+                                fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                        height: 30,
+                        //color: Colors.white,
+                      ),
                     ),
-                ),
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 9,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
+                    pw.Expanded(
+                      flex: 4,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Force Sale Value 30% ",style: pw.TextStyle(fontSize: 11,)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
+                        child: pw.Text("CODE: ",
+                            style: pw.TextStyle(
+                                fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                        height: 30,
+                        //color: Colors.yellow,
+                      ),
+                    )
+                  ],
                 ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-                              
-              pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 5,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Force Sale Value: ",style: pw.TextStyle(fontSize: 11,)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 4,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 11,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("COMMENT: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                 ),
-                    ]
-                    ),
-                ),
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Valuation: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 9,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-              ]
               ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 8,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Requested Date: ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 8,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Requested Date: ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Property Information: ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 6,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Building ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Address ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 6,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child:
+                            pw.Text(",, ", style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Owner Name ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child:
+                            pw.Text("N/A ", style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Contact No. ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Bank Officer ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child:
+                            pw.Text("N/A ", style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Contact No",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(
+                child: pw.Row(
+                  children: [
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Latitude ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("11.5489 ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Longtitude ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    pw.Expanded(
+                      flex: 2,
+                      child: pw.Container(
+                        padding: pw.EdgeInsets.all(2),
+                        alignment: pw.Alignment.centerLeft,
+                        decoration: pw.BoxDecoration(border: pw.Border.all()),
+                        child: pw.Text("Requested Date: ",
+                            style: pw.TextStyle(fontSize: 12)),
+                        height: 30,
+                        //color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw.SizedBox(height: 5),
+              pw.Container(
+                child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
+                    style: pw.TextStyle(fontSize: 15)),
+              ),
+              pw.SizedBox(height: 5),
+
+              //After Google Map
+              pw.Container(
+                child: pw.Column(children: [
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 3,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("DESCRIPTION: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("AREA/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MIN/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MAX/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MIN-VALUE: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MAX-VALUE: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 9,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("Property Value(Estimate) ",
+                              style: pw.TextStyle(
+                                fontSize: 11,
+                              )),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("USD 0.00 ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("USD 0.00 ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 9,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("Force Sale Value 30% ",
+                              style: pw.TextStyle(
+                                fontSize: 11,
+                              )),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("0.00sqm: ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("USD 0.00 ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 5,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("Force Sale Value: ",
+                              style: pw.TextStyle(
+                                fontSize: 11,
+                              )),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("USD nan ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("USD nan ",
+                              style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 4,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          //child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 11,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("COMMENT: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 3,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("Valuation: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 9,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          //child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                ]),
+              ),
+            ],
           ),
-        ],
-      ),
         )
         // pw.Flexible(
         //   child: pw.Table(
@@ -844,20 +887,14 @@ pdf.addPage(
         //   ],
         // ),
         // ),
-    ]
-    );
-    
-  }
-  
-  )
-);
+      ]);
+    }));
 
-return pdf.save();
-}
+    return pdf.save();
+  }
 
   void generatePdf() async {
     const title = 'Flutter Demo';
     await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
   }
-  
 }
