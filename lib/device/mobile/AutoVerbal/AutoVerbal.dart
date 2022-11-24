@@ -298,8 +298,12 @@ pdf.addPage(
           );
       }).toList(),
     );
-    return pw.Column(children: [
-       pw.Container(
+    return pw.Column(
+      children: [
+       pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        children: [
+          pw.Container(
           alignment: pw.Alignment.topLeft,
           height: 50,
           width: 150,
@@ -309,9 +313,11 @@ pdf.addPage(
               ),
               fit: pw.BoxFit.fill),
         ),
+        ],
+       ),
       pw.SizedBox(
         child: pw.FittedBox(
-          child: pw.Text(title,style: pw.TextStyle(font: font))
+          child: pw.Text(title,style: pw.TextStyle(font: font,fontWeight: pw.FontWeight.bold,fontSize: 18))
         )
         ),
         pw.SizedBox(height: 20),
@@ -705,10 +711,10 @@ pdf.addPage(
                  pw.Expanded(
                   flex: 2,
                   child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
+                    padding: const pw.EdgeInsets.all(2),
                       alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
+                          child: pw.Text("USD 0.00 ",style: const pw.TextStyle(fontSize: 11)),
                             height: 30,
                     //color: Colors.blue,
                   ),
@@ -856,7 +862,7 @@ return pdf.save();
 }
 
   void generatePdf() async {
-    const title = 'Flutter Demo';
+    const title = 'Check Verbal';
     await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
   }
   
