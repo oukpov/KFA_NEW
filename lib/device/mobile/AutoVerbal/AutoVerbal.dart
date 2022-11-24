@@ -50,7 +50,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   }
 
   List<AutoVerbal_List> data_pdf = [];
-  int i = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +68,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           if (snapshot.hasData) {
             return ListView.builder(
                 itemCount: snapshot.data?.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (BuildContext context, int index) {
                   final cdt = snapshot.data![index];
                   data_pdf.add(cdt);
                   return Container(
@@ -242,8 +241,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 color: Colors.blue,
                                 onPressed: () {
                                   setState(() {
-                                    print("asfdjghjsfjgsdfhgjghj");
-                                    // generatePdf(index);
+                                    generatePdf();
+                                    //print("go");
                                   });
                                 },
                                 text: 'Print',
@@ -278,14 +277,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Text(i.toString()),
-      ),
     );
   }
 
-  Future<Uint8List> _generatePdf(PdfPageFormat format, int index) async {
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
     final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
@@ -304,19 +299,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               );
             }).toList(),
           );
-<<<<<<< HEAD
-      }).toList(),
-    );
-    return pw.Column(
-      children: [
-       pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.start,
-        children: [
-          pw.Container(
-=======
       return pw.Column(children: [
         pw.Container(
->>>>>>> 3516c34b33e3e6528f5928496f314d3d73bbad94
           alignment: pw.Alignment.topLeft,
           height: 50,
           width: 150,
@@ -326,19 +310,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               ),
               fit: pw.BoxFit.fill),
         ),
-<<<<<<< HEAD
-        ],
-       ),
-      pw.SizedBox(
-        child: pw.FittedBox(
-          child: pw.Text(title,style: pw.TextStyle(font: font,fontWeight: pw.FontWeight.bold,fontSize: 18))
-        )
-        ),
-=======
-        // pw.SizedBox(
-        //     child: pw.FittedBox(
-        //         child: pw.Text(title, style: pw.TextStyle(font: font)))),
->>>>>>> 3516c34b33e3e6528f5928496f314d3d73bbad94
+        pw.SizedBox(
+            child: pw.FittedBox(
+                child: pw.Text(title, style: pw.TextStyle(font: font)))),
         pw.SizedBox(height: 20),
         pw.Container(
           // pw.padding: const EdgeInsets.all(9),
@@ -354,8 +328,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         //color: Colors.red,
-                        child: pw.Text(
-                            "DATE: ${data_pdf[index].verbalId.toString()}",
+                        child: pw.Text("DATE: ",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
                         height: 30,
@@ -377,131 +350,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     )
                   ],
                 ),
-<<<<<<< HEAD
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: const pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",style: const pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-                              
-              pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 5,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Force Sale Value: ",style: pw.TextStyle(fontSize: 11,)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 2,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                pw.Expanded(
-                  flex: 4,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 11,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("COMMENT: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                 ),
-                    ]
-                    ),
-                ),
-                pw.Container(
-                  child: pw.Row(
-                    children: [
-                      pw.Expanded(
-                  flex: 3,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Valuation: ",style: pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                 pw.Expanded(
-                  flex: 9,
-                  child: pw.Container(
-                    padding: pw.EdgeInsets.all(2),
-                      alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
-                            height: 30,
-                    //color: Colors.blue,
-                  ),
-                ),
-                    ]
-                    ),
-                ),
-              ]
-=======
->>>>>>> 3516c34b33e3e6528f5928496f314d3d73bbad94
               ),
               pw.SizedBox(
                 child: pw.Row(
@@ -1042,19 +890,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       ]);
     }));
 
-<<<<<<< HEAD
-return pdf.save();
-}
-
-  void generatePdf() async {
-    const title = 'Check Verbal';
-    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
-=======
     return pdf.save();
   }
 
-  void generatePdf(int i) async {
-    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, i));
->>>>>>> 3516c34b33e3e6528f5928496f314d3d73bbad94
+  void generatePdf() async {
+    const title = 'Flutter Demo';
+    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, title));
   }
 }
