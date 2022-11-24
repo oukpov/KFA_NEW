@@ -80,13 +80,13 @@ class _AddState extends State<Add> {
     _branch;
     super.initState();
     requestModelAuto = AutoVerbalRequestModel(
-      property_type_id: "",
-      lat: "",
-      lng: "",
-      address: '',
-      approve_id: "", agent: "",
-      bank_branch_id: "",
-      bank_contact: "",
+      property_type_id: "12",
+      lat: "105.1899",
+      lng: "11.5323",
+      address: "null",
+      approve_id: "null", agent: "null",
+      bank_branch_id: "6467",
+      bank_contact: "null",
       bank_id: "",
       bank_officer: "",
       code: "",
@@ -687,6 +687,7 @@ class _AddState extends State<Add> {
     );
     if (!mounted) return;
     asking_price = result[0]['adding_price'];
+    print("\nasking_price = ${asking_price}\n");
     address = result[0]['address'];
     requestModelAuto.lat = result[0]['lat'];
     requestModelAuto.lng = result[0]['lng'];
