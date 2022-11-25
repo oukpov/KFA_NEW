@@ -360,16 +360,18 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               width: 90,
               child: pw.BarcodeWidget(
                 barcode: pw.Barcode.qrCode(),
-                data: "https://www.youtube.com/",
+                data:
+                    "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLa}&long=${data_pdf.elementAt(i).latlongLog}",
               ),
             ),
           ],
         ),
-        // pw.SizedBox(
-        //     child: pw.FittedBox(
-        //         child: pw.Text(data_pdf.elementAt(i).verbalId.toString(),
-        //             style: pw.TextStyle(font: font)))),
-        pw.SizedBox(height: 10),
+        pw.Container(
+          height: 30,
+          width: 100,
+          child: pw.Text("VERBAL CHECK",
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        ),
         pw.Container(
           // pw.padding: const EdgeInsets.all(9),
           child: pw.Column(
@@ -689,7 +691,95 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("AREA/sqm:${data_pdf.elementAt(i)} ",
+                          child: pw.Text("AREA/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MIN/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MAX/sqm: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MIN-VALUE:} ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("MAX-VALUE: ",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  pw.Container(
+                    child: pw.Row(children: [
+                      pw.Expanded(
+                        flex: 3,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("",
+                              style: pw.TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: pw.FontWeight.bold)),
+                          height: 30,
+                          //color: Colors.blue,
+                        ),
+                      ),
+                      pw.Expanded(
+                        flex: 2,
+                        child: pw.Container(
+                          padding: pw.EdgeInsets.all(2),
+                          alignment: pw.Alignment.centerLeft,
+                          decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          child: pw.Text("AREA/sqm: ",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
