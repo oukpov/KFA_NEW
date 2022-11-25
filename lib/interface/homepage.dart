@@ -93,8 +93,8 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  leading: const Icon(Icons.settings),
+                  title: const Text('Settings'),
                 ),
                 const Spacer(),
                 DefaultTextStyle(
@@ -106,7 +106,7 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
                     margin: const EdgeInsets.symmetric(
                       vertical: 16.0,
                     ),
-                    child: const Text('Terms of Service | Privacy Policy'),
+                    child: const Text('info@kfa.com.kh | (855) 23 999 855'),
                   ),
                 ),
               ],

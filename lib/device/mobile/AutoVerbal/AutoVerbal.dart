@@ -14,8 +14,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-List<AutoVerbal_List> data_pdf = [];
-
 class Show_autoVerbals extends StatefulWidget {
   const Show_autoVerbals({super.key});
 
@@ -87,12 +85,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   var i = 0;
   int total_MIN = 0;
   int total_MAX = 0;
+  static List<AutoVerbal_List> data_pdf = [];
   @override
   void initState() {
-    data_pdf;
+    data_pdf = [];
     land;
     // TODO: implement initState
     super.initState();
+    print("ashdjahsdkjhaskhdksakj ${data_pdf.length}");
   }
 
   @override
@@ -101,7 +101,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.lightBlue[900],
-        title: Text(
+        title: const Text(
           "AutoVerbal List",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
@@ -279,8 +279,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 shape: GFButtonShape.pills,
                                 color: Colors.green,
                                 onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => map()));
+                                  setState(() {
+                                    print("data pdf lagnht ${data_pdf.length}");
+                                  });
                                 },
                                 text: 'Edit',
                                 icon: const Icon(Icons.edit),
@@ -349,13 +350,22 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
+        elevation: 10,
+        onPressed: () {},
+        child: const Icon(
+          Icons.search_sharp,
+        ),
+      ),
     );
   }
 
   Future<Uint8List> _generatePdf(PdfPageFormat format, int i) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
-    final ByteData bytes = await rootBundle.load('assets/images/KFA-Logo.png');
+    final ByteData bytes =
+        await rootBundle.load('assets/images/New_KFA_Logo.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
 
     pdf.addPage(pw.Page(build: (context) {
@@ -948,6 +958,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
+                          // ទាយយក forceSale from  ForceSaleAndValuation
                           child: pw.Text("Force Sale Value 30% ",
                               style: pw.TextStyle(
                                 fontSize: 11,
@@ -962,7 +973,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("0.00sqm: ",
+                          child: pw.Text("USD 0.00",
                               style: pw.TextStyle(fontSize: 11)),
                           height: 30,
                           //color: Colors.blue,
@@ -974,7 +985,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00 ",
+                          child: pw.Text("USD 0.00",
                               style: pw.TextStyle(fontSize: 11)),
                           height: 30,
                           //color: Colors.blue,
