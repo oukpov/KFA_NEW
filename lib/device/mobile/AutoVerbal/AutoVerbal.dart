@@ -48,16 +48,20 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   //   }
   // }
 
-  Future<List<AutoVerbal_List>> datatpe() async {
+ 
+   void max({required String verbalIds}) async {
     final response = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/type'));
+        // ignore: unnecessary_brace_in_string_interps
+        .get(Uri.parse(
+            'https://kfahrm.cc/Laravel/public/api/autoverbal/type?autoverbal_id=$verbalIds}'));
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((data) => new AutoVerbal_List.fromJson(data))
-          .toList();
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('${verbalIds['verbalId']} deleted successfully')
+      //   ),
+      // );
     } else {
-      throw Exception('Unexpected error occured!');
+      throw Exception('Delete error occured!');
     }
   }
 
@@ -292,7 +296,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     for (int i = 0; i < index; i++) {
                                       print(
                                           "${data_pdf.elementAt(index).verbalId}\n");
+
                                     }
+                                    for(int i=0 ; i<index;i++)
+                                    {
+                                      max(verbalIds: data_pdf.elementAt(i).verbalId.toString());
+                                    }
+                                    
                                     generatePdf(index);
                                     Land(data_pdf
                                         .elementAt(index)
@@ -1049,7 +1059,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("Valuation: ",
+                          child: pw.Text("Valuation:  ",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
