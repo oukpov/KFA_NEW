@@ -298,7 +298,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                         .elementAt(index)
                                         .verbalId
                                         .toString());
-
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Find(context, index)));
                                     //print("go");
                                   });
                                 },
@@ -1165,14 +1168,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  Widget Find(BuildContext context, String index) {
+  Widget Find(BuildContext context, int index) {
     return SafeArea(
         child: CustomGoogleMapMarkerBuilder(
       customMarkers: [
         MarkerData(
             marker: Marker(
                 markerId: const MarkerId('id-1'),
-                position: LatLng(37.42796133580664, -122.085749655962)),
+                position: LatLng(data_pdf[index].latlongLa, -122.085749655962)),
             child: Icon(
               Icons.location_on,
               color: Colors.red[900],
