@@ -14,6 +14,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
+List<AutoVerbal_List> data_pdf = [];
+
 class Show_autoVerbals extends StatefulWidget {
   const Show_autoVerbals({super.key});
 
@@ -48,8 +50,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   //   }
   // }
 
- 
-   void max({required String verbalIds}) async {
+  void max({required String verbalIds}) async {
     final response = await http
         // ignore: unnecessary_brace_in_string_interps
         .get(Uri.parse(
@@ -82,7 +83,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  static List<AutoVerbal_List> data_pdf = [];
   List land = [];
   var i = 0;
   int total_MIN = 0;
@@ -296,22 +296,24 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     for (int i = 0; i < index; i++) {
                                       print(
                                           "${data_pdf.elementAt(index).verbalId}\n");
+                                    }
+                                    for (int i = 0; i < index; i++) {
+                                      max(
+                                          verbalIds: data_pdf
+                                              .elementAt(i)
+                                              .verbalId
+                                              .toString());
+                                    }
 
-                                    }
-                                    for(int i=0 ; i<index;i++)
-                                    {
-                                      max(verbalIds: data_pdf.elementAt(i).verbalId.toString());
-                                    }
-                                    
                                     generatePdf(index);
                                     Land(data_pdf
                                         .elementAt(index)
                                         .verbalId
                                         .toString());
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Find(context, index)));
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => Find(
+                                    //             context, data_pdf, index)));
                                     //print("go");
                                   });
                                 },
@@ -1176,37 +1178,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         //print(list);
       });
     }
-  }
-
-  Widget Find(BuildContext context, int index) {
-    return SafeArea(
-        child: CustomGoogleMapMarkerBuilder(
-      customMarkers: [
-        MarkerData(
-            marker: Marker(
-                markerId: const MarkerId('id-1'),
-                position: LatLng(data_pdf[index].latlongLa, -122.085749655962)),
-            child: Icon(
-              Icons.location_on,
-              color: Colors.red[900],
-              size: 40,
-            )),
-      ],
-      builder: (BuildContext context, Set<Marker>? markers) {
-        if (markers == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return GoogleMap(
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
-          ),
-          mapType: MapType.hybrid,
-          markers: markers,
-          onMapCreated: (GoogleMapController controller) {},
-        );
-      },
-    ));
   }
 }
 
