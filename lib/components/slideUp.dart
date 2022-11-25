@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 import 'package:search_map_location/widget/search_widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +28,7 @@ import 'distance.dart';
 import 'landsize.dart';
 import 'numDisplay.dart';
 import 'road.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingUpPanelExample extends StatelessWidget {
   const SlidingUpPanelExample({super.key});

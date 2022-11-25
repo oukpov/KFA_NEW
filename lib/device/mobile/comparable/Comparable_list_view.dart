@@ -17,7 +17,7 @@ class ComparableList extends StatefulWidget {
   State<ComparableList> createState() => _ComparableListState();
 }
 
-class _ComparableListState extends State<ComparableList> with data {
+class _ComparableListState extends State<ComparableList> {
   // A function that converts a response body into a List<Photo>.
   static List<String> Idcom = [];
   Future<Comparable> com_data() async {
