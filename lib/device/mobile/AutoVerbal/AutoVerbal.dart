@@ -77,6 +77,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   }
 
   List<AutoVerbal_List> data_pdf = [];
+  List land = [];
+  var i = 0;
   @override
   void initState() {
     data_pdf;
@@ -284,6 +286,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                           "${data_pdf.elementAt(index).verbalId}\n");
                                     }
                                     generatePdf(index);
+                                    Land(data_pdf
+                                        .elementAt(index)
+                                        .verbalId
+                                        .toString());
+
                                     //print("go");
                                   });
                                 },
@@ -664,7 +671,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
                     style: pw.TextStyle(fontSize: 15)),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(
+                height: 20,
+              ),
 
               //After Google Map
               pw.Container(
@@ -757,94 +766,115 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       ),
                     ]),
                   ),
-                  pw.Container(
-                    child: pw.Row(children: [
-                      pw.Expanded(
-                        flex: 3,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.Expanded(
-                        flex: 2,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("AREA/sqm: ",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.Expanded(
-                        flex: 2,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MIN/sqm: ",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.Expanded(
-                        flex: 2,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MAX/sqm: ",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.Expanded(
-                        flex: 2,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MIN-VALUE:} ",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                      pw.Expanded(
-                        flex: 2,
-                        child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
-                          alignment: pw.Alignment.centerLeft,
-                          decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("MAX-VALUE: ",
-                              style: pw.TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: pw.FontWeight.bold)),
-                          height: 30,
-                          //color: Colors.blue,
-                        ),
-                      ),
-                    ]),
-                  ),
+                  if (land.length >= 1)
+                    pw.ListView.builder(
+                        itemBuilder: (Context, index) {
+                          return pw.Container(
+                            child: pw.Row(children: [
+                              pw.Expanded(
+                                flex: 3,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_type"] ?? "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                              pw.Expanded(
+                                flex: 2,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_area"] ?? "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                              pw.Expanded(
+                                flex: 2,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_minsqm"] ??
+                                          "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                              pw.Expanded(
+                                flex: 2,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_maxsqm"] ??
+                                          "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                              pw.Expanded(
+                                flex: 2,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_minvalue"] ??
+                                          "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                              pw.Expanded(
+                                flex: 2,
+                                child: pw.Container(
+                                  padding: pw.EdgeInsets.all(2),
+                                  alignment: pw.Alignment.centerLeft,
+                                  decoration:
+                                      pw.BoxDecoration(border: pw.Border.all()),
+                                  child: pw.Text(
+                                      land[index]["verbal_land_maxvalue"] ??
+                                          "N/A",
+                                      style: pw.TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  height: 30,
+                                  //color: Colors.blue,
+                                ),
+                              ),
+                            ]),
+                          );
+                        },
+                        itemCount: land.length),
                   pw.Container(
                     child: pw.Row(children: [
                       pw.Expanded(
@@ -1094,22 +1124,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
             ),
           ],
         ),
-
-        // pw.Flexible(
-        //   child: pw.Table(
-        //   border: pw.TableBorder.all(),
-        //   columnWidths: const <int, pw.TableColumnWidth> {
-        //   0: pw.FractionColumnWidth(0.2),
-        //   // 1: pw.FractionColumnWidth(0.3),
-        //   // 2: pw.FractionColumnWidth(0.3),
-        //   },
-        //   children: [
-        //     buildRow(['Date: ','Code: ',' ','Name: ']),
-        //     buildRow(['Cell 1','Cell 2',' ', 'Cell 3']),
-        //     buildRow(['Cell 1','Cell 2',' ', 'Cell 3']),
-        //   ],
-        // ),
-        // ),
       ]);
     }));
 
@@ -1119,5 +1133,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   void generatePdf(int i) async {
     const title = 'Flutter Demo';
     await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, i));
+  }
+
+  void Land(String i) async {
+    setState(() {});
+    //print(id);
+    var rs = await http.get(Uri.parse(
+        'https://kfahrm.cc/Laravel/public/api/autoverbal/list_land?verbal_landid=$i'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+
+      setState(() {
+        land = jsonData;
+        print("lenght =  ${land.length}");
+        //print(list);
+      });
+    }
   }
 }
