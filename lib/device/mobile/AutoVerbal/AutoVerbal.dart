@@ -988,6 +988,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 ]),
               ],
             ),
+            pw.SizedBox(
+              width: 10,
+            ),
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
