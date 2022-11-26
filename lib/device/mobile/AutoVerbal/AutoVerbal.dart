@@ -48,21 +48,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   //   }
   // }
 
-  void max({required String verbalIds}) async {
-    final response = await http
-        // ignore: unnecessary_brace_in_string_interps
-        .get(Uri.parse(
-            'https://kfahrm.cc/Laravel/public/api/autoverbal/type?autoverbal_id=$verbalIds}'));
-    if (response.statusCode == 200) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('${verbalIds['verbalId']} deleted successfully')
-      //   ),
-      // );
-    } else {
-      throw Exception('Delete error occured!');
-    }
-  }
+  // void max({required String verbalIds}) async {
+  //   final response = await http
+  //       // ignore: unnecessary_brace_in_string_interps
+  //       .get(Uri.parse(
+  //           'https://kfahrm.cc/Laravel/public/api/autoverbal/type?autoverbal_id=$verbalIds}'));
+  //   if (response.statusCode == 200) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   SnackBar(
+  //     //     content: Text('${verbalIds['verbalId']} deleted successfully')
+  //     //   ),
+  //     // );
+  //   } else {
+  //     throw Exception('Delete error occured!');
+  //   }
+  // }
 
 //delete id
   void deleteDataId({required String verbalIds}) async {
@@ -85,14 +85,16 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   var i = 0;
   int total_MIN = 0;
   int total_MAX = 0;
-  static List<AutoVerbal_List> data_pdf = [];
+  List<AutoVerbal_List> data_pdf = [];
+  var lat, log;
   @override
   void initState() {
-    data_pdf = [];
     land;
+    total_MAX;
+    total_MIN;
+    data_pdf;
     // TODO: implement initState
     super.initState();
-    print("ashdjahsdkjhaskhdksakj ${data_pdf.length}");
   }
 
   @override
@@ -296,14 +298,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
                                     for (int i = 0; i < index; i++) {
                                       print(
-                                          "${data_pdf.elementAt(index).verbalId}\n");
-                                    }
-                                    for (int i = 0; i < index; i++) {
-                                      max(
-                                          verbalIds: data_pdf
-                                              .elementAt(i)
-                                              .verbalId
-                                              .toString());
+                                          "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
                                     }
 
                                     generatePdf(index);
@@ -311,11 +306,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                         .elementAt(index)
                                         .verbalId
                                         .toString());
-                                    // Navigator.of(context).push(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => Find(
-                                    //             context, data_pdf, index)));
-                                    //print("go");
                                   });
                                 },
                                 text: 'Print',
@@ -369,19 +359,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     final Uint8List byteList = bytes.buffer.asUint8List();
 
     pdf.addPage(pw.Page(build: (context) {
-      // pw.TableRow buildRow(List<String> cells) => pw.TableRow(
-      //       children: cells.map((cell) {
-      //         return pw.Padding(
-      //           padding: const pw.EdgeInsets.all(12),
-      //           child: pw.Center(
-      //               child: pw.Text(
-      //             cell,
-      //             style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-      //           )),
-      //         );
-      //       }).toList(),
-      //     );
-
       return pw.Column(children: [
         pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -1183,58 +1160,108 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           total_MIN = total_MIN + int.parse(land[i]["verbal_land_minvalue"]);
           total_MAX = total_MAX + int.parse(land[i]["verbal_land_maxvalue"]);
         }
-
-        print("total_MIN: ${total_MIN.toString()}\n");
         print("lenght =  ${land.length}");
         //print(list);
       });
     }
   }
-}
 
-class map extends StatefulWidget {
-  const map({super.key});
-
-  @override
-  State<map> createState() => _mapState();
-}
-
-class _mapState extends State<map> {
-  final locations = const [
-    LatLng(37.42796133580664, -122.085749655962),
-  ];
-
-  // late SearchRequestModel requestModel;
-  // // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
-  // late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
-  @override
-  Widget build(BuildContext context) {
+  Widget map(BuildContext context, var lat, var log, int index) {
+    double.parse(lat);
+    double.parse(log);
     return SafeArea(
-        child: CustomGoogleMapMarkerBuilder(
-      customMarkers: [
-        MarkerData(
-            marker: Marker(
-                markerId: const MarkerId('id-1'), position: locations[0]),
-            child: Icon(
-              Icons.location_on,
-              color: Colors.red[900],
-              size: 40,
-            )),
-      ],
-      builder: (BuildContext context, Set<Marker>? markers) {
-        if (markers == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return GoogleMap(
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
-          ),
-          mapType: MapType.hybrid,
-          markers: markers,
-          onMapCreated: (GoogleMapController controller) {},
-        );
-      },
-    ));
+      child: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: CustomGoogleMapMarkerBuilder(
+                customMarkers: [
+                  MarkerData(
+                      marker: Marker(
+                          markerId: const MarkerId('id-1'),
+                          position: LatLng(lat, log)),
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.red[900],
+                        size: 40,
+                      )),
+                ],
+                builder: (BuildContext context, Set<Marker>? markers) {
+                  if (markers == null) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(lat, log),
+                      zoom: 14.4746,
+                    ),
+                    mapType: MapType.hybrid,
+                    markers: markers,
+                    onMapCreated: (GoogleMapController controller) {},
+                  );
+                },
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: GFButton(
+                onPressed: () {
+                  generatePdf(index);
+                },
+                text: "Submit",
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
+
+// class map extends StatefulWidget {
+//   const map({super.key});
+
+//   @override
+//   State<map> createState() => _mapState();
+// }
+
+// class _mapState extends State<map> {
+//   final locations = const [
+//     LatLng(37.42796133580664, -122.085749655962),
+//   ];
+
+//   // late SearchRequestModel requestModel;
+//   // // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
+//   // late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//         child: CustomGoogleMapMarkerBuilder(
+//       customMarkers: [
+//         MarkerData(
+//             marker: Marker(
+//                 markerId: const MarkerId('id-1'), position: locations[0]),
+//             child: Icon(
+//               Icons.location_on,
+//               color: Colors.red[900],
+//               size: 40,
+//             )),
+//       ],
+//       builder: (BuildContext context, Set<Marker>? markers) {
+//         if (markers == null) {
+//           return const Center(child: CircularProgressIndicator());
+//         }
+//         return GoogleMap(
+//           initialCameraPosition: const CameraPosition(
+//             target: LatLng(37.42796133580664, -122.085749655962),
+//             zoom: 14.4746,
+//           ),
+//           mapType: MapType.hybrid,
+//           markers: markers,
+//           onMapCreated: (GoogleMapController controller) {},
+//         );
+//       },
+//     ));
+//   }
+// }
