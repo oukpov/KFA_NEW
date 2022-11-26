@@ -35,35 +35,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  // Future<List<AutoVerbal_List>> fetchData1() async {
-  //   final response = await http
-  //       .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/type'));
-  //   if (response.statusCode == 200) {
-  //     List jsonResponse = json.decode(response.body);
-  //     return jsonResponse
-  //         .map((data1) => new AutoVerbal_List.fromJson(data1))
-  //         .toList();
-  //   } else {
-  //     throw Exception('Unexpected error occured!');
-  //   }
-  // }
-
-  // void max({required String verbalIds}) async {
-  //   final response = await http
-  //       // ignore: unnecessary_brace_in_string_interps
-  //       .get(Uri.parse(
-  //           'https://kfahrm.cc/Laravel/public/api/autoverbal/type?autoverbal_id=$verbalIds}'));
-  //   if (response.statusCode == 200) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(
-  //     //   SnackBar(
-  //     //     content: Text('${verbalIds['verbalId']} deleted successfully')
-  //     //   ),
-  //     // );
-  //   } else {
-  //     throw Exception('Delete error occured!');
-  //   }
-  // }
-
 //delete id
   void deleteDataId({required String verbalIds}) async {
     final response = await http
@@ -71,11 +42,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         .delete(Uri.parse(
             'https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('${verbalIds['verbalId']} deleted successfully')
-      //   ),
-      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${verbalIds} deleted successfully')),
+      );
     } else {
       throw Exception('Delete error occured!');
     }
@@ -83,16 +52,22 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
   List land = [];
   var i = 0;
-  int total_MIN = 0;
-  int total_MAX = 0;
+  static int? total_MIN = 0;
+  static int? total_MAX = 0;
   List<AutoVerbal_List> data_pdf = [];
-  var lat, log;
+  late double fsvM, fsvN, fx, fn;
+  static String address = "";
+  late double lat, log;
   @override
   void initState() {
     land;
-    total_MAX;
-    total_MIN;
+    total_MIN = 0;
+    total_MAX = 0;
     data_pdf;
+    fsvM = 0;
+    fsvN = 0;
+    fx = 0;
+    fn = 0;
     // TODO: implement initState
     super.initState();
   }
@@ -126,8 +101,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30)),
+                              topLeft: Radius.circular(25),
+                              bottomRight: Radius.circular(25)),
                           boxShadow: [
                             BoxShadow(color: Colors.black, blurRadius: 5)
                           ]),
@@ -300,12 +275,27 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                       print(
                                           "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
                                     }
+                                    total_MAX = 0;
+                                    total_MIN = 0;
 
-                                    generatePdf(index);
-                                    Land(data_pdf
-                                        .elementAt(index)
-                                        .verbalId
-                                        .toString());
+                                    address = "";
+                                    fsvM = 0;
+                                    fsvN = 0;
+                                    fx = 0;
+                                    fn = 0;
+                                    lat = data_pdf.elementAt(i).latlongLa
+                                        as double;
+                                    log = data_pdf.elementAt(i).latlongLog
+                                        as double;
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             map(lat: lat, lot: log)));
+                                    print(lat + log);
+                                    generatePdf(
+                                        index,
+                                        snapshot.data![index].verbalCon
+                                            .toString());
                                   });
                                 },
                                 text: 'Print',
@@ -351,7 +341,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     );
   }
 
-  Future<Uint8List> _generatePdf(PdfPageFormat format, int i) async {
+  Future<Uint8List> _generatePdf(
+      PdfPageFormat format, int i, String fsv) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
     final ByteData bytes =
@@ -373,8 +364,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                   fit: pw.BoxFit.fill),
             ),
             pw.Container(
-              height: 90,
-              width: 90,
+              height: 70,
+              width: 70,
               child: pw.BarcodeWidget(
                 barcode: pw.Barcode.qrCode(),
                 data:
@@ -384,7 +375,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           ],
         ),
         pw.Container(
-          height: 30,
+          height: 20,
           width: 100,
           child: pw.Text("VERBAL CHECK",
               style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
@@ -407,7 +398,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                             "DATE: ${data_pdf.elementAt(i).verbalDate}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.white,
                       ),
                     ),
@@ -421,7 +412,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                             "CODE: ${data_pdf.elementAt(i).verbalId.toString()}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.yellow,
                       ),
                     )
@@ -440,31 +431,22 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "Requested Date :${data_pdf.elementAt(i).verbalCreatedDate.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
                   ],
                 ),
               ),
-              pw.SizedBox(
-                child: pw.Row(
-                  children: [
-                    pw.Expanded(
-                      flex: 8,
-                      child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
-                        alignment: pw.Alignment.centerLeft,
-                        decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "Referring to your request letter for verbal check by PPCBank, we estimated the value of property as below.",
-                            style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
-                        //color: Colors.blue,
-                      ),
-                    ),
-                  ],
-                ),
+              pw.Container(
+                padding: pw.EdgeInsets.all(2),
+                alignment: pw.Alignment.centerLeft,
+                decoration: pw.BoxDecoration(border: pw.Border.all()),
+                child: pw.Text(
+                    "Referring to your request letter for verbal check by ${data_pdf.elementAt(i).bankName.toString()}, we estimated the value of property as below.",
+                    overflow: pw.TextOverflow.clip),
+                height: 30,
+                //color: Colors.blue,
               ),
               pw.SizedBox(
                 child: pw.Row(
@@ -477,7 +459,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Property Information: ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -490,7 +472,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "${data_pdf.elementAt(i).verbalPropertyId.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -508,7 +490,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Address : ",
                             style: const pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -518,10 +500,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "${data_pdf.elementAt(i).verbalAddress.toString()} ",
+                        child: pw.Text("${data_pdf.elementAt(i).verbalAddress}",
                             style: const pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -539,7 +520,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Owner Name ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -554,7 +535,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                             pw.Text(
                                 "${data_pdf.elementAt(i).verbalOwner.toString()}",
                                 style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -568,7 +549,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "Contact No : ${data_pdf.elementAt(i).verbalContact.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -586,7 +567,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Bank Officer ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -596,10 +577,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "${data_pdf.elementAt(i).bankofficer.toString()}",
+                        child: pw.Text("${data_pdf.elementAt(i).bankAcronym}",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -612,7 +592,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "Contact No : ${data_pdf.elementAt(i).bankcontact.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -630,7 +610,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Latitude ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -643,7 +623,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "${data_pdf.elementAt(i).latlongLa.toString()}",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -655,7 +635,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Longtitude ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -668,7 +648,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "${data_pdf.elementAt(i).latlongLog.toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
-                        height: 30,
+                        height: 25,
                         //color: Colors.blue,
                       ),
                     ),
@@ -679,10 +659,10 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
               pw.Container(
                 child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
-                    style: pw.TextStyle(fontSize: 15)),
+                    style: pw.TextStyle(fontSize: 12)),
               ),
               pw.SizedBox(
-                height: 20,
+                height: 5,
               ),
 
               //After Google Map
@@ -700,7 +680,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -714,7 +694,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -728,7 +708,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -742,7 +722,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -756,7 +736,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -770,7 +750,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -795,7 +775,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -811,7 +791,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -827,7 +807,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -843,7 +823,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -860,7 +840,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -877,7 +857,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     style: pw.TextStyle(
                                         fontSize: 11,
                                         fontWeight: pw.FontWeight.bold)),
-                                height: 30,
+                                height: 25,
                                 //color: Colors.blue,
                               ),
                             ),
@@ -897,7 +877,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                 fontSize: 11,
                               )),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -909,7 +889,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text(total_MIN.toString(),
                               style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -921,7 +901,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text(total_MAX.toString(),
                               style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -936,11 +916,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           // ទាយយក forceSale from  ForceSaleAndValuation
-                          child: pw.Text("Force Sale Value 30% ",
-                              style: pw.TextStyle(
+                          child: pw.Text("Force Sale Value ${fsv}% ",
+                              style: const pw.TextStyle(
                                 fontSize: 11,
                               )),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -950,9 +930,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00",
+                          child: pw.Text("${fsvN.toString()}",
                               style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -962,9 +942,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD 0.00",
-                              style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          child: pw.Text(fsvN.toString(),
+                              style: const pw.TextStyle(fontSize: 11)),
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -975,38 +955,38 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 5,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("Force Sale Value: ",
-                              style: pw.TextStyle(
+                              style: const pw.TextStyle(
                                 fontSize: 11,
                               )),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",
-                              style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          child: pw.Text("${fn}",
+                              style: const pw.TextStyle(fontSize: 11)),
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("USD nan ",
-                              style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          child: pw.Text("${fx}",
+                              style: const pw.TextStyle(fontSize: 11)),
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -1017,7 +997,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           //child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -1031,11 +1011,12 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("COMMENT: ",
+                          child: pw.Text(
+                              "COMMENT: ${data_pdf.elementAt(i).verbalComment}",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -1053,7 +1034,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -1064,7 +1045,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           //child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
-                          height: 30,
+                          height: 25,
                           //color: Colors.blue,
                         ),
                       ),
@@ -1075,28 +1056,28 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
             ],
           ),
         ),
-        pw.SizedBox(height: 10),
+        pw.SizedBox(height: 5),
         pw.Text(
             '*Note : The land building size based on the bank officer provided, in case the land and building size are wrong provided when we have the actual size inspect, we are not response on this case.'),
         pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          crossAxisAlignment: pw.CrossAxisAlignment.end,
           children: [
             pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
               pw.Text('Verbal Check Replied By :',
                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-              pw.Text('${data_pdf.elementAt(i).verbalOwner.toString()}',
+              pw.Text('${data_pdf.elementAt(i).agenttypeName}',
                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             ]),
-            pw.SizedBox(width: 10),
-            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
-              pw.Text('${data_pdf.elementAt(i).verbalContact.toString()}',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            ]),
+            pw.Text('${data_pdf.elementAt(i).agentTypePhone}',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
           ],
         ),
-        pw.Row(mainAxisAlignment: pw.MainAxisAlignment.start, children: [
+        pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
           pw.Text('KHMER FOUNDATION APPRAISALS Co.,Ltd',
-              style: pw.TextStyle(color: PdfColors.blue)),
+              style: pw.TextStyle(
+                  color: PdfColors.blue,
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 16)),
         ]),
         pw.Row(
           children: [
@@ -1119,9 +1100,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 ]),
               ],
             ),
-            pw.SizedBox(
-              width: 10,
-            ),
+            pw.SizedBox(width: 10),
             pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
@@ -1141,127 +1120,49 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     return pdf.save();
   }
 
-  void generatePdf(int i) async {
+  void generatePdf(int i, String fsv) async {
     const title = 'Flutter Demo';
-    await Printing.layoutPdf(onLayout: (format) => _generatePdf(format, i));
+    Land(data_pdf.elementAt(i).verbalId.toString(),
+        data_pdf[i].verbalCon.toString());
+
+    Future.delayed(
+      const Duration(seconds: 2),
+      () => Printing.layoutPdf(
+          onLayout: (format) => _generatePdf(format, i, fsv)),
+    );
   }
 
-  void Land(String i) async {
-    setState(() {});
-    //print(id);
+  Future Land(String i, String fsv) async {
+    double x = 0, n = 0;
+    var jsonData;
     var rs = await http.get(Uri.parse(
         'https://kfahrm.cc/Laravel/public/api/autoverbal/list_land?verbal_landid=$i'));
     if (rs.statusCode == 200) {
-      var jsonData = jsonDecode(rs.body);
-
+      jsonData = jsonDecode(rs.body);
+      land = jsonData;
       setState(() {
-        land = jsonData;
+        print("Land === ${land.length}");
+
         for (int i = 0; i < land.length; i++) {
-          total_MIN = total_MIN + int.parse(land[i]["verbal_land_minvalue"]);
-          total_MAX = total_MAX + int.parse(land[i]["verbal_land_maxvalue"]);
+          total_MIN = total_MIN! + int.parse(land[i]["verbal_land_minvalue"]);
+          total_MAX = total_MAX! + int.parse(land[i]["verbal_land_maxvalue"]);
+          // address = land[i]["address"];
+          x = x + int.parse(land[i]["verbal_land_maxsqm"]);
+          n = n + int.parse(land[i]["verbal_land_minsqm"]);
         }
-        print("lenght =  ${land.length}");
-        //print(list);
+        fsvM = (total_MAX! * double.parse(fsv)) / 100;
+        fsvN = (total_MIN! * double.parse(fsv)) / 100;
+
+        if (land.length < 1) {
+          total_MIN = 0;
+          total_MAX = 0;
+        } else {
+          fx = x * (double.parse(fsv) / 100);
+          fn = n * (double.parse(fsv) / 100);
+        }
+
+        print("Total mix ${total_MAX}");
       });
     }
   }
-
-  Widget map(BuildContext context, var lat, var log, int index) {
-    double.parse(lat);
-    double.parse(log);
-    return SafeArea(
-      child: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: CustomGoogleMapMarkerBuilder(
-                customMarkers: [
-                  MarkerData(
-                      marker: Marker(
-                          markerId: const MarkerId('id-1'),
-                          position: LatLng(lat, log)),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.red[900],
-                        size: 40,
-                      )),
-                ],
-                builder: (BuildContext context, Set<Marker>? markers) {
-                  if (markers == null) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(lat, log),
-                      zoom: 14.4746,
-                    ),
-                    mapType: MapType.hybrid,
-                    markers: markers,
-                    onMapCreated: (GoogleMapController controller) {},
-                  );
-                },
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: GFButton(
-                onPressed: () {
-                  generatePdf(index);
-                },
-                text: "Submit",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-// class map extends StatefulWidget {
-//   const map({super.key});
-
-//   @override
-//   State<map> createState() => _mapState();
-// }
-
-// class _mapState extends State<map> {
-//   final locations = const [
-//     LatLng(37.42796133580664, -122.085749655962),
-//   ];
-
-//   // late SearchRequestModel requestModel;
-//   // // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
-//   // late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//         child: CustomGoogleMapMarkerBuilder(
-//       customMarkers: [
-//         MarkerData(
-//             marker: Marker(
-//                 markerId: const MarkerId('id-1'), position: locations[0]),
-//             child: Icon(
-//               Icons.location_on,
-//               color: Colors.red[900],
-//               size: 40,
-//             )),
-//       ],
-//       builder: (BuildContext context, Set<Marker>? markers) {
-//         if (markers == null) {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//         return GoogleMap(
-//           initialCameraPosition: const CameraPosition(
-//             target: LatLng(37.42796133580664, -122.085749655962),
-//             zoom: 14.4746,
-//           ),
-//           mapType: MapType.hybrid,
-//           markers: markers,
-//           onMapCreated: (GoogleMapController controller) {},
-//         );
-//       },
-//     ));
-//   }
-// }
