@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:admin/data/data.dart';
@@ -58,9 +57,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   List<AutoVerbal_List> data_pdf = [];
   late double fsvM, fsvN, fx, fn;
   static String address = "";
-  late GoogleMapController mapController;
-  final Set<Marker> markers = new Set();
-  static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
   @override
   void initState() {
     land;
@@ -286,14 +282,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     fsvN = 0;
                                     fx = 0;
                                     fn = 0;
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Map(context)));
-                                    // generatePdf(
-                                    //     index,
-                                    //     snapshot.data![index].verbalCon
-                                    //         .toString());
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             Map(context)));
+                                    generatePdf(
+                                        index,
+                                        snapshot.data![index].verbalCon
+                                            .toString());
                                   });
                                 },
                                 text: 'Print',
@@ -517,7 +513,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Owner Name ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -525,14 +521,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 3,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child:
                             // name rest with api
-                            pw.Text(
-                                "${data_pdf.elementAt(i).verbalOwner.toString()}",
-                                style: pw.TextStyle(fontSize: 12)),
+                            pw.Text("${data_pdf.elementAt(i).verbalOwner}",
+                                style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -540,13 +535,13 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 3,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         // name rest with api
                         child: pw.Text(
                             "Contact No : ${data_pdf.elementAt(i).verbalContact.toString()} ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -560,11 +555,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 2,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Bank Officer ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -572,11 +567,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 3,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("${data_pdf.elementAt(i).bankAcronym}",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -584,12 +579,12 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 3,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
                             "Contact No : ${data_pdf.elementAt(i).bankcontact.toString()}",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -603,11 +598,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 2,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Latitude ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -615,12 +610,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 3,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "${data_pdf.elementAt(i).latlongLa.toString()}",
-                            style: pw.TextStyle(fontSize: 12)),
+                        child: pw.Text("${data_pdf.elementAt(i).latlongLa}",
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -632,7 +626,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Longtitude ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -640,12 +634,12 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                     pw.Expanded(
                       flex: 2,
                       child: pw.Container(
-                        padding: pw.EdgeInsets.all(2),
+                        padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
                             "${data_pdf.elementAt(i).latlongLog.toString()} ",
-                            style: pw.TextStyle(fontSize: 12)),
+                            style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
                       ),
@@ -659,11 +653,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                 child: pw.Column(
                   children: [
                     pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
-                        style: pw.TextStyle(fontSize: 12)),
+                        style: const pw.TextStyle(fontSize: 12)),
                     pw.SizedBox(
                       height: 30,
                       width: 30,
-                      child: pw.Map(context),
+                      // child: ,
                     )
                   ],
                 ),
@@ -677,7 +671,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 3,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("DESCRIPTION: ",
@@ -691,7 +685,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("AREA/sqm: ",
@@ -705,7 +699,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("MIN/sqm: ",
@@ -719,7 +713,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("MAX/sqm: ",
@@ -733,7 +727,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("MIN-VALUE:} ",
@@ -747,7 +741,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                       pw.Expanded(
                         flex: 2,
                         child: pw.Container(
-                          padding: pw.EdgeInsets.all(2),
+                          padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text("MAX-VALUE: ",
@@ -1170,15 +1164,28 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
       });
     }
   }
+}
 
-  Widget Map(BuildContext context) {
+class OnMap extends StatefulWidget {
+  const OnMap({super.key});
+
+  @override
+  State<OnMap> createState() => _OnMapState();
+}
+
+class _OnMapState extends State<OnMap> {
+  late GoogleMapController mapController;
+  final Set<Marker> markers = new Set();
+  static const LatLng showLocation = LatLng(27.7089427, 85.3086209);
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: [
           GoogleMap(
             //Map widget from google_maps_flutter package
             zoomGesturesEnabled: true, //enable Zoom in, out on map
-            initialCameraPosition: CameraPosition(
+            initialCameraPosition: const CameraPosition(
               //innital position in map
               target: showLocation, //initial position
               zoom: 15.0, //initial zoom level
