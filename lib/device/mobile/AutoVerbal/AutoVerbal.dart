@@ -1,3 +1,4 @@
+
 import 'dart:typed_data';
 
 import 'package:admin/data/data.dart';
@@ -42,9 +43,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         .delete(Uri.parse(
             'https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${verbalIds} deleted successfully')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('${verbalIds} deleted successfully')),
+      // );
     } else {
       throw Exception('Delete error occured!');
     }
@@ -57,7 +58,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   List<AutoVerbal_List> data_pdf = [];
   late double fsvM, fsvN, fx, fn;
   static String address = "";
-  late double lat, log;
+  late GoogleMapController mapController;
+  final Set<Marker> markers = new Set();
+  static const LatLng showLocation = const LatLng(27.7089427, 85.3086209);
   @override
   void initState() {
     land;
@@ -283,19 +286,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     fsvN = 0;
                                     fx = 0;
                                     fn = 0;
-                                    lat = data_pdf.elementAt(i).latlongLa
-                                        as double;
-                                    log = data_pdf.elementAt(i).latlongLog
-                                        as double;
-                                    // Navigator.of(context).push(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             map(lat: lat, lot: log)));
-                                    print(lat + log);
-                                    generatePdf(
-                                        index,
-                                        snapshot.data![index].verbalCon
-                                            .toString());
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Map(context)));
+                                    // generatePdf(
+                                    //     index,
+                                    //     snapshot.data![index].verbalCon
+                                    //         .toString());
                                   });
                                 },
                                 text: 'Print',
@@ -658,11 +656,17 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               pw.SizedBox(height: 5),
 
               pw.Container(
-                child: pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
-                    style: pw.TextStyle(fontSize: 12)),
-              ),
-              pw.SizedBox(
-                height: 5,
+                child: pw.Column(
+                  children: [
+                    pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
+                        style: pw.TextStyle(fontSize: 12)),
+                    pw.SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: pw.Map(context),
+                    )
+                  ],
+                ),
               ),
 
               //After Google Map
@@ -1122,6 +1126,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
   void generatePdf(int i, String fsv) async {
     const title = 'Flutter Demo';
+
     Land(data_pdf.elementAt(i).verbalId.toString(),
         data_pdf[i].verbalCon.toString());
 
@@ -1164,5 +1169,52 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         print("Total mix ${total_MAX}");
       });
     }
+  }
+
+  Widget Map(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          GoogleMap(
+            //Map widget from google_maps_flutter package
+            zoomGesturesEnabled: true, //enable Zoom in, out on map
+            initialCameraPosition: CameraPosition(
+              //innital position in map
+              target: showLocation, //initial position
+              zoom: 15.0, //initial zoom level
+            ),
+            markers: getmarkers(), //markers to show on map
+            mapType: MapType.normal, //map type
+            onMapCreated: (controller) {
+              //method called when map is created
+              setState(() {
+                mapController = controller;
+              });
+            },
+          ),
+          TextButton(onPressed: () {}, child: const Text("submit"))
+        ],
+      ),
+    );
+  }
+
+  Set<Marker> getmarkers() {
+    //markers to place on map
+    setState(() {
+      markers.add(Marker(
+        //add first marker
+        markerId: MarkerId(showLocation.toString()),
+        position: showLocation, //position of marker
+        infoWindow: const InfoWindow(
+          //popup info
+          title: 'Marker Title First ',
+          snippet: 'My Custom Subtitle',
+        ),
+        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+      ));
+      //add more markers here
+    });
+
+    return markers;
   }
 }
