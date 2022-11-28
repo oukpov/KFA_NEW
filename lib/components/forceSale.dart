@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 import 'contants.dart';
 
-class ForceSaleAndValuation extends StatefulWidget {
-  const ForceSaleAndValuation({Key? key}) : super(key: key);
+typedef OnChangeCallback = void Function(dynamic value);
 
+class ForceSaleAndValuation extends StatefulWidget {
+  ForceSaleAndValuation({Key? key, required this.value}) : super(key: key);
+  final OnChangeCallback value;
   @override
   State<ForceSaleAndValuation> createState() => _ForceSaleAndValuationState();
 }
@@ -15,6 +17,7 @@ class ForceSaleAndValuation extends StatefulWidget {
 class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
   String Value = '30';
   var forceSale = ['10', '20', '30', '40', '50', '0'];
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -48,6 +51,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
               onChanged: (String? newValue) {
                 setState(() {
                   Value = newValue!;
+                  widget.value(newValue);
                   // ignore: avoid_print
                   print(newValue);
                 });

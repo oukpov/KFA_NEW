@@ -271,7 +271,7 @@ class _LandBuildingState extends State<LandBuilding> {
         Container(
           padding: EdgeInsets.only(left: 22, right: 22),
           width: double.infinity,
-          height: 270,
+          height: 280,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
@@ -474,7 +474,7 @@ class _LandBuildingState extends State<LandBuilding> {
           (((widget.asking_price * (100 - min)) / 100) * (widget.opt / 100)));
       totalMin = (minSqm * area);
       totalMax = (maxSqm * area);
-      print("asking_price on Land & biule =  ${widget.asking_price}");
+      print(widget.asking_price);
       print(minSqm);
       print(maxSqm);
       print(totalMin);

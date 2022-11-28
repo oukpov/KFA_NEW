@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+typedef OnChangeCallback = void Function(dynamic value);
+
 class Code extends StatefulWidget {
+  final OnChangeCallback code;
   const Code({
     Key? key,
+    required this.code,
   }) : super(key: key);
 
   @override
@@ -37,9 +41,10 @@ class _CodeState extends State<Code> {
 
       setState(() {
         loading = false;
-        code = jsonData['data'];
+        code = jsonData;
         codedisplay = int.parse(code[0]['verbal_id']) + 1;
         print(code[0]['verbal_id']);
+        widget.code(codedisplay);
         print(codedisplay);
 
         // print(_list);

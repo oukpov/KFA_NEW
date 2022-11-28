@@ -50,11 +50,11 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  List land = [];
   var i = 0;
   static int? total_MIN = 0;
   static int? total_MAX = 0;
   List<AutoVerbal_List> data_pdf = [];
+  List land = [];
   late double fsvM, fsvN, fx, fn;
   static String address = "";
   @override
@@ -284,8 +284,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                     fn = 0;
                                     // Navigator.of(context).push(
                                     //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             Map(context)));
+                                    //         builder: (context) => OnMap()));
+
                                     generatePdf(
                                         index,
                                         snapshot.data![index].verbalCon
@@ -342,6 +342,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     final ByteData bytes =
         await rootBundle.load('assets/images/New_KFA_Logo.png');
     final Uint8List byteList = bytes.buffer.asUint8List();
+    final ByteData bytes_image =
+        await rootBundle.load('assets/images/message-banner3.jpg');
+    final Uint8List byteList_image = bytes_image.buffer.asUint8List();
 
     pdf.addPage(pw.Page(build: (context) {
       return pw.Column(children: [
@@ -349,16 +352,18 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
             pw.Container(
+              width: 70,
               height: 50,
-              width: 150,
               child: pw.Image(
                   pw.MemoryImage(
                     byteList,
                   ),
                   fit: pw.BoxFit.fill),
             ),
+            pw.Text("VERBAL CHECK",
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             pw.Container(
-              height: 70,
+              height: 50,
               width: 70,
               child: pw.BarcodeWidget(
                 barcode: pw.Barcode.qrCode(),
@@ -367,12 +372,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               ),
             ),
           ],
-        ),
-        pw.Container(
-          height: 20,
-          width: 100,
-          child: pw.Text("VERBAL CHECK",
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
         ),
         pw.Container(
           // pw.padding: const EdgeInsets.all(9),
@@ -560,7 +559,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("Bank Officer ",
                             style: const pw.TextStyle(fontSize: 12)),
-                        height: 25,
+                        height: 30,
                         //color: Colors.blue,
                       ),
                     ),
@@ -572,7 +571,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text("${data_pdf.elementAt(i).bankAcronym}",
                             style: const pw.TextStyle(fontSize: 12)),
-                        height: 25,
+                        height: 30,
                         //color: Colors.blue,
                       ),
                     ),
@@ -585,7 +584,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         child: pw.Text(
                             "Contact No : ${data_pdf.elementAt(i).bankcontact.toString()}",
                             style: const pw.TextStyle(fontSize: 12)),
-                        height: 25,
+                        height: 30,
                         //color: Colors.blue,
                       ),
                     ),
@@ -654,11 +653,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                   children: [
                     pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
                         style: const pw.TextStyle(fontSize: 12)),
-                    pw.SizedBox(
-                      height: 30,
-                      width: 30,
-                      // child: ,
-                    )
+                    pw.Container(
+                      height: 110,
+                      child: pw.Image(
+                          pw.MemoryImage(
+                            byteList_image,
+                          ),
+                          fit: pw.BoxFit.fill),
+                    ),
                   ],
                 ),
               ),
@@ -771,7 +773,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                                 child: pw.Text(
                                     land[index]["verbal_land_type"] ?? "N/A",
                                     style: pw.TextStyle(
-                                        fontSize: 11,
+                                        fontSize: 10,
                                         fontWeight: pw.FontWeight.bold)),
                                 height: 25,
                                 //color: Colors.blue,
@@ -1075,7 +1077,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               style: pw.TextStyle(
                   color: PdfColors.blue,
                   fontWeight: pw.FontWeight.bold,
-                  fontSize: 16)),
+                  fontSize: 12)),
         ]),
         pw.Row(
           children: [
@@ -1118,20 +1120,22 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     return pdf.save();
   }
 
-  void generatePdf(int i, String fsv) async {
+  void generatePdf(int i, String fsv) {
     const title = 'Flutter Demo';
-
     Land(data_pdf.elementAt(i).verbalId.toString(),
         data_pdf[i].verbalCon.toString());
-
     Future.delayed(
       const Duration(seconds: 2),
       () => Printing.layoutPdf(
           onLayout: (format) => _generatePdf(format, i, fsv)),
     );
+    setState(() {
+      // land = [];
+      // data_pdf = [];
+    });
   }
 
-  Future Land(String i, String fsv) async {
+  void Land(String i, String fsv) async {
     double x = 0, n = 0;
     var jsonData;
     var rs = await http.get(Uri.parse(
@@ -1179,28 +1183,36 @@ class _OnMapState extends State<OnMap> {
   static const LatLng showLocation = LatLng(27.7089427, 85.3086209);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          GoogleMap(
-            //Map widget from google_maps_flutter package
-            zoomGesturesEnabled: true, //enable Zoom in, out on map
-            initialCameraPosition: const CameraPosition(
-              //innital position in map
-              target: showLocation, //initial position
-              zoom: 15.0, //initial zoom level
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 500,
+              child: GoogleMap(
+                //Map widget from google_maps_flutter package
+                zoomGesturesEnabled: true, //enable Zoom in, out on map
+                initialCameraPosition: const CameraPosition(
+                  //innital position in map
+                  target: showLocation, //initial position
+                  zoom: 15.0, //initial zoom level
+                ),
+                markers: getmarkers(), //markers to show on map
+                mapType: MapType.hybrid, //map type
+                onMapCreated: (controller) {
+                  //method called when map is created
+                  setState(() {
+                    mapController = controller;
+                  });
+                },
+              ),
             ),
-            markers: getmarkers(), //markers to show on map
-            mapType: MapType.normal, //map type
-            onMapCreated: (controller) {
-              //method called when map is created
-              setState(() {
-                mapController = controller;
-              });
-            },
-          ),
-          TextButton(onPressed: () {}, child: const Text("submit"))
-        ],
+            Container(
+              height: 200,
+              child: TextButton(onPressed: () {}, child: const Text("submit")),
+            ),
+          ],
+        ),
       ),
     );
   }

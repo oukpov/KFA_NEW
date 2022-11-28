@@ -110,11 +110,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Center(child: Text("GoogleMap")),
         elevation: 0.0,
+        backgroundColor: kPrimaryColor,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.find_replace_outlined),
             color: kwhite,
-            //style: IconButton.styleFrom(backgroundColor: kImageColor),
+            //key: IconButton.styleFrom(backgroundColor: kImageColor),
             //onPressed: () => Show(),
             onPressed: () {
               Clear();
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            //onPressed: () => Show(),
+            //onPressed: () => Show(),S
             onPressed: () {
               // Navigator.pushReplacement(
               //   context,
@@ -135,10 +136,13 @@ class _HomePageState extends State<HomePage> {
               //     ),
               //   ),
               // );
+
               data = [
                 {
                   'adding_price': adding_price,
                   'address': sendAddrress,
+                  'lat': requestModel.lat,
+                  'lng': requestModel.lng
                 }
               ];
               Navigator.pop(context, data);
@@ -146,6 +150,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      backgroundColor: kPrimaryColor,
       body: Material(
         child: Stack(
           alignment: Alignment.topCenter,
@@ -224,13 +229,13 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(height: 36.0),
-          RoadDropdown(
-            onChanged: (value) {
-              // requestModel.comparable_road = value;
-              //  print(requestModel.comparable_road);
-            },
-          ),
-          SizedBox(height: 10.0),
+          // RoadDropdown(
+          //   onChanged: (value) {
+          //     // requestModel.comparable_road = value;
+          //     //  print(requestModel.comparable_road);
+          //   },
+          // ),
+          // SizedBox(height: 10.0),
           ToFromDate(
             fromDate: (value) {
               requestModel.fromDate = value;
@@ -288,7 +293,7 @@ class _HomePageState extends State<HomePage> {
             target: LatLng(latitude, longitude), //initial position
             zoom: 10.0, //initial zoom level
           ),
-          mapType: MapType.hybrid, //map type
+          mapType: MapType.normal, //map type
           onMapCreated: (controller) {
             //method called when map is created
             setState(() {
@@ -355,8 +360,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> Show(SearchRequestModel requestModel) async {
-    // var rs = await http
-    //     .get(Uri.parse('https://kfahrm.cc/laravel/public/api/comparable/list?page=100'));
     setState(() {
       isApiCallProcess = true;
     });
@@ -371,29 +374,9 @@ class _HomePageState extends State<HomePage> {
       var jsonData = jsonDecode(rs.body);
       setState(() {
         list = jsonData['autoverbal'];
-        print(list);
-        //  print(requestModel.comparable_road);
-        print(requestModel.distance);
-        print(requestModel.fromDate);
-        print(requestModel.land_max);
-        print(requestModel.land_min);
-        print(requestModel.lat);
-        print(requestModel.lng);
-        print(requestModel.num);
-        print(requestModel.property_type_id);
-        print(requestModel.toDate);
       });
     }
-
-    print(list.length);
-
     Map map = list.asMap();
-    // List list = [
-    //   {"title": "one", "id": "1", "lat": 11.489, "lon": 105.9214},
-    //   {"title": "two", "id": "2", "lat": 11.5, "lon": 104.9314},
-    //   {"title": "three", "id": "3", "lat": 11.6, "lon": 104.9414},
-    // ];
-    print(map);
     if (requestModel.lat.isEmpty || requestModel.lng.isEmpty) {
       setState(() {
         isApiCallProcess = false;
@@ -427,9 +410,7 @@ class _HomePageState extends State<HomePage> {
         ).show();
       } else {
         adding_price = 0;
-        for (var i = 0; i < map.length; i++)
-        // ignore: curly_braces_in_flow_control_structures
-        {
+        for (var i = 0; i < map.length; i++) {
           print("Index $i");
           if (map[i]['comparable_adding_price'] == '') {
             map[i]['comparable_adding_price'] = '0';
@@ -448,7 +429,6 @@ class _HomePageState extends State<HomePage> {
                 (double.parse(map[i]['comparable_adding_price'])) / map.length;
             print(map[i]['comparable_adding_price']);
           }
-          //  print(adding_price);
           MarkerId markerId = MarkerId('$i');
           listMarkerIds.add(markerId);
           Marker marker = Marker(

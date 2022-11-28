@@ -1,45 +1,48 @@
 // ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names
 
 import 'dart:convert';
-import 'package:admin/Customs/form.dart';
+
 import 'package:admin/Customs/formTwinN.dart';
-import 'package:admin/components/ApprovebyAndVerifyby.dart';
-import 'package:admin/components/FileOpen.dart';
-import 'package:admin/components/LandBuilding.dart';
+import 'package:admin/Customs/responsive.dart';
+import 'package:admin/components/code.dart';
 import 'package:admin/components/comment.dart';
-import 'package:admin/components/contants.dart';
-import 'package:admin/components/date.dart';
 import 'package:admin/components/forceSale.dart';
-import 'package:admin/components/imageOpen.dart';
-import 'package:admin/components/slideUp.dart';
-import 'package:admin/device/mobile/AutoVerbal/check.dart';
-import 'package:admin/device/mobile/AutoVerbal/property.dart';
-import 'package:admin/model/models/autoVerbal.dart';
-import 'package:admin/respon.dart';
 import 'package:admin/server/api_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/button/gf_button.dart';
-import 'package:http/http.dart' as http;
+
+import '../../../components/ApprovebyAndVerifyby.dart';
+import '../../../components/FileOpen.dart';
+import '../../../components/LandBuilding.dart';
+import '../../../components/bank.dart';
+import '../../../components/date.dart';
+import '../../../components/imageOpen.dart';
+import '../../../components/property.dart';
+import '../../../components/slideUp.dart';
+import '../../../contants.dart';
+import '../../../customs/form.dart';
+import '../../../model/models/autoVerbal.dart';
 
 class Add extends StatefulWidget {
-  const Add({super.key});
-
+  const Add({super.key, required this.id});
+  final String id;
   @override
   State<Add> createState() => _AddState();
 }
 
 class _AddState extends State<Add> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  APIservice apIservice = APIservice();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  String fromValue = 'Bank';
+  String genderValue = 'Female';
   int opt = 0;
-  static double asking_price = 1;
+  double asking_price = 1;
   String address = '';
   String propertyType = '', propertyTypeValue = '';
+  var code = 0;
   TextEditingController dateinput = TextEditingController();
   late AutoVerbalRequestModel requestModelAuto;
-  String userID = '17';
-  var code;
   var from = [
     'Bank',
     'Private',
@@ -50,43 +53,19 @@ class _AddState extends State<Add> {
     'Male',
     'Other',
   ];
-  var _list = [];
-  List<dynamic> _branch = [];
-  static String bankvalue = "6480";
-  static String branchvalue = "";
-  var bank = [
-    'Bank',
-    'Private',
-    'Other',
-  ];
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("USA"), value: "USA"),
-      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
-      DropdownMenuItem(child: Text("England"), value: "England"),
-    ];
-    return menuItems;
-  }
 
   @override
   void initState() {
-    asking_price;
-    bankvalue = "";
-    // ignore: unnecessary_new
-    Load();
-    branch(bankvalue);
-    _list;
-    _branch;
     super.initState();
+
     requestModelAuto = AutoVerbalRequestModel(
-      property_type_id: "12",
-      lat: "105.1899",
-      lng: "11.5323",
-      address: "null",
-      approve_id: "null", agent: "null",
-      bank_branch_id: "6467",
-      bank_contact: "null",
+      property_type_id: "",
+      lat: "",
+      lng: "",
+      address: '',
+      approve_id: "", agent: "",
+      bank_branch_id: "",
+      bank_contact: "",
       bank_id: "",
       bank_officer: "",
       code: "",
@@ -116,15 +95,15 @@ class _AddState extends State<Add> {
           IconButton(
             icon: const Icon(Icons.save),
             color: kwhite,
-            //style: IconButton.styleFrom(backgroundColor: kImageColor),
+            // style: IconButton.styleFrom(backgroundColor: kImageColor),
             onPressed: () {
-              setState(() {
-                requestModelAuto.user = "17";
-                print(requestModelAuto.user);
+              requestModelAuto.user = "17";
+              if (validateAndSave()) {
                 APIservice apIservice = APIservice();
                 apIservice.saveAutoVerbal(requestModelAuto).then(
                   (value) {
-                    // print('Error');
+                    print('Error');
+                    print(json.encode(requestModelAuto.toJson()));
                     if (requestModelAuto.verbal.isEmpty) {
                       AwesomeDialog(
                         context: context,
@@ -165,9 +144,10 @@ class _AddState extends State<Add> {
                         print(value.message);
                       }
                     }
+                    ;
                   },
                 );
-              });
+              }
             },
           ),
         ],
@@ -262,11 +242,9 @@ class _AddState extends State<Add> {
                     code = value;
                   },
                 ),
-                // dropdown(),
-                // PropertyDropdown(
-                //   id: (value) {},
-                //   name: (value) {},
-                // ),
+                // ignore: sized_box_for_whitespace
+                //dropdown(),
+                // PropertyDropdown(),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -278,175 +256,17 @@ class _AddState extends State<Add> {
                     requestModelAuto.property_type_id = value;
                   },
                 ),
-                // SizedBox(
-                //   height: 10.0,
-                // ),
-                // BankDropdown(),
-                Container(
-                  height: 70,
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: DropdownButtonFormField<String>(
-                    isExpanded: true,
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.65,
-                    onChanged: (newValue) {
-                      setState(() {
-                        bankvalue = newValue!;
-                        // ignore: avoid_print
-                        setState(() {
-                          branch(bankvalue);
-                          requestModelAuto.bank_id = bankvalue;
-                        });
-                        print(bankvalue);
-                        print("Value of bank  ${newValue}");
-                      });
-                    },
-                    validator: (String? value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Please select bank';
-                      }
-                      return null;
-                    },
-                    items: _list
-                        .map<DropdownMenuItem<String>>(
-                          (value) => DropdownMenuItem<String>(
-                            value: value["bank_id"].toString(),
-                            child: Text(value["bank_name"]),
-                          ),
-                        )
-                        .toList(),
-                    // add extra sugar..
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: kImageColor,
-                    ),
-
-                    decoration: InputDecoration(
-                      fillColor: kwhite,
-                      filled: true,
-                      labelText: 'Bank',
-                      hintText: 'Select',
-
-                      prefixIcon: Icon(
-                        Icons.home_work,
-                        color: kImageColor,
-                        size: 20,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: kPrimaryColor, width: 2.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: kPrimaryColor,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: kerror,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 5,
-                          color: kerror,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      //   decoration: InputDecoration(
-                      //       labelText: 'From',
-                      //       prefixIcon: Icon(Icons.business_outlined)),
-                    ),
-                  ),
+                SizedBox(
+                  height: 10.0,
                 ),
-
-                ((_branch.length <= 1)
-                    ? SizedBox(
-                        height: 0.1,
-                      )
-                    : Container(
-                        height: 70,
-                        margin: EdgeInsets.only(top: 10),
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                        child: DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          // autofocus: true,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              branchvalue = newValue!;
-                              // ignore: avoid_print
-                              requestModelAuto.bank_branch_id = branchvalue;
-                              print("This id in branch ${newValue}");
-                            });
-                            ;
-                          },
-                          items: _branch
-                              .map<DropdownMenuItem<String>>(
-                                (value) => DropdownMenuItem<String>(
-                                  value: value["bank_branch_id"].toString(),
-                                  child: Text(
-                                    value["bank_branch_name"],
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        fontSize: MediaQuery.of(context)
-                                                .textScaleFactor *
-                                            14),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          // add extra sugar..
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: kImageColor,
-                          ),
-
-                          decoration: InputDecoration(
-                            fillColor: kwhite,
-                            filled: true,
-                            labelText: 'Branch',
-                            hintText: 'Select',
-
-                            prefixIcon: Icon(
-                              Icons.account_tree_rounded,
-                              color: kImageColor,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: kPrimaryColor, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kPrimaryColor,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: kerror,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 5,
-                                color: kerror,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            //   decoration: InputDecoration(
-                            //       labelText: 'From',
-                            //       prefixIcon: Icon(Icons.business_outlined)),
-                          ),
-                        ),
-                      )),
+                BankDropdown(
+                  bank: (value) {
+                    requestModelAuto.bank_id = value;
+                  },
+                  bankbranch: (value) {
+                    requestModelAuto.bank_branch_id = value;
+                  },
+                ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -462,12 +282,10 @@ class _AddState extends State<Add> {
                   icon1: Icon(
                     Icons.person,
                     color: kImageColor,
-                    size: 20,
                   ),
                   icon2: Icon(
                     Icons.phone,
                     color: kImageColor,
-                    size: 20,
                   ),
                 ),
                 SizedBox(
@@ -499,10 +317,15 @@ class _AddState extends State<Add> {
                     color: kImageColor,
                   ),
                 ),
+
                 SizedBox(
                   height: 10,
                 ),
-                ForceSaleAndValuation(),
+                ForceSaleAndValuation(
+                  value: (value) {
+                    requestModelAuto.verbal_con = value;
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -590,7 +413,6 @@ class _AddState extends State<Add> {
                   height: 10,
                 ),
                 ImageOpen(),
-                SizedBox(height: 10),
                 SizedBox(
                   height: 330,
                   child: LandBuilding(
@@ -603,75 +425,6 @@ class _AddState extends State<Add> {
                     landId: code.toString(),
                   ),
                 ),
-                SizedBox(height: 10),
-                // GFButton(
-                //   text: "Submit",
-                //   onPressed: () {
-                //     setState(() {
-                //       print("\nkokasd\n");
-                //       requestModelAuto.user = userID.toString();
-                //       if (validateAndSave()) {
-                //         apIservice.saveAutoVerbal(requestModelAuto).then(
-                //           (value) {
-                //             print('Error');
-                //             print(json.encode(requestModelAuto.toJson()));
-                //             if (requestModelAuto.verbal.isEmpty) {
-                //               AwesomeDialog(
-                //                 context: context,
-                //                 dialogType: DialogType.error,
-                //                 animType: AnimType.rightSlide,
-                //                 headerAnimationLoop: false,
-                //                 title: 'Error',
-                //                 desc: "Please add Land/Building at least 1!",
-                //                 btnOkOnPress: () {},
-                //                 btnOkIcon: Icons.cancel,
-                //                 btnOkColor: Colors.red,
-                //               ).show();
-                //             } else {
-                //               if (value.message == "Save Successfully") {
-                //                 AwesomeDialog(
-                //                     context: context,
-                //                     animType: AnimType.leftSlide,
-                //                     headerAnimationLoop: false,
-                //                     dialogType: DialogType.success,
-                //                     showCloseIcon: false,
-                //                     title: value.message,
-                //                     autoHide: Duration(seconds: 3),
-                //                     onDismissCallback: (type) {
-                //                       Navigator.pop(context);
-                //                     }).show();
-                //               } else {
-                //                 AwesomeDialog(
-                //                   context: context,
-                //                   dialogType: DialogType.error,
-                //                   animType: AnimType.rightSlide,
-                //                   headerAnimationLoop: false,
-                //                   title: 'Error',
-                //                   desc: value.message,
-                //                   btnOkOnPress: () {},
-                //                   btnOkIcon: Icons.cancel,
-                //                   btnOkColor: Colors.red,
-                //                 ).show();
-                //                 print(value.message);
-                //               }
-                //             }
-                //           },
-                //         );
-                //       }
-                //     });
-                //   },
-                // ),
-                // TextButton(
-                //     onPressed: () {
-                //       // APIservice apIservice = APIservice();
-                //       // apIservice.saveAutoVerbal(requestModelAuto).then(
-                //       //   (value) {
-                //       print(requestModelVerbal.toJson());
-                //       print(requestModelAuto.toJson());
-                //       //   },
-                //       // );
-                //     },
-                //     child: Text('test')),
               ],
             ),
           ),
@@ -687,39 +440,9 @@ class _AddState extends State<Add> {
     );
     if (!mounted) return;
     asking_price = result[0]['adding_price'];
-    print("\nasking_price = ${asking_price}\n");
     address = result[0]['address'];
     requestModelAuto.lat = result[0]['lat'];
     requestModelAuto.lng = result[0]['lng'];
-  }
-
-  void Load() async {
-    setState(() {});
-    var rs =
-        await http.get(Uri.parse('https://kfahrm.cc/Laravel/public/api/bank'));
-    if (rs.statusCode == 200) {
-      var jsonData = jsonDecode(rs.body);
-      // print(jsonData);
-      // print(jsonData);
-
-      setState(() {
-        _list = jsonData['banks'];
-        print(_list[0]);
-      });
-    }
-  }
-
-  void branch(String pm) async {
-    setState(() {});
-    var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=$pm'));
-    if (rs.statusCode == 200) {
-      var jsonData = jsonDecode(rs.body.toString());
-      // print(jsonData);
-      setState(() {
-        _branch = jsonData['bank_branches'];
-      });
-    }
   }
 
   bool validateAndSave() {

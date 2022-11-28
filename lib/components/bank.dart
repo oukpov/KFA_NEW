@@ -6,9 +6,13 @@ import 'package:flutter/material.dart';
 
 import 'contants.dart';
 
-class BankDropdown extends StatefulWidget {
-  const BankDropdown({Key? key}) : super(key: key);
+typedef OnChangeCallback = void Function(dynamic value);
 
+class BankDropdown extends StatefulWidget {
+  const BankDropdown({Key? key, required this.bank, required this.bankbranch})
+      : super(key: key);
+  final OnChangeCallback bank;
+  final OnChangeCallback bankbranch;
   @override
   State<BankDropdown> createState() => _BankDropdownState();
 }
@@ -46,7 +50,7 @@ class _BankDropdownState extends State<BankDropdown> {
                 setState(() {
                   bankvalue = newValue as String;
                   // ignore: avoid_print
-
+                  widget.bank(bankvalue);
                   branch(newValue.toString());
                   print(newValue);
                 });
@@ -63,10 +67,6 @@ class _BankDropdownState extends State<BankDropdown> {
                       value: value["bank_id"].toString(),
                       child: Text(
                         value["bank_name"],
-                        maxLines: 90,
-                        style: TextStyle(
-                            color: Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)]),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -87,7 +87,6 @@ class _BankDropdownState extends State<BankDropdown> {
                 prefixIcon: Icon(
                   Icons.home_work,
                   color: kImageColor,
-                  size: 20,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
@@ -110,7 +109,7 @@ class _BankDropdownState extends State<BankDropdown> {
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    width: 5,
+                    width: 2,
                     color: kerror,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
@@ -130,11 +129,12 @@ class _BankDropdownState extends State<BankDropdown> {
             height: 55,
             padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
             child: DropdownButtonFormField<String>(
-              isExpanded: false,
+              isExpanded: true,
 
               onChanged: (String? newValue) {
                 setState(() {
                   branchvalue = newValue!;
+                  widget.bankbranch(branchvalue);
                   // ignore: avoid_print
                   print(newValue);
                 });
@@ -208,7 +208,8 @@ class _BankDropdownState extends State<BankDropdown> {
   void branch(String value) async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=$value'));
+        'https://kfahrm.cc/Laravel/public/api/bankbranch?bank_branch_details_id=' +
+            value));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body.toString());
       // print(jsonData);

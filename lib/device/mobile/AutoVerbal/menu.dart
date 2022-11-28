@@ -7,7 +7,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class MenuAutoVerbal extends StatefulWidget {
-  const MenuAutoVerbal({super.key});
+  MenuAutoVerbal({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   State<MenuAutoVerbal> createState() => _MenuAutoVerbalState();
@@ -46,8 +47,10 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                       builder: (context) => Show_autoVerbals()));
                 }
                 if (i == 0) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Add()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Add(
+                            id: widget.id,
+                          )));
                 }
               },
               child: Container(

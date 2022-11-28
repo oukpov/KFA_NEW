@@ -3,8 +3,8 @@ import 'package:admin/device/mobile/comparable/menu.dart';
 import 'package:flutter/material.dart';
 
 class NoBodyHome extends StatefulWidget {
-  const NoBodyHome({super.key});
-
+  const NoBodyHome({Key? key, required this.id}) : super(key: key);
+  final String id;
   @override
   State<NoBodyHome> createState() => _NoBodyHomeState();
 }
@@ -53,7 +53,7 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                   }
                   if (i == 4) {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MenuAutoVerbal()));
+                        builder: (context) => MenuAutoVerbal(id: widget.id)));
                   }
                 },
                 child: Container(
