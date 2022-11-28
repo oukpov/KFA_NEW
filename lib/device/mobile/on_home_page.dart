@@ -1,4 +1,5 @@
 import 'package:admin/device/mobile/AutoVerbal/menu.dart';
+import 'package:admin/device/mobile/Customer/menu.dart';
 import 'package:admin/device/mobile/comparable/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,12 @@ class _NoBodyHomeState extends State<NoBodyHome> {
             for (int i = 0; i < 8; i++)
               InkWell(
                 onTap: () {
+                  if (i == 0) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuCostome(
+                              id: widget.id,
+                            )));
+                  }
                   if (i == 2) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MenuComparable()));
