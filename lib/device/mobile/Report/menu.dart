@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 
-class MenuCostome extends StatefulWidget {
-  MenuCostome({Key? key, required this.id}) : super(key: key);
+class MenuReport extends StatefulWidget {
+  MenuReport({Key? key, required this.id}) : super(key: key);
   final String id;
 
   @override
-  State<MenuCostome> createState() => _MenuCostomeState();
+  State<MenuReport> createState() => _MenuReportState();
 }
 
-class _MenuCostomeState extends State<MenuCostome> {
+class _MenuReportState extends State<MenuReport> {
   List<Text> option = const [
-    Text("New Costomer",
+    Text("Costomer",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("New", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("Costomer List",
+    Text("Verbal", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Comparable",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Valuation",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Property",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
-    Icon(Icons.data_saver_on),
-    Icon(Icons.data_saver_on),
-    Icon(Icons.list_alt_outlined),
+    Icon(Icons.home_repair_service),
+    Icon(Icons.home_repair_service),
+    Icon(Icons.home_repair_service),
+    Icon(Icons.home_repair_service),
+    Icon(Icons.home_repair_service),
   ];
   @override
   Widget build(BuildContext context) {

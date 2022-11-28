@@ -1,5 +1,10 @@
 import 'package:admin/device/mobile/AutoVerbal/menu.dart';
 import 'package:admin/device/mobile/Customer/menu.dart';
+import 'package:admin/device/mobile/Property/menu.dart';
+import 'package:admin/device/mobile/Report/menu.dart';
+import 'package:admin/device/mobile/User/menu.dart';
+import 'package:admin/device/mobile/Valuation/menu.dart';
+import 'package:admin/device/mobile/Verbal/menu.dart';
 import 'package:admin/device/mobile/comparable/menu.dart';
 import 'package:flutter/material.dart';
 
@@ -54,13 +59,41 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                               id: widget.id,
                             )));
                   }
+                  if (i == 1) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuValuation(id: '17')));
+                  }
                   if (i == 2) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MenuComparable()));
                   }
+                  if (i == 3) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuProperty(
+                              id: "17",
+                            )));
+                  }
                   if (i == 4) {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MenuAutoVerbal(id: widget.id)));
+                  }
+                  if (i == 5) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuVerbal(
+                              id: "17",
+                            )));
+                  }
+                  if (i == 6) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuUser(
+                              id: "17",
+                            )));
+                  }
+                  if (i == 7) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MenuReport(
+                              id: "17",
+                            )));
                   }
                 },
                 child: Container(

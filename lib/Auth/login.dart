@@ -258,7 +258,7 @@ class _LoginState extends State<Login> {
                     });
                     APIservice apIservice = APIservice();
                     apIservice.login(requestModel).then((value) {
-                      Load();
+                      Load(value.token);
                       setState(() {
                         isApiCallProcess = false;
                       });
@@ -350,13 +350,14 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void Load() async {
+  void Load(String token) async {
     setState(() {});
     var rs = await http.get(
       Uri.parse('https://kfahrm.cc/Laravel/public/api/user'),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
       },
     );
     if (rs.statusCode == 200) {
@@ -371,7 +372,7 @@ class _LoginState extends State<Login> {
         from = jsonData['known_from'];
         tel = jsonData['tel_num'];
       });
-      print(id.toString());
+      print("Id = ${id.toString()}\n\n\n\n\n\n\n\n\n\n\n\n");
     }
   }
 

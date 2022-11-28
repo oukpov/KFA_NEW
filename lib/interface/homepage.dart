@@ -58,18 +58,18 @@ class _HomePageState extends State<HomePage>
         desktop: Center(),
       ),
       On_property(),
-      On_User(),
-      // Account(
-      //   username: widget.user,
-      //   email: widget.email,
-      //   first_name: widget.first_name,
-      //   last_name: widget.last_name,
-      //   gender: widget.gender,
-      //   from: widget.from,
-      //   tel: widget.tel,
-      //   id: widget.id,
-      // ),
+      Account(
+        username: widget.user,
+        email: widget.email,
+        first_name: widget.first_name,
+        last_name: widget.last_name,
+        gender: widget.gender,
+        from: widget.from,
+        tel: widget.tel,
+        id: widget.id,
+      ),
     ];
+    print("widget id = " + widget.id);
     super.initState();
   }
 

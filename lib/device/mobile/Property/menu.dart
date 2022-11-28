@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 
-class MenuCostome extends StatefulWidget {
-  MenuCostome({Key? key, required this.id}) : super(key: key);
+class MenuProperty extends StatefulWidget {
+  MenuProperty({Key? key, required this.id}) : super(key: key);
   final String id;
 
   @override
-  State<MenuCostome> createState() => _MenuCostomeState();
+  State<MenuProperty> createState() => _MenuPropertyState();
 }
 
-class _MenuCostomeState extends State<MenuCostome> {
+class _MenuPropertyState extends State<MenuProperty> {
   List<Text> option = const [
-    Text("New Costomer",
+    Text("New Property",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("New", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("Costomer List",
+    Text("Property List",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
-    Icon(Icons.data_saver_on),
-    Icon(Icons.data_saver_on),
+    Icon(Icons.add_circle),
     Icon(Icons.list_alt_outlined),
   ];
   @override

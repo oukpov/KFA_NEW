@@ -2,14 +2,13 @@
 
 import 'dart:io';
 
-import 'package:admin/Profile/components/profile_pic.dart';
 import 'package:admin/Profile/components/singleBox.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../Account/account.dart';
 import 'FieldBox.dart';
@@ -197,13 +196,6 @@ class _PictureState extends State<Picture> {
                                   height: 40,
                                   width: 40,
                                   child: TextButton(
-                                    // padding: EdgeInsets.zero,
-                                    // shape: RoundedRectangleBorder(
-                                    //     borderRadius: BorderRadius.circular(50),
-                                    //     side: BorderSide(
-                                    //       color: kImageColor,
-                                    //     )),
-                                    // color: kImageColor,
                                     onPressed: () {
                                       showDialog(
                                           context: context,

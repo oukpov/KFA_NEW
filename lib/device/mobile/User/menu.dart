@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
-class MenuCostome extends StatefulWidget {
-  MenuCostome({Key? key, required this.id}) : super(key: key);
+class MenuUser extends StatefulWidget {
+  MenuUser({Key? key, required this.id}) : super(key: key);
   final String id;
 
   @override
-  State<MenuCostome> createState() => _MenuCostomeState();
+  State<MenuUser> createState() => _MenuUserState();
 }
 
-class _MenuCostomeState extends State<MenuCostome> {
+class _MenuUserState extends State<MenuUser> {
   List<Text> option = const [
-    Text("New Costomer",
+    Text("New User",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("New", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text("Costomer List",
+    Text("New Role",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
-    Icon(Icons.data_saver_on),
-    Icon(Icons.data_saver_on),
-    Icon(Icons.list_alt_outlined),
+    Icon(Icons.add_circle),
+    Icon(Icons.add_task),
   ];
   @override
   Widget build(BuildContext context) {
