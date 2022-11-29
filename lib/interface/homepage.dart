@@ -103,10 +103,10 @@ class _HomePageState extends State<HomePage>
                   height: 100.0,
                   // clipBehavior: Clip.antiAlias,
                   child: Text(widget.user,
-                      style: const TextStyle(
+                      style: TextStyle(
                         //color: Color.fromRGBO(169, 203, 56, 1),
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: MediaQuery.of(context).textScaleFactor * 16,
                         fontWeight: FontWeight.bold,
                       )),
                 ),
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage>
             desktop: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   child: pages[pageIndex],
                 )
               ],

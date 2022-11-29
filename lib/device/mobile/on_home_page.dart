@@ -52,6 +52,7 @@ class _NoBodyHomeState extends State<NoBodyHome> {
             // ),
             for (int i = 0; i < 8; i++)
               InkWell(
+                hoverColor: Colors.brown[100],
                 onTap: () {
                   if (i == 0) {
                     Navigator.of(context).push(MaterialPageRoute(

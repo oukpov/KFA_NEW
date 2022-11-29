@@ -4,6 +4,7 @@ import 'package:admin/Auth/register.dart';
 import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/Customs/formVLD.dart';
 import 'package:admin/Customs/responsive.dart';
+import 'package:admin/Memory/Local_data.dart';
 import 'package:admin/model/models/login_model.dart';
 import 'package:admin/server/api_service.dart';
 import 'package:flutter/gestures.dart';
@@ -45,9 +46,27 @@ class _LoginState extends State<Login> {
   late String gender = "";
   late String from = "";
   late String tel = "";
+  static List<PeopleModel> list = [];
+  static bool status = false;
+  selectPeople() async {
+    list = await PeopleController().selectPeople();
+    if (list.isEmpty) {
+      setState(() {
+        status = false;
+      });
+    } else {
+      setState(() {
+        status = true;
+      });
+    }
+    print(status);
+  }
 
   @override
   void initState() {
+    list;
+    selectPeople();
+
     super.initState();
     requestModel = LoginRequestModel(email: "", password: "");
   }
@@ -170,12 +189,60 @@ class _LoginState extends State<Login> {
             SizedBox(
               height: 30.0,
             ),
-            FormValidate(
-              label: 'Email',
-              onSaved: (input) => requestModel.email = input!,
-              iconname: Icon(
-                Icons.email,
-                color: kImageColor,
+            // FormValidate(
+            //   label: 'Email',
+            //   onSaved: (input) => requestModel.email = input!,
+            //   iconname: Icon(
+            //     Icons.email,
+            //     color: kImageColor,
+            //   ),
+            // ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+              child: TextFormField(
+                // controller: Email,
+                onSaved: (input) => requestModel.email = input!,
+                decoration: InputDecoration(
+                  fillColor: Color.fromARGB(255, 255, 255, 255),
+                  filled: true,
+                  labelText: 'Email',
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: kImageColor,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: Color.fromRGBO(0, 126, 250, 1), width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Color.fromRGBO(0, 126, 250, 1),
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Color.fromARGB(255, 249, 0, 0),
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Color.fromARGB(255, 249, 0, 0),
+                    ),
+                    //  borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                validator: (input) {
+                  if (input == null || input.isEmpty) {
+                    return 'require *';
+                  }
+                  return null;
+                },
               ),
             ),
             SizedBox(
@@ -185,6 +252,8 @@ class _LoginState extends State<Login> {
               //   height: 55,
               padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: TextFormField(
+                // controller: password,
+                // initialValue: "list[0].password",
                 onSaved: (input) => requestModel.password = input!,
                 obscureText: _isObscure,
                 decoration: InputDecoration(
@@ -297,10 +366,12 @@ class _LoginState extends State<Login> {
                             // );
                           },
                         ).show();
-                        // Navigator.pushReplacement(context,
-                        //     MaterialPageRoute(builder: (context) => Add()));
-                        // ignore: avoid_print
-                        // print(value.message);
+                        // var people = PeopleModel(
+                        //   id: 0,
+                        //   name: Email.text,
+                        //   password: password.text,
+                        // );
+                        // PeopleController().insertPeople(people);
                       } else {
                         AwesomeDialog(
                           context: context,
