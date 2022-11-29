@@ -290,17 +290,8 @@ class _AccountState extends State<Account> {
                     ),
                   ],
                 ),
-
-                // Column(
-                //   children: [
-
-                //   ],
-                // ),
               ],
-            )
-
-            // ignore: deprecated_member_use
-            ),
+            )),
       ),
     );
   }
@@ -339,7 +330,7 @@ class EditPicture extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Colors.black),
-              )
+              ),
             ],
           ),
         ),
@@ -347,7 +338,3 @@ class EditPicture extends StatelessWidget {
     );
   }
 }
-
-// UpdateUserInfo()async{
-//   var username =
-// }

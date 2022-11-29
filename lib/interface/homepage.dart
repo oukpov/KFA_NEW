@@ -41,21 +41,13 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final _advancedDrawerController = AdvancedDrawerController();
   static int pageIndex = 0;
-  List pages = [
-    // const Page3(),
-    // const Page4(),
-  ];
+  List pages = [];
   @override
   void initState() {
     // TODO: implement initState
     pages = [
-      Responsive(
-        phone: OnBody_Home(),
-        mobile: NoBodyHome(
-          id: widget.id,
-        ),
-        tablet: Center(),
-        desktop: Center(),
+      NoBodyHome(
+        id: widget.id,
       ),
       On_property(),
       Account(
@@ -174,7 +166,35 @@ class _HomePageState extends State<HomePage>
             ],
           ),
         ),
-        body: pages[pageIndex],
+        body: SingleChildScrollView(
+          child: Responsive(
+            mobile: pages[pageIndex],
+            tablet: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 500,
+                        child: pages[pageIndex],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            desktop: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: pages[pageIndex],
+                )
+              ],
+            ),
+            phone: pages[pageIndex],
+          ),
+        ),
         bottomNavigationBar: buildMyNavBar(context),
       ),
     );
