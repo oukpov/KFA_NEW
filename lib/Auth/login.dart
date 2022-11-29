@@ -48,25 +48,15 @@ class _LoginState extends State<Login> {
   late String tel = "";
   static List<PeopleModel> list = [];
   static bool status = false;
-  selectPeople() async {
-    list = await PeopleController().selectPeople();
-    if (list.isEmpty) {
-      setState(() {
-        status = false;
-      });
-    } else {
-      setState(() {
-        status = true;
-      });
-    }
-    print(status);
-  }
-
+  PeopleModel? peopleModel;
+  late TextEditingController Email;
+  late TextEditingController Password;
   @override
   void initState() {
+    status;
     list;
-    selectPeople();
-
+    Email = TextEditingController(text: peopleModel!.name);
+    Password = TextEditingController(text: peopleModel!.password);
     super.initState();
     requestModel = LoginRequestModel(email: "", password: "");
   }
@@ -197,120 +187,9 @@ class _LoginState extends State<Login> {
             //     color: kImageColor,
             //   ),
             // ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: TextFormField(
-                // controller: Email,
-                onSaved: (input) => requestModel.email = input!,
-                decoration: InputDecoration(
-                  fillColor: Color.fromARGB(255, 255, 255, 255),
-                  filled: true,
-                  labelText: 'Email',
-                  prefixIcon: Icon(
-                    Icons.email,
-                    color: kImageColor,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromRGBO(0, 126, 250, 1), width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(0, 126, 250, 1),
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: Color.fromARGB(255, 249, 0, 0),
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: Color.fromARGB(255, 249, 0, 0),
-                    ),
-                    //  borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                validator: (input) {
-                  if (input == null || input.isEmpty) {
-                    return 'require *';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              //   height: 55,
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: TextFormField(
-                // controller: password,
-                // initialValue: "list[0].password",
-                onSaved: (input) => requestModel.password = input!,
-                obscureText: _isObscure,
-                decoration: InputDecoration(
-                  fillColor: kwhite,
-                  filled: true,
-                  labelText: 'Enter password',
-                  prefixIcon: Icon(
-                    Icons.key,
-                    color: kImageColor,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      color: kImageColor,
-                      _isObscure ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isObscure = !_isObscure;
-                      });
-                    },
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: kPrimaryColor, width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: kerror,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2,
-                      color: kerror,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1,
-                      color: kPrimaryColor,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                validator: (input) {
-                  if (input == null || input.isEmpty) {
-                    return 'require *';
-                  }
-                  return null;
-                },
-              ),
-            ),
 
+            ((status == false) ? input(context) : Output(context)),
+            // input(context),
             SizedBox(
               height: 10.0,
             ),
@@ -356,22 +235,8 @@ class _LoginState extends State<Login> {
                                     id: id.toString(),
                                   ),
                                 ));
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => Add(
-                            //       id: id,
-                            //     ),
-                            //   ),
-                            // );
                           },
                         ).show();
-                        // var people = PeopleModel(
-                        //   id: 0,
-                        //   name: Email.text,
-                        //   password: password.text,
-                        // );
-                        // PeopleController().insertPeople(people);
                       } else {
                         AwesomeDialog(
                           context: context,
@@ -389,6 +254,12 @@ class _LoginState extends State<Login> {
                     });
                     // ignore: avoid_print
                     print(requestModel.toJson());
+                    var people = PeopleModel(
+                      id: 0,
+                      name: requestModel.email,
+                      password: requestModel.password,
+                    );
+                    PeopleController().insertPeople(people);
                   }
                 },
               ),
@@ -454,5 +325,243 @@ class _LoginState extends State<Login> {
       return true;
     }
     return false;
+  }
+
+  Widget input(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: TextFormField(
+            // controller: Email,
+            onSaved: (input) => requestModel.email = input!,
+            decoration: InputDecoration(
+              fillColor: Color.fromARGB(255, 255, 255, 255),
+              filled: true,
+              labelText: 'Email',
+              prefixIcon: Icon(
+                Icons.email,
+                color: kImageColor,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: Color.fromRGBO(0, 126, 250, 1), width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromRGBO(0, 126, 250, 1),
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromARGB(255, 249, 0, 0),
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromARGB(255, 249, 0, 0),
+                ),
+                //  borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            validator: (input) {
+              if (input == null || input.isEmpty) {
+                return 'require *';
+              }
+              return null;
+            },
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          //   height: 55,
+          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: TextFormField(
+            // controller: password,
+            // initialValue: "list[0].password",
+            onSaved: (input) => requestModel.password = input!,
+            obscureText: _isObscure,
+            decoration: InputDecoration(
+              fillColor: kwhite,
+              filled: true,
+              labelText: 'Enter password',
+              prefixIcon: Icon(
+                Icons.key,
+                color: kImageColor,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  color: kImageColor,
+                  _isObscure ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: kerror,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 2,
+                  color: kerror,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: kPrimaryColor,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            validator: (input) {
+              if (input == null || input.isEmpty) {
+                return 'require *';
+              }
+              return null;
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget Output(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: TextFormField(
+            controller: Email,
+            onSaved: (input) => requestModel.email = input!,
+            decoration: InputDecoration(
+              fillColor: Color.fromARGB(255, 255, 255, 255),
+              filled: true,
+              labelText: 'Email',
+              prefixIcon: Icon(
+                Icons.email,
+                color: kImageColor,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: Color.fromRGBO(0, 126, 250, 1), width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromRGBO(0, 126, 250, 1),
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromARGB(255, 249, 0, 0),
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color.fromARGB(255, 249, 0, 0),
+                ),
+                //  borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            validator: (input) {
+              if (input == null || input.isEmpty) {
+                return 'require *';
+              }
+              return null;
+            },
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          //   height: 55,
+          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: TextFormField(
+            controller: Password,
+            // initialValue: "list[0].password",
+            onSaved: (input) => requestModel.password = input!,
+            obscureText: _isObscure,
+            decoration: InputDecoration(
+              fillColor: kwhite,
+              filled: true,
+              labelText: 'Enter password',
+              prefixIcon: Icon(
+                Icons.key,
+                color: kImageColor,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  color: kImageColor,
+                  _isObscure ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                  });
+                },
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: kerror,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 2,
+                  color: kerror,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: kPrimaryColor,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            validator: (input) {
+              if (input == null || input.isEmpty) {
+                return 'require *';
+              }
+              return null;
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

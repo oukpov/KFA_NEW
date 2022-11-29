@@ -1,3 +1,4 @@
+import 'package:admin/Memory/Local_data.dart';
 import 'package:admin/device/mobile/AutoVerbal/menu.dart';
 import 'package:admin/device/mobile/Customer/menu.dart';
 import 'package:admin/device/mobile/Property/menu.dart';
@@ -91,10 +92,12 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                             )));
                   }
                   if (i == 7) {
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => MenuReport(
+                    //           id: "17",
+                    //         )));
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MenuReport(
-                              id: "17",
-                            )));
+                        builder: (context) => ShowPeoplePage()));
                   }
                 },
                 child: Container(

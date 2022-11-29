@@ -107,7 +107,7 @@ class ConnectionDb {
   // Create a Database
   setDatabase() async {
     var directory = await getApplicationDocumentsDirectory();
-    var path = join(directory.path, 'db_name');
+    var path = join(directory.path, 'kfa_project');
     var database =
         await openDatabase(path, version: 1, onCreate: _onCreateDatabase);
     return database;
@@ -116,7 +116,86 @@ class ConnectionDb {
 // Create a Table of database
   _onCreateDatabase(Database database, int version) async {
     await database.execute(
-      'CREATE TABLE tbPeople(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, gender TEXT,address TEXT)',
+      'CREATE TABLE tbPeople(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, password TEXT)',
+    );
+  }
+}
+
+class ShowPeoplePage extends StatefulWidget {
+  const ShowPeoplePage({Key? key}) : super(key: key);
+
+  @override
+  State<ShowPeoplePage> createState() => _ShowPeoplePageState();
+}
+
+class _ShowPeoplePageState extends State<ShowPeoplePage> {
+  @override
+  void initState() {
+    super.initState();
+    selectPeople();
+  }
+
+  List<PeopleModel> list = [];
+  bool status = false;
+
+  selectPeople() async {
+    list = await PeopleController().selectPeople();
+    if (list.isEmpty) {
+      setState(() {
+        status = false;
+      });
+    } else {
+      setState(() {
+        status = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('List People'),
+      ),
+      body: Visibility(
+        visible: true,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            var data = list[index];
+            return Card(
+              child: ListTile(
+                onTap: () {
+                  PeopleController().deletePeople(data.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ShowPeoplePage()),
+                  );
+                  debugPrint('People deleted');
+                },
+                leading: CircleAvatar(
+                  child: Text(data.id.toString()),
+                ),
+                title: Text(data.name),
+                subtitle: Text(data.password),
+                // trailing: Text(data.gender),
+              ),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (_) => CreatePeoplePage()),
+          // );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
