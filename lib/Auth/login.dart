@@ -51,12 +51,31 @@ class _LoginState extends State<Login> {
   PeopleModel? peopleModel;
   late TextEditingController Email;
   late TextEditingController Password;
+  selectPeople() async {
+    list = await PeopleController().selectPeople();
+    if (list.isEmpty) {
+      setState(() {
+        status = false;
+        // print(list[0].name.toString());
+        // print("asfdsdfsdfsdsfdsfd");
+        // Email = TextEditingController(text: list[0].name);
+        // Password = TextEditingController(text: list[0].password);
+      });
+    } else {
+      setState(() {
+        status = true;
+        Email = TextEditingController(text: list[0].name);
+        Password = TextEditingController(text: list[0].password);
+      });
+    }
+  }
+
   @override
   void initState() {
+    selectPeople();
     status;
     list;
-    Email = TextEditingController(text: peopleModel!.name);
-    Password = TextEditingController(text: peopleModel!.password);
+
     super.initState();
     requestModel = LoginRequestModel(email: "", password: "");
   }
@@ -254,6 +273,19 @@ class _LoginState extends State<Login> {
                     });
                     // ignore: avoid_print
                     print(requestModel.toJson());
+                  }
+                  if (list.length > 0) {
+                    if (list.elementAt(0).name.toString() !=
+                        requestModel.email) {
+                      var people = PeopleModel(
+                        id: 0,
+                        name: requestModel.email,
+                        password: requestModel.password,
+                      );
+                      PeopleController().insertPeople(people);
+                    }
+                  }
+                  if (list.length <= 0) {
                     var people = PeopleModel(
                       id: 0,
                       name: requestModel.email,

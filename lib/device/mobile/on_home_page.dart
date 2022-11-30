@@ -1,4 +1,5 @@
 import 'package:admin/Memory/Local_data.dart';
+import 'package:admin/components/Google_Map.dart';
 import 'package:admin/device/mobile/AutoVerbal/menu.dart';
 import 'package:admin/device/mobile/Customer/menu.dart';
 import 'package:admin/device/mobile/Property/menu.dart';
@@ -7,6 +8,7 @@ import 'package:admin/device/mobile/User/menu.dart';
 import 'package:admin/device/mobile/Valuation/menu.dart';
 import 'package:admin/device/mobile/Verbal/menu.dart';
 import 'package:admin/device/mobile/comparable/menu.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class NoBodyHome extends StatefulWidget {
@@ -96,8 +98,18 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                     //     builder: (context) => MenuReport(
                     //           id: "17",
                     //         )));
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ShowPeoplePage()));
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.leftSlide,
+                      headerAnimationLoop: false,
+                      dialogType: DialogType.success,
+                      showCloseIcon: false,
+                      title: "value.message",
+                      autoHide: Duration(seconds: 3),
+                      onDismissCallback: (type) {},
+                    ).show();
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Google_Map()));
                   }
                 },
                 child: Container(

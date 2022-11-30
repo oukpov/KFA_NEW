@@ -113,16 +113,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: kPrimaryColor,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.find_replace_outlined),
-            color: kwhite,
-            //key: IconButton.styleFrom(backgroundColor: kImageColor),
-            //onPressed: () => Show(),
-            onPressed: () {
-              Clear();
-              Show(requestModel);
-            },
-          ),
-          IconButton(
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
@@ -524,7 +514,7 @@ class _HomePageState extends State<HomePage> {
       sendAddrress = message;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text("koko ${message}"),
         ),
       );
     } catch (e) {
