@@ -12,6 +12,8 @@ import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_arc_speed_dial/flutter_speed_dial_menu_button.dart';
+import 'package:flutter_arc_speed_dial/main_menu_floating_action_button.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -215,7 +217,6 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Positioned(
               child: Align(
-                alignment: Alignment.topCenter,
                 child: SearchLocation(
                   apiKey:
                       'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
@@ -228,25 +229,23 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SlidingUpPanel(
-              maxHeight: _panelHeightOpen,
-              minHeight: _panelHeightClosed,
-              parallaxEnabled: true,
-              body: MapShow(),
-              parallaxOffset: .5,
-              panelBuilder: (ScrollController sc) => _panel(sc),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(18.0),
-                  topRight: Radius.circular(18.0)),
-              onPanelSlide: (double pos) => setState(() {}),
-            ),
+            MapShow(),
+            // SlidingUpPanel(
+            //   maxHeight: _panelHeightOpen,
+            //   minHeight: _panelHeightClosed,
+            //   parallaxEnabled: true,
+            //   body: MapShow(),
+            //   parallaxOffset: .5,
+            //   panelBuilder: (ScrollController sc) => _panel(sc),
+            //   borderRadius: BorderRadius.only(
+            //       topLeft: Radius.circular(18.0),
+            //       topRight: Radius.circular(18.0)),
+            //   onPanelSlide: (double pos) => setState(() {}),
+            // ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.face),
-      ),
+      floatingActionButton: _getFloatingActionButton(),
     );
   }
 
@@ -362,48 +361,57 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(height: isNeedPadding ? bottomOffset : hiddenKeyboard);
   }
 
+  List<MapType> style_map = [
+    MapType.hybrid,
+    MapType.normal,
+  ];
+  int index = 0;
   Stack MapShow() {
     return Stack(
       children: [
-        GoogleMap(
-          // markers: getmarkers(),
-          markers:
-              ((num.isOdd) ? Set<Marker>.of(markers.values) : getmarkers()),
-          //Map widget from google_maps_flutter package
-          zoomGesturesEnabled: true, //enable Zoom in, out on map
-          initialCameraPosition: CameraPosition(
-            //innital position in map
-            target: LatLng(latitude, longitude), //initial position
-            zoom: 10.0, //initial zoom level
-          ),
-          mapType: MapType.hybrid, //map type
-          onMapCreated: (controller) {
-            //method called when map is created
-            setState(() {
-              mapController = controller;
-            });
-          },
-          onTap: (argument) {
-            MarkerId markerId = MarkerId('mark');
-            listMarkerIds.add(markerId);
-            Marker marker = Marker(
-              markerId: MarkerId('mark'),
-              position: argument,
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed),
-            );
-            setState(() {
-              num = num + 1;
-              markers[markerId] = marker;
-              requestModel.lat = argument.latitude.toString();
-              requestModel.lng = argument.longitude.toString();
-              getAddress(argument);
-            });
-          },
-          onCameraMove: (CameraPosition cameraPositiona) {
-            cameraPosition = cameraPositiona; //when map is dragging
-          },
-        ),
+        (lat != null)
+            ? GoogleMap(
+                // markers: getmarkers(),
+                markers:
+                    ((num > 0) ? Set<Marker>.of(markers.values) : getmarkers()),
+                //Map widget from google_maps_flutter package
+                zoomGesturesEnabled: true, //enable Zoom in, out on map
+                initialCameraPosition: CameraPosition(
+                  //innital position in map
+                  target: LatLng(latitude, longitude), //initial position
+                  zoom: 10.0, //initial zoom level
+                ),
+                mapType: style_map[index], //map type
+                onMapCreated: (controller) {
+                  //method called when map is created
+                  setState(() {
+                    mapController = controller;
+                  });
+                },
+                onTap: (argument) {
+                  MarkerId markerId = MarkerId('mark');
+                  listMarkerIds.add(markerId);
+                  Marker marker = Marker(
+                    markerId: MarkerId('mark'),
+                    position: argument,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
+                  );
+                  setState(() {
+                    num = num + 1;
+                    markers[markerId] = marker;
+                    requestModel.lat = argument.latitude.toString();
+                    requestModel.lng = argument.longitude.toString();
+                    getAddress(argument);
+                  });
+                },
+                onCameraMove: (CameraPosition cameraPositiona) {
+                  cameraPosition = cameraPositiona; //when map is dragging
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
         Align(
           alignment: Alignment.topCenter,
           child: SearchLocation(
@@ -643,5 +651,63 @@ class _HomePageState extends State<HomePage> {
       );
       rethrow;
     }
+  }
+
+  bool _isShowDial = false;
+  Widget _getFloatingActionButton() {
+    return SpeedDialMenuButton(
+      //if needed to close the menu after clicking sub-FAB
+      isShowSpeedDial: _isShowDial,
+      //manually open or close menu
+      updateSpeedDialStatus: (isShow) {
+        //return any open or close change within the widget
+        this._isShowDial = isShow;
+      },
+      //general init
+      isMainFABMini: false,
+      mainMenuFloatingActionButton: MainMenuFloatingActionButton(
+          mini: false,
+          child: Icon(Icons.menu),
+          onPressed: () {},
+          closeMenuChild: Icon(Icons.close),
+          closeMenuForegroundColor: Colors.white,
+          closeMenuBackgroundColor: Colors.red),
+      floatingActionButtonWidgetChildren: <FloatingActionButton>[
+        FloatingActionButton(
+          mini: true,
+          child: Icon(Icons.location_history),
+          onPressed: () {
+            //if need to close menu after click
+            _isShowDial = false;
+            setState(() {
+              num = 0;
+            });
+          },
+          backgroundColor: Colors.pink,
+        ),
+        FloatingActionButton(
+          mini: true,
+          child: Icon(Icons.photo_size_select_large),
+          onPressed: () {
+            //if need to toggle menu after click
+            _isShowDial = !_isShowDial;
+            setState(() {
+              if (index < 1) {
+                index = index + 1;
+              } else {
+                index = 0;
+              }
+            });
+          },
+          backgroundColor: Colors.orange,
+        ),
+      ],
+      isSpeedDialFABsMini: true,
+      paddingBtwSpeedDialButton: 10.0,
+    );
+  }
+
+  Widget _getBodyWidget() {
+    return Container();
   }
 }
