@@ -12,6 +12,8 @@ import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -74,9 +76,75 @@ class _HomePageState extends State<HomePage> {
   // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
   late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
   late SearchRequestModel requestModel;
+  String? _currentAddress;
+  Position? _currentPosition;
+// use for check user access to the location
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        lat = _currentPosition!.latitude;
+        log = _currentPosition!.longitude;
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future showLocation() async {}
+  dynamic lat, log;
+  final Set<Marker> marker = new Set();
+  int num = 0;
 
   @override
   void initState() {
+    _getCurrentPosition();
     getAddress(latLng);
     // ignore: unnecessary_new
     requestModel = new SearchRequestModel(
@@ -175,7 +243,31 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.face),
+      ),
     );
+  }
+
+  Set<Marker> getmarkers() {
+    //markers to place on map
+    setState(() {
+      marker.add(Marker(
+        //add second marker
+        markerId: MarkerId("showLocation.toString()"),
+        position: LatLng(lat, log), //position of marker
+        infoWindow: InfoWindow(
+          //popup info
+          title: 'Thanks for using us',
+        ),
+        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+      ));
+
+      //add more markers here
+    });
+
+    return marker;
   }
 
   Widget _panel(ScrollController sc) {
@@ -274,8 +366,9 @@ class _HomePageState extends State<HomePage> {
     return Stack(
       children: [
         GoogleMap(
-          //   markers: getmarkers(),
-          markers: Set<Marker>.of(markers.values),
+          // markers: getmarkers(),
+          markers:
+              ((num.isOdd) ? Set<Marker>.of(markers.values) : getmarkers()),
           //Map widget from google_maps_flutter package
           zoomGesturesEnabled: true, //enable Zoom in, out on map
           initialCameraPosition: CameraPosition(
@@ -283,7 +376,7 @@ class _HomePageState extends State<HomePage> {
             target: LatLng(latitude, longitude), //initial position
             zoom: 10.0, //initial zoom level
           ),
-          mapType: MapType.normal, //map type
+          mapType: MapType.hybrid, //map type
           onMapCreated: (controller) {
             //method called when map is created
             setState(() {
@@ -300,6 +393,7 @@ class _HomePageState extends State<HomePage> {
                   BitmapDescriptor.hueRed),
             );
             setState(() {
+              num = num + 1;
               markers[markerId] = marker;
               requestModel.lat = argument.latitude.toString();
               requestModel.lng = argument.longitude.toString();
