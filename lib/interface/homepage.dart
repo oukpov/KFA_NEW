@@ -1,13 +1,11 @@
 import 'package:admin/Account/account.dart';
-import 'package:admin/device/mobile/on_home_page.dart';
-import 'package:admin/device/phone/on_body_home.dart';
+import 'package:admin/device/mobile/navigate_home/on_home_page.dart';
 import 'package:admin/respon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 
-import '../device/mobile/propety.dart';
-import '../device/mobile/user.dart';
+import '../device/mobile/navigate_setting/memu_propety.dart';
 
 class HomePage extends StatefulWidget {
   final String user;
@@ -49,7 +47,16 @@ class _HomePageState extends State<HomePage>
       NoBodyHome(
         id: widget.id,
       ),
-      On_property(),
+      On_property(
+        username: widget.user,
+        email: widget.email,
+        first_name: widget.first_name,
+        last_name: widget.last_name,
+        gender: widget.gender,
+        from: widget.from,
+        tel: widget.tel,
+        id: widget.id,
+      ),
       Account(
         username: widget.user,
         email: widget.email,

@@ -346,7 +346,6 @@ class _LoginState extends State<Login> {
         from = jsonData['known_from'];
         tel = jsonData['tel_num'];
       });
-      print("Id = ${id.toString()}\n\n\n\n\n\n\n\n\n\n\n\n");
     }
   }
 

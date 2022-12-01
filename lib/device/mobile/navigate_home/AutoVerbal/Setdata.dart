@@ -11,17 +11,17 @@ import 'package:admin/server/api_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/ApprovebyAndVerifyby.dart';
-import '../../../components/FileOpen.dart';
-import '../../../components/LandBuilding.dart';
-import '../../../components/bank.dart';
-import '../../../components/date.dart';
-import '../../../components/imageOpen.dart';
-import '../../../components/property.dart';
-import '../../../components/slideUp.dart';
-import '../../../contants.dart';
-import '../../../customs/form.dart';
-import '../../../model/models/autoVerbal.dart';
+import '../../../../components/ApprovebyAndVerifyby.dart';
+import '../../../../components/FileOpen.dart';
+import '../../../../components/LandBuilding.dart';
+import '../../../../components/bank.dart';
+import '../../../../components/date.dart';
+import '../../../../components/imageOpen.dart';
+import '../../../../components/property.dart';
+import '../../../../components/slideUp.dart';
+import '../../../../contants.dart';
+import '../../../../customs/form.dart';
+import '../../../../model/models/autoVerbal.dart';
 
 class Add extends StatefulWidget {
   const Add({super.key, required this.id});

@@ -1,39 +1,39 @@
-import 'package:admin/device/mobile/AutoVerbal/AutoVerbal.dart';
-import 'package:admin/device/mobile/AutoVerbal/Setdata.dart';
 import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class MenuAutoVerbal extends StatefulWidget {
-  MenuAutoVerbal({Key? key, required this.id}) : super(key: key);
-  final String id;
+class MenuComparable extends StatefulWidget {
+  const MenuComparable({super.key});
 
   @override
-  State<MenuAutoVerbal> createState() => _MenuAutoVerbalState();
+  State<MenuComparable> createState() => _MenuComparableState();
 }
 
-class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
+class _MenuComparableState extends State<MenuComparable> {
   List<Text> option = const [
-    Text("New Auto Verbal",
+    Text("New Comparable",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-    Text(" Auto Verbal List",
+    Text("Comparable List",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+    Text("Comparable Search",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.data_saver_on),
     Icon(Icons.list_alt_outlined),
+    Icon(Icons.search),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent[800],
-        title: Text(
-          " Auto Verbal",
+        backgroundColor: Colors.red,
+        title: const Text(
+          "Comparable",
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
         ),
       ),
       body: Column(
@@ -44,13 +44,7 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
               onTap: () {
                 if (i == 1) {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Show_autoVerbals()));
-                }
-                if (i == 0) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Add(
-                            id: widget.id,
-                          )));
+                      builder: (context) => ComparableList()));
                 }
               },
               child: Container(
