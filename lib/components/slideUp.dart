@@ -11,9 +11,8 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_arc_speed_dial/flutter_speed_dial_menu_button.dart';
-import 'package:flutter_arc_speed_dial/main_menu_floating_action_button.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -173,6 +172,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    index = _selectedIndex;
+    setState(() {
+      if (_selectedIndex == 0) {
+        num = 0;
+      } else {
+        if (index < 1) {
+          index = index + 1;
+        } else {
+          index = 0;
+        }
+      }
+    });
+  }
+
   Widget _uiSteup(BuildContext context) {
     // TextEditingController search = TextEditingController();
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
@@ -211,41 +226,42 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       backgroundColor: kPrimaryColor,
-      body: Material(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: <Widget>[
-            Positioned(
-              child: Align(
-                child: SearchLocation(
-                  apiKey:
-                      'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
-                  country: 'KH',
-                  onSelected: (Place place) {
-                    address = place.description;
-                    print(place.description);
-                    getLatLang(address);
-                  },
-                ),
-              ),
+      body: Container(
+        child: MapShow(),
+        height: MediaQuery.of(context).size.height * 1,
+      ),
+      bottomNavigationBar: Container(
+        height: MediaQuery.of(context).size.height * 0.06,
+        color: Colors.blue[50],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon:
+                  Icon(Icons.person_pin_circle, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  num = 0;
+                });
+              },
             ),
-            MapShow(),
-            // SlidingUpPanel(
-            //   maxHeight: _panelHeightOpen,
-            //   minHeight: _panelHeightClosed,
-            //   parallaxEnabled: true,
-            //   body: MapShow(),
-            //   parallaxOffset: .5,
-            //   panelBuilder: (ScrollController sc) => _panel(sc),
-            //   borderRadius: BorderRadius.only(
-            //       topLeft: Radius.circular(18.0),
-            //       topRight: Radius.circular(18.0)),
-            //   onPanelSlide: (double pos) => setState(() {}),
-            // ),
+            IconButton(
+              icon: Icon(Icons.business, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  if (index < 1) {
+                    index = index + 1;
+                  } else {
+                    index = 0;
+                  }
+                });
+              },
+            ),
           ],
         ),
       ),
-      floatingActionButton: _getFloatingActionButton(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: circularMenu,
     );
   }
 
@@ -653,61 +669,92 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  bool _isShowDial = false;
-  Widget _getFloatingActionButton() {
-    return SpeedDialMenuButton(
-      //if needed to close the menu after clicking sub-FAB
-      isShowSpeedDial: _isShowDial,
-      //manually open or close menu
-      updateSpeedDialStatus: (isShow) {
-        //return any open or close change within the widget
-        this._isShowDial = isShow;
-      },
-      //general init
-      isMainFABMini: false,
-      mainMenuFloatingActionButton: MainMenuFloatingActionButton(
-          mini: false,
-          child: Icon(Icons.menu),
-          onPressed: () {},
-          closeMenuChild: Icon(Icons.close),
-          closeMenuForegroundColor: Colors.white,
-          closeMenuBackgroundColor: Colors.red),
-      floatingActionButtonWidgetChildren: <FloatingActionButton>[
-        FloatingActionButton(
-          mini: true,
-          child: Icon(Icons.location_history),
-          onPressed: () {
-            //if need to close menu after click
-            _isShowDial = false;
-            setState(() {
-              num = 0;
-            });
-          },
-          backgroundColor: Colors.pink,
-        ),
-        FloatingActionButton(
-          mini: true,
-          child: Icon(Icons.photo_size_select_large),
-          onPressed: () {
-            //if need to toggle menu after click
-            _isShowDial = !_isShowDial;
-            setState(() {
-              if (index < 1) {
-                index = index + 1;
-              } else {
-                index = 0;
-              }
-            });
-          },
-          backgroundColor: Colors.orange,
-        ),
-      ],
-      isSpeedDialFABsMini: true,
-      paddingBtwSpeedDialButton: 10.0,
-    );
-  }
+  // bool _isShowDial = false;
+  // Widget _getFloatingActionButton() {
+  //   return SpeedDialMenuButton(
+  //     //if needed to close the menu after clicking sub-FAB
+  //     isShowSpeedDial: _isShowDial,
+  //     //manually open or close menu
+  //     updateSpeedDialStatus: (isShow) {
+  //       //return any open or close change within the widget
+  //       this._isShowDial = isShow;
+  //     },
+  //     //general init
+  //     isMainFABMini: false,
+  //     mainMenuFloatingActionButton: MainMenuFloatingActionButton(
+  //         mini: false,
+  //         child: Icon(Icons.menu),
+  //         onPressed: () {},
+  //         closeMenuChild: Icon(Icons.close),
+  //         closeMenuForegroundColor: Colors.white,
+  //         closeMenuBackgroundColor: Colors.red),
+  //     floatingActionButtonWidgetChildren: <FloatingActionButton>[
+  //       FloatingActionButton(
+  //         mini: true,
+  //         child: Icon(Icons.location_history),
+  //         onPressed: () {
+  //           //if need to close menu after click
+  //           _isShowDial = false;
+  //           setState(() {
+  //             num = 0;
+  //           });
+  //         },
+  //         backgroundColor: Colors.pink,
+  //       ),
+  //       FloatingActionButton(
+  //         mini: true,
+  //         child: Icon(Icons.photo_size_select_large),
+  //         onPressed: () {
+  //           //if need to toggle menu after click
+  //           _isShowDial = !_isShowDial;
+  //           setState(() {
+  //             if (index < 1) {
+  //               index = index + 1;
+  //             } else {
+  //               index = 0;
+  //             }
+  //           });
+  //         },
+  //         backgroundColor: Colors.orange,
+  //       ),
+  //     ],
+  //     isSpeedDialFABsMini: true,
+  //     paddingBtwSpeedDialButton: 80.0,
+  //   );
+  // }
 
-  Widget _getBodyWidget() {
-    return Container();
-  }
+  // Widget _getBodyWidget() {
+  //   return Container();
+  // }
+  final circularMenu = CircularMenu(
+      toggleButtonColor: Colors.pink,
+      toggleButtonBoxShadow: [
+        BoxShadow(color: Color.fromRGBO(183, 28, 28, 1), blurRadius: 1)
+      ],
+      radius: 100,
+      items: [
+        CircularMenuItem(
+          color: Color.fromARGB(0, 255, 193, 7),
+          onTap: () {},
+        ),
+        CircularMenuItem(
+            icon: Icons.search,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+            icon: Icons.person_pin_circle,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+            icon: Icons.star,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+          color: Color.fromARGB(0, 255, 193, 7),
+          onTap: () {},
+        ),
+      ]);
 }
