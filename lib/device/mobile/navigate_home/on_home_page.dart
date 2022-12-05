@@ -1,12 +1,12 @@
 import 'package:admin/components/Google_Map.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/menu.dart';
+import 'package:admin/device/mobile/navigate_home/Comparable/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Customer/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Property/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Report/menu.dart';
 import 'package:admin/device/mobile/navigate_home/User/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Valuation/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Verbal/menu.dart';
-import 'package:admin/device/mobile/comparable/menu.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 

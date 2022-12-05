@@ -1,4 +1,4 @@
-import 'package:admin/device/mobile/comparable/Comparable_list_view.dart';
+import 'package:admin/device/mobile/navigate_home/Comparable/Comparable_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';

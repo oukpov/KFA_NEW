@@ -7,11 +7,12 @@ import 'contants.dart';
 typedef OnChangeCallback = void Function(dynamic value);
 
 class PropertyDropdown extends StatefulWidget {
+  const PropertyDropdown(
+      {Key? key, required this.name, required this.id, this.v})
+      : super(key: key);
   final OnChangeCallback name;
   final OnChangeCallback id;
-  const PropertyDropdown({Key? key, required this.name, required this.id})
-      : super(key: key);
-
+  final String? v;
   @override
   State<PropertyDropdown> createState() => _PropertyDropdownState();
 }
@@ -52,6 +53,7 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
             // print(newValue.split(" ")[1]);
           });
         },
+        value: widget.v,
         items: _list
             .map<DropdownMenuItem<String>>(
               (value) => DropdownMenuItem<String>(

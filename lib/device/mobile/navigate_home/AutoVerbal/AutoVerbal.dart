@@ -1,5 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:admin/Customs/Contants.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/Deteil.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/Edit.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,7 +50,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-  var i = 0;
+  int i = 0;
   static int? total_MIN = 0;
   static int? total_MAX = 0;
   List<AutoVerbal_List> data_pdf = [];
@@ -80,246 +83,313 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
       ),
-      body: FutureBuilder<List<AutoVerbal_List>>(
-        future: fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final cdt = snapshot.data![index];
-                  data_pdf.add(snapshot.data![index]);
-                  data_pdf[index] = snapshot.data![index];
-                  return Container(
-                      height: MediaQuery.of(context).size.height * 0.41,
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(20),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              bottomRight: Radius.circular(25)),
-                          boxShadow: [
-                            BoxShadow(color: Colors.black, blurRadius: 5)
-                          ]),
-                      child: Column(children: [
-                        Expanded(
-                            flex: 4,
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Code :",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                      Text(cdt.verbalId.toString(),
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Property Type :",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                      Text(cdt.propertyTypeName.toString(),
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Address :",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                      Text(cdt.verbalAddress.toString(),
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  14)),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text("Bank :",
+      body: Container(
+        child: FutureBuilder<List<AutoVerbal_List>>(
+          future: fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final cdt = snapshot.data![index];
+                    data_pdf.add(snapshot.data![index]);
+                    data_pdf[index] = snapshot.data![index];
+                    return Container(
+                        height: MediaQuery.of(context).size.height * 0.47,
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(20),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                bottomRight: Radius.circular(25)),
+                            boxShadow: [
+                              BoxShadow(color: Colors.black, blurRadius: 5)
+                            ]),
+                        child: Column(children: [
+                          Expanded(
+                              flex: 4,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Code :",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: MediaQuery.of(context)
                                                         .textScaleFactor *
                                                     15)),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(cdt.bankName.toString(),
+                                        Text(cdt.verbalId.toString(),
                                             style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  12,
-                                              fontWeight: FontWeight.bold,
-                                            )),
-                                      ),
-                                    ],
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Property Type :",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                        Text(cdt.propertyTypeName.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Address :",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                        Text(cdt.verbalAddress.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    14)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text("Bank :",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .textScaleFactor *
+                                                          15)),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(cdt.bankName.toString(),
+                                              style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    12,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Agency :",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                        Text(cdt.agenttypeName.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    14)),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4, bottom: 4),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Create date :",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    15)),
+                                        Text(cdt.verbalCreatedDate.toString(),
+                                            style: TextStyle(
+                                                fontSize: MediaQuery.of(context)
+                                                        .textScaleFactor *
+                                                    14)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
+                          const Divider(
+                            color: Colors.black,
+                            thickness: 4,
+                            height: 2,
+                          ),
+                          Expanded(
+                            // ignore: sort_child_properties_last
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GFButton(
+                                  shape: GFButtonShape.pills,
+                                  color: const Color.fromRGBO(38, 166, 154, 1),
+                                  elevation: 5,
+                                  onPressed: () {
+                                    setState(() {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Detail(
+                                                    id: index,
+                                                    code: data_pdf
+                                                        .elementAt(index)
+                                                        .verbalId
+                                                        .toString(),
+                                                  )));
+                                    });
+                                  },
+                                  text: 'Detail',
+                                  icon: const Icon(
+                                    Icons.import_contacts,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Agency :",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                      Text(cdt.agenttypeName.toString(),
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  14)),
-                                    ],
+                                GFButton(
+                                  shape: GFButtonShape.pills,
+                                  color: Color.fromRGBO(33, 57, 76, 30),
+                                  elevation: 5,
+                                  onPressed: () {
+                                    setState(() {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => Edit(
+                                                    id: data_pdf
+                                                        .elementAt(index)
+                                                        .verbalId
+                                                        .toString(),
+                                                    pro: data_pdf
+                                                        .elementAt(index)
+                                                        .propertyTypeName
+                                                        .toString(),
+                                                    bn: data_pdf
+                                                        .elementAt(index)
+                                                        .bankAcronym
+                                                        .toString(),
+                                                    id_bn: data_pdf
+                                                        .elementAt(index)
+                                                        .bankId
+                                                        .toString(),
+                                                  )));
+                                    });
+                                  },
+                                  text: 'Edit',
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 4, bottom: 4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Create date :",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  15)),
-                                      Text(cdt.verbalCreatedDate.toString(),
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  14)),
-                                    ],
+                                GFButton(
+                                  shape: GFButtonShape.pills,
+                                  color: Colors.red,
+                                  elevation: 5,
+                                  onPressed: () {
+                                    setState(() {
+                                      deleteDataId(
+                                          verbalIds: cdt.verbalId.toString());
+                                      Navigator.pop(context);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Show_autoVerbals()));
+                                    });
+                                  },
+                                  text: 'Delete',
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
-                            )),
-                        const Divider(
-                          color: Colors.black,
-                          thickness: 3,
-                          height: 2,
-                          endIndent: 20,
-                        ),
-                        Expanded(
-                          // ignore: sort_child_properties_last
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GFButton(
-                                shape: GFButtonShape.pills,
-                                color: Colors.green,
-                                onPressed: () {
-                                  setState(() {
-                                    print("data pdf lagnht ${data_pdf.length}");
-                                  });
-                                },
-                                text: 'Edit',
-                                icon: const Icon(Icons.edit),
-                              ),
-                              GFButton(
-                                shape: GFButtonShape.pills,
-                                color: Colors.blue,
-                                onPressed: () {
-                                  setState(() {
-                                    print("Number of index =  ${index}");
-                                    // data_pdf.add(snapshot.data![index]);
-
-                                    for (int i = 0; i < index; i++) {
-                                      print(
-                                          "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
-                                    }
-                                    total_MAX = 0;
-                                    total_MIN = 0;
-
-                                    address = "";
-                                    fsvM = 0;
-                                    fsvN = 0;
-                                    fx = 0;
-                                    fn = 0;
-                                    // Navigator.of(context).push(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => OnMap()));
-
-                                    generatePdf(
-                                        index,
-                                        snapshot.data![index].verbalCon
-                                            .toString());
-                                  });
-                                },
-                                text: 'Print',
-                                icon: const Icon(Icons.print),
-                              ),
-                              GFButton(
-                                shape: GFButtonShape.pills,
-                                color: Colors.red,
-                                onPressed: () {
-                                  setState(() {
-                                    deleteDataId(
-                                        verbalIds: cdt.verbalId.toString());
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Show_autoVerbals()));
-                                  });
-                                },
-                                text: 'Delete',
-                                icon: const Icon(Icons.delete),
-                              ),
-                            ],
+                            ),
+                            flex: 1,
                           ),
-                          flex: 1,
-                        ),
-                      ]));
-                });
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("Server is not responding"));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                          GFButton(
+                            shape: GFButtonShape.pills,
+                            color: Color.fromRGBO(33, 150, 243, 1),
+                            elevation: 10.0,
+                            fullWidthButton: true,
+                            onPressed: () {
+                              setState(() {
+                                print("Number of index =  ${index}");
+                                // data_pdf.add(snapshot.data![index]);
+
+                                for (int i = 0; i < index; i++) {
+                                  print(
+                                      "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
+                                }
+                                total_MAX = 0;
+                                total_MIN = 0;
+
+                                address = "";
+                                fsvM = 0;
+                                fsvN = 0;
+                                fx = 0;
+                                fn = 0;
+                                // Navigator.of(context).push(
+                                //     MaterialPageRoute(
+                                //         builder: (context) => OnMap()));
+
+                                generatePdf(index,
+                                    snapshot.data![index].verbalCon.toString());
+                              });
+                            },
+                            text: 'Print',
+                            icon: const Icon(
+                              Icons.print,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ]));
+                  });
+            } else if (snapshot.hasError) {
+              return const Center(child: Text("Server is not responding"));
+            } else {
+              return Container(
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height * 1,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    image: const DecorationImage(
+                      alignment: Alignment.center,
+                      image: ExactAssetImage('assets/images/New_KFA_Logo.png'),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                  child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue[700],
@@ -927,7 +997,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("${fsvN.toString()}",
+                          child: pw.Text(fsvN.toString(),
                               style: pw.TextStyle(fontSize: 11)),
                           height: 25,
                           //color: Colors.blue,
@@ -969,7 +1039,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           padding: const pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text("${fn}",
+                          child: pw.Text("$fn",
                               style: const pw.TextStyle(fontSize: 11)),
                           height: 25,
                           //color: Colors.blue,
@@ -1164,73 +1234,5 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         print("Total mix ${total_MAX}");
       });
     }
-  }
-}
-
-class OnMap extends StatefulWidget {
-  const OnMap({super.key});
-
-  @override
-  State<OnMap> createState() => _OnMapState();
-}
-
-class _OnMapState extends State<OnMap> {
-  late GoogleMapController mapController;
-  final Set<Marker> markers = new Set();
-  static const LatLng showLocation = LatLng(27.7089427, 85.3086209);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 500,
-              child: GoogleMap(
-                //Map widget from google_maps_flutter package
-                zoomGesturesEnabled: true, //enable Zoom in, out on map
-                initialCameraPosition: const CameraPosition(
-                  //innital position in map
-                  target: showLocation, //initial position
-                  zoom: 15.0, //initial zoom level
-                ),
-                markers: getmarkers(), //markers to show on map
-                mapType: MapType.hybrid, //map type
-                onMapCreated: (controller) {
-                  //method called when map is created
-                  setState(() {
-                    mapController = controller;
-                  });
-                },
-              ),
-            ),
-            Container(
-              height: 200,
-              child: TextButton(onPressed: () {}, child: const Text("submit")),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Set<Marker> getmarkers() {
-    //markers to place on map
-    setState(() {
-      markers.add(Marker(
-        //add first marker
-        markerId: MarkerId(showLocation.toString()),
-        position: showLocation, //position of marker
-        infoWindow: const InfoWindow(
-          //popup info
-          title: 'Marker Title First ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-      ));
-      //add more markers here
-    });
-
-    return markers;
   }
 }

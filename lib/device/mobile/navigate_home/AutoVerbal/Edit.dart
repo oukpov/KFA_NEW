@@ -1,36 +1,33 @@
-// ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names
-
 import 'dart:convert';
 
-import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/Customs/responsive.dart';
+import 'package:admin/components/bank.dart';
 import 'package:admin/components/code.dart';
-import 'package:admin/components/comment.dart';
-import 'package:admin/components/forceSale.dart';
+import 'package:admin/components/contants.dart';
+import 'package:admin/components/imageOpen.dart';
+import 'package:admin/components/slideUp.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/property.dart';
+import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/server/api_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../components/ApprovebyAndVerifyby.dart';
-import '../../../../components/FileOpen.dart';
-import '../../../../components/LandBuilding.dart';
-import '../../../../components/bank.dart';
-import '../../../../components/date.dart';
-import '../../../../components/imageOpen.dart';
-import '../../../../components/property.dart';
-import '../../../../components/slideUp.dart';
-import '../../../../contants.dart';
-import '../../../../customs/form.dart';
-import '../../../../model/models/autoVerbal.dart';
-
-class Add extends StatefulWidget {
-  const Add({super.key, required this.id});
+class Edit extends StatefulWidget {
+  const Edit(
+      {super.key,
+      required this.id,
+      required this.pro,
+      required this.bn,
+      required this.id_bn});
   final String id;
+  final String pro;
+  final String bn;
+  final String id_bn;
   @override
-  State<Add> createState() => _AddState();
+  State<Edit> createState() => _EditState();
 }
 
-class _AddState extends State<Add> {
+class _EditState extends State<Edit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -238,6 +235,7 @@ class _AddState extends State<Add> {
             child: Column(
               children: [
                 Code(
+                  cd: widget.id,
                   code: (value) {
                     code = value;
                   },
@@ -245,10 +243,11 @@ class _AddState extends State<Add> {
                 // ignore: sized_box_for_whitespace
                 //dropdown(),
                 // PropertyDropdown(),
-                SizedBox(
-                  height: 10.0,
-                ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
                 PropertyDropdown(
+                  pro: widget.pro,
                   name: (value) {
                     propertyType = value;
                   },
@@ -260,6 +259,7 @@ class _AddState extends State<Add> {
                   height: 10.0,
                 ),
                 BankDropdown(
+                  bn: widget.bn,
                   bank: (value) {
                     requestModelAuto.bank_id = value;
                   },
@@ -267,164 +267,164 @@ class _AddState extends State<Add> {
                     requestModelAuto.bank_branch_id = value;
                   },
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                FormTwinN(
-                  Label1: 'Owner',
-                  Label2: 'Contact',
-                  onSaved1: (input) {
-                    requestModelAuto.owner = input!;
-                  },
-                  onSaved2: (input) {
-                    requestModelAuto.contact = input!;
-                  },
-                  icon1: Icon(
-                    Icons.person,
-                    color: kImageColor,
-                  ),
-                  icon2: Icon(
-                    Icons.phone,
-                    color: kImageColor,
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                DateComponents(
-                  date: (value) {
-                    requestModelAuto.date = value;
-                  },
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                FormTwinN(
-                  Label1: 'Bank Officer',
-                  Label2: 'Contact',
-                  onSaved1: (input) {
-                    requestModelAuto.bank_officer = input!;
-                  },
-                  onSaved2: (input) {
-                    requestModelAuto.bank_contact = input!;
-                  },
-                  icon1: Icon(
-                    Icons.work,
-                    color: kImageColor,
-                  ),
-                  icon2: Icon(
-                    Icons.phone,
-                    color: kImageColor,
-                  ),
-                ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // FormTwinN(
+                //   Label1: 'Owner',
+                //   Label2: 'Contact',
+                //   onSaved1: (input) {
+                //     requestModelAuto.owner = input!;
+                //   },
+                //   onSaved2: (input) {
+                //     requestModelAuto.contact = input!;
+                //   },
+                //   icon1: Icon(
+                //     Icons.person,
+                //     color: kImageColor,
+                //   ),
+                //   icon2: Icon(
+                //     Icons.phone,
+                //     color: kImageColor,
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // DateComponents(
+                //   date: (value) {
+                //     requestModelAuto.date = value;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // FormTwinN(
+                //   Label1: 'Bank Officer',
+                //   Label2: 'Contact',
+                //   onSaved1: (input) {
+                //     requestModelAuto.bank_officer = input!;
+                //   },
+                //   onSaved2: (input) {
+                //     requestModelAuto.bank_contact = input!;
+                //   },
+                //   icon1: Icon(
+                //     Icons.work,
+                //     color: kImageColor,
+                //   ),
+                //   icon2: Icon(
+                //     Icons.phone,
+                //     color: kImageColor,
+                //   ),
+                // ),
 
-                SizedBox(
-                  height: 10,
-                ),
-                ForceSaleAndValuation(
-                  value: (value) {
-                    requestModelAuto.verbal_con = value;
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CommentAndOption(
-                  value: (value) {
-                    opt = int.parse(value);
-                  },
-                  id: (value) {
-                    requestModelAuto.option = value;
-                  },
-                  comment: (String? newValue) {
-                    requestModelAuto.comment = newValue!;
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ApprovebyAndVerifyby(
-                  approve: (value) {
-                    requestModelAuto.approve_id = value;
-                  },
-                  verify: (value) {
-                    requestModelAuto.agent = value;
-                  },
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                FormS(
-                  label: 'Address',
-                  onSaved: (input) {
-                    requestModelAuto.address = input!;
-                  },
-                  iconname: Icon(
-                    Icons.location_on_rounded,
-                    color: kImageColor,
-                  ),
-                ),
-                SizedBox(
-                  height: 3.0,
-                ),
-                TextButton(
-                  onPressed: () {
-                    SlideUp(context);
-                  },
-                  child: FractionallySizedBox(
-                    widthFactor: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 22, right: 22),
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: kPrimaryColor,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        // padding: EdgeInsets.only(left: 30, right: 30),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                SizedBox(width: 10),
-                                Icon(
-                                  Icons.map_sharp,
-                                  color: kImageColor,
-                                ),
-                                SizedBox(width: 10),
-                                Text('Choose Location'),
-                              ],
-                            )),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                FileOpen(),
-                SizedBox(
-                  height: 10,
-                ),
-                ImageOpen(),
-                SizedBox(
-                  height: 330,
-                  child: LandBuilding(
-                    asking_price: asking_price,
-                    opt: opt,
-                    address: address,
-                    list: (value) {
-                      requestModelAuto.verbal = value;
-                    },
-                    landId: code.toString(),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // ForceSaleAndValuation(
+                //   value: (value) {
+                //     requestModelAuto.verbal_con = value;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // CommentAndOption(
+                //   value: (value) {
+                //     opt = int.parse(value);
+                //   },
+                //   id: (value) {
+                //     requestModelAuto.option = value;
+                //   },
+                //   comment: (String? newValue) {
+                //     requestModelAuto.comment = newValue!;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // ApprovebyAndVerifyby(
+                //   approve: (value) {
+                //     requestModelAuto.approve_id = value;
+                //   },
+                //   verify: (value) {
+                //     requestModelAuto.agent = value;
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 10.0,
+                // ),
+                // FormS(
+                //   label: 'Address',
+                //   onSaved: (input) {
+                //     requestModelAuto.address = input!;
+                //   },
+                //   iconname: Icon(
+                //     Icons.location_on_rounded,
+                //     color: kImageColor,
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 3.0,
+                // ),
+                // TextButton(
+                //   onPressed: () {
+                //     SlideUp(context);
+                //   },
+                //   child: FractionallySizedBox(
+                //     widthFactor: 1,
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(left: 22, right: 22),
+                //       child: Container(
+                //         height: 60,
+                //         decoration: BoxDecoration(
+                //           border: Border.all(
+                //             width: 1,
+                //             color: kPrimaryColor,
+                //           ),
+                //           borderRadius: BorderRadius.all(
+                //             Radius.circular(10),
+                //           ),
+                //         ),
+                //         // padding: EdgeInsets.only(left: 30, right: 30),
+                //         child: Align(
+                //             alignment: Alignment.centerLeft,
+                //             child: Row(
+                //               // ignore: prefer_const_literals_to_create_immutables
+                //               children: [
+                //                 SizedBox(width: 10),
+                //                 Icon(
+                //                   Icons.map_sharp,
+                //                   color: kImageColor,
+                //                 ),
+                //                 SizedBox(width: 10),
+                //                 Text('Choose Location'),
+                //               ],
+                //             )),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 3,
+                // ),
+                // FileOpen(),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // ImageOpen(),
+                // SizedBox(
+                //   height: 330,
+                //   child: LandBuilding(
+                //     asking_price: asking_price,
+                //     opt: opt,
+                //     address: address,
+                //     list: (value) {
+                //       requestModelAuto.verbal = value;
+                //     },
+                //     landId: code.toString(),
+                //   ),
+                // ),
               ],
             ),
           ),

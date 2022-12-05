@@ -9,10 +9,12 @@ import 'contants.dart';
 typedef OnChangeCallback = void Function(dynamic value);
 
 class BankDropdown extends StatefulWidget {
-  const BankDropdown({Key? key, required this.bank, required this.bankbranch})
+  const BankDropdown(
+      {Key? key, required this.bank, required this.bankbranch, this.bn})
       : super(key: key);
   final OnChangeCallback bank;
   final OnChangeCallback bankbranch;
+  final String? bn;
   @override
   State<BankDropdown> createState() => _BankDropdownState();
 }
@@ -81,7 +83,7 @@ class _BankDropdownState extends State<BankDropdown> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
-                labelText: 'Bank',
+                labelText: ((widget.bn == null) ? 'Bank' : widget.bn),
                 hintText: 'Select',
 
                 prefixIcon: Icon(

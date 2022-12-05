@@ -17,6 +17,12 @@ class ForceSaleAndValuation extends StatefulWidget {
 class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
   String Value = '30';
   var forceSale = ['10', '20', '30', '40', '50', '0'];
+  @override
+  void initState() {
+    widget.value(Value);
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +57,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
               onChanged: (String? newValue) {
                 setState(() {
                   Value = newValue!;
-                  widget.value(newValue);
+                  widget.value(Value);
                   // ignore: avoid_print
                   print(newValue);
                 });

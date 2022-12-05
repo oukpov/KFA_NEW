@@ -9,7 +9,9 @@ typedef OnChangeCallback = void Function(dynamic value);
 class PropertyDropdown extends StatefulWidget {
   final OnChangeCallback name;
   final OnChangeCallback id;
-  const PropertyDropdown({Key? key, required this.name, required this.id})
+  final String? pro;
+  const PropertyDropdown(
+      {Key? key, required this.name, required this.id, this.pro})
       : super(key: key);
 
   @override
@@ -53,6 +55,7 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
             // print(newValue.split(" ")[1]);
           });
         },
+
         items: _list
             .map<DropdownMenuItem<String>>(
               (value) => DropdownMenuItem<String>(
@@ -74,7 +77,7 @@ class _PropertyDropdownState extends State<PropertyDropdown> {
 
         decoration: InputDecoration(
           filled: true,
-          labelText: 'Property',
+          labelText: ((widget.pro == null) ? 'Property' : widget.pro),
           hintText: 'Select one',
           labelStyle: TextStyle(color: Colors.black54),
           prefixIcon: Icon(

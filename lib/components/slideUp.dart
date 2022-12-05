@@ -38,19 +38,12 @@ class SlidingUpPanelExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   // systemNavigationBarColor: Colors.grey[200],
-    //   systemNavigationBarIconBrightness: Brightness.dark,
-    //   systemNavigationBarDividerColor: Colors.black,
-    // ));
-
     return HomePage();
   }
 }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -278,7 +271,8 @@ class _HomePageState extends State<HomePage> {
         ),
         icon: BitmapDescriptor.defaultMarker, //Icon for Marker
       ));
-
+      requestModel.lat = lat.toString();
+      requestModel.lng = log.toString();
       //add more markers here
     });
 
@@ -632,7 +626,7 @@ class _HomePageState extends State<HomePage> {
       sendAddrress = message;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("koko ${message}"),
+          content: Text("Address: ${message}"),
         ),
       );
     } catch (e) {

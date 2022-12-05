@@ -12,8 +12,9 @@ class Code extends StatefulWidget {
   const Code({
     Key? key,
     required this.code,
+    this.cd,
   }) : super(key: key);
-
+  final String? cd;
   @override
   State<Code> createState() => _CodeState();
 }
@@ -69,13 +70,21 @@ class _CodeState extends State<Code> {
                   size: 30,
                 ),
                 SizedBox(width: 10),
-                Text(
-                  codedisplay.toString(),
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: kPrimaryColor),
-                ),
+                ((widget.cd == null)
+                    ? Text(
+                        codedisplay.toString(),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      )
+                    : Text(
+                        widget.cd.toString(),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      )),
               ],
             ),
     );
