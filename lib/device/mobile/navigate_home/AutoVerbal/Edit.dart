@@ -4,7 +4,6 @@ import 'package:admin/Customs/responsive.dart';
 import 'package:admin/components/bank.dart';
 import 'package:admin/components/code.dart';
 import 'package:admin/components/contants.dart';
-import 'package:admin/components/imageOpen.dart';
 import 'package:admin/components/slideUp.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/property.dart';
 import 'package:admin/model/models/autoVerbal.dart';

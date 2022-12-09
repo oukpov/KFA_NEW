@@ -433,10 +433,9 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               height: 50,
               width: 70,
               child: pw.BarcodeWidget(
-                barcode: pw.Barcode.qrCode(),
-                data:
-                    "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLa}&long=${data_pdf.elementAt(i).latlongLog}",
-              ),
+                  barcode: pw.Barcode.qrCode(),
+                  data:
+                      "https://www.google.com/maps/@${data_pdf.elementAt(i).latlongLa},${data_pdf.elementAt(i).latlongLog},15z"),
             ),
           ],
         ),
