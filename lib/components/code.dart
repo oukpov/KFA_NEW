@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+typedef OnChangeCallback = void Function(dynamic value);
+
 class Code extends StatefulWidget {
+  final OnChangeCallback code;
   const Code({
     Key? key,
+    required this.code,
+    this.cd,
   }) : super(key: key);
-
+  final String? cd;
   @override
   State<Code> createState() => _CodeState();
 }
@@ -37,9 +42,10 @@ class _CodeState extends State<Code> {
 
       setState(() {
         loading = false;
-        code = jsonData['data'];
+        code = jsonData;
         codedisplay = int.parse(code[0]['verbal_id']) + 1;
         print(code[0]['verbal_id']);
+        widget.code(codedisplay);
         print(codedisplay);
 
         // print(_list);
@@ -64,13 +70,21 @@ class _CodeState extends State<Code> {
                   size: 30,
                 ),
                 SizedBox(width: 10),
-                Text(
-                  codedisplay.toString(),
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: kPrimaryColor),
-                ),
+                ((widget.cd == null)
+                    ? Text(
+                        codedisplay.toString(),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      )
+                    : Text(
+                        widget.cd.toString(),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      )),
               ],
             ),
     );

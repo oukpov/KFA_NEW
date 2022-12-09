@@ -11,7 +11,10 @@ Licensing: More information can be found here: https://github.com/akshathjain/sl
 import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +22,6 @@ import 'package:intl/intl.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 import 'package:search_map_location/widget/search_widget.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -29,25 +31,19 @@ import 'distance.dart';
 import 'landsize.dart';
 import 'numDisplay.dart';
 import 'road.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SlidingUpPanelExample extends StatelessWidget {
   const SlidingUpPanelExample({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   // systemNavigationBarColor: Colors.grey[200],
-    //   systemNavigationBarIconBrightness: Brightness.dark,
-    //   systemNavigationBarDividerColor: Colors.black,
-    // ));
-
     return HomePage();
   }
 }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -55,6 +51,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _panelHeightOpen = 0;
   final double _panelHeightClosed = 95.0;
+  //////////////////////////////////////////////////////////////
   String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
   GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
@@ -67,6 +64,7 @@ class _HomePageState extends State<HomePage> {
   List list = [];
   double adding_price = 0.0;
   String sendAddrress = '';
+  //////////////////////////////////////////////////////////////
   List data = [];
   var date = DateFormat('yyyy-MM-dd').format(DateTime(2020, 01, 01));
   var date1 = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -74,9 +72,75 @@ class _HomePageState extends State<HomePage> {
   // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
   late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
   late SearchRequestModel requestModel;
+  String? _currentAddress;
+  Position? _currentPosition;
+// use for check user access to the location
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        lat = _currentPosition!.latitude;
+        log = _currentPosition!.longitude;
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future showLocation() async {}
+  dynamic lat, log;
+  final Set<Marker> marker = new Set();
+  int num = 0;
 
   @override
   void initState() {
+    _getCurrentPosition();
     getAddress(latLng);
     // ignore: unnecessary_new
     requestModel = new SearchRequestModel(
@@ -103,6 +167,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    index = _selectedIndex;
+    setState(() {
+      if (_selectedIndex == 0) {
+        num = 0;
+      } else {
+        if (index < 1) {
+          index = index + 1;
+        } else {
+          index = 0;
+        }
+      }
+    });
+  }
+
   Widget _uiSteup(BuildContext context) {
     // TextEditingController search = TextEditingController();
     _panelHeightOpen = MediaQuery.of(context).size.height * .80;
@@ -110,22 +190,13 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Center(child: Text("GoogleMap")),
         elevation: 0.0,
+        backgroundColor: kPrimaryColor,
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.find_replace_outlined),
-            color: kwhite,
-            //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            //onPressed: () => Show(),
-            onPressed: () {
-              Clear();
-              Show(requestModel);
-            },
-          ),
           IconButton(
             icon: const Icon(Icons.save),
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            //onPressed: () => Show(),
+            //onPressed: () => Show(),S
             onPressed: () {
               // Navigator.pushReplacement(
               //   context,
@@ -135,10 +206,13 @@ class _HomePageState extends State<HomePage> {
               //     ),
               //   ),
               // );
+
               data = [
                 {
                   'adding_price': adding_price,
                   'address': sendAddrress,
+                  'lat': requestModel.lat,
+                  'lng': requestModel.lng
                 }
               ];
               Navigator.pop(context, data);
@@ -146,41 +220,65 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Material(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: <Widget>[
-            Positioned(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SearchLocation(
-                  apiKey:
-                      'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
-                  country: 'KH',
-                  onSelected: (Place place) {
-                    address = place.description;
-                    print(place.description);
-                    getLatLang(address);
-                  },
-                ),
-              ),
+      backgroundColor: kPrimaryColor,
+      body: Container(
+        child: MapShow(),
+        height: MediaQuery.of(context).size.height * 1,
+      ),
+      bottomNavigationBar: Container(
+        height: MediaQuery.of(context).size.height * 0.06,
+        color: Colors.blue[50],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon:
+                  Icon(Icons.person_pin_circle, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  num = 0;
+                });
+              },
             ),
-            SlidingUpPanel(
-              maxHeight: _panelHeightOpen,
-              minHeight: _panelHeightClosed,
-              parallaxEnabled: true,
-              body: MapShow(),
-              parallaxOffset: .5,
-              panelBuilder: (ScrollController sc) => _panel(sc),
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(18.0),
-                  topRight: Radius.circular(18.0)),
-              onPanelSlide: (double pos) => setState(() {}),
+            IconButton(
+              icon: Icon(Icons.business, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  if (index < 1) {
+                    index = index + 1;
+                  } else {
+                    index = 0;
+                  }
+                });
+              },
             ),
           ],
         ),
       ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: circularMenu,
     );
+  }
+
+  Set<Marker> getmarkers() {
+    //markers to place on map
+    setState(() {
+      marker.add(Marker(
+        //add second marker
+        markerId: MarkerId("showLocation.toString()"),
+        position: LatLng(lat, log), //position of marker
+        infoWindow: InfoWindow(
+          //popup info
+          title: 'Thanks for using us',
+        ),
+        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+      ));
+      requestModel.lat = lat.toString();
+      requestModel.lng = log.toString();
+      //add more markers here
+    });
+
+    return marker;
   }
 
   Widget _panel(ScrollController sc) {
@@ -224,13 +322,13 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(height: 36.0),
-          RoadDropdown(
-            onChanged: (value) {
-              // requestModel.comparable_road = value;
-              //  print(requestModel.comparable_road);
-            },
-          ),
-          SizedBox(height: 10.0),
+          // RoadDropdown(
+          //   onChanged: (value) {
+          //     // requestModel.comparable_road = value;
+          //     //  print(requestModel.comparable_road);
+          //   },
+          // ),
+          // SizedBox(height: 10.0),
           ToFromDate(
             fromDate: (value) {
               requestModel.fromDate = value;
@@ -275,46 +373,57 @@ class _HomePageState extends State<HomePage> {
     return SizedBox(height: isNeedPadding ? bottomOffset : hiddenKeyboard);
   }
 
+  List<MapType> style_map = [
+    MapType.hybrid,
+    MapType.normal,
+  ];
+  int index = 0;
   Stack MapShow() {
     return Stack(
       children: [
-        GoogleMap(
-          //   markers: getmarkers(),
-          markers: Set<Marker>.of(markers.values),
-          //Map widget from google_maps_flutter package
-          zoomGesturesEnabled: true, //enable Zoom in, out on map
-          initialCameraPosition: CameraPosition(
-            //innital position in map
-            target: LatLng(latitude, longitude), //initial position
-            zoom: 10.0, //initial zoom level
-          ),
-          mapType: MapType.hybrid, //map type
-          onMapCreated: (controller) {
-            //method called when map is created
-            setState(() {
-              mapController = controller;
-            });
-          },
-          onTap: (argument) {
-            MarkerId markerId = MarkerId('mark');
-            listMarkerIds.add(markerId);
-            Marker marker = Marker(
-              markerId: MarkerId('mark'),
-              position: argument,
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed),
-            );
-            setState(() {
-              markers[markerId] = marker;
-              requestModel.lat = argument.latitude.toString();
-              requestModel.lng = argument.longitude.toString();
-              getAddress(argument);
-            });
-          },
-          onCameraMove: (CameraPosition cameraPositiona) {
-            cameraPosition = cameraPositiona; //when map is dragging
-          },
-        ),
+        (lat != null)
+            ? GoogleMap(
+                // markers: getmarkers(),
+                markers:
+                    ((num > 0) ? Set<Marker>.of(markers.values) : getmarkers()),
+                //Map widget from google_maps_flutter package
+                zoomGesturesEnabled: true, //enable Zoom in, out on map
+                initialCameraPosition: CameraPosition(
+                  //innital position in map
+                  target: LatLng(latitude, longitude), //initial position
+                  zoom: 10.0, //initial zoom level
+                ),
+                mapType: style_map[index], //map type
+                onMapCreated: (controller) {
+                  //method called when map is created
+                  setState(() {
+                    mapController = controller;
+                  });
+                },
+                onTap: (argument) {
+                  MarkerId markerId = MarkerId('mark');
+                  listMarkerIds.add(markerId);
+                  Marker marker = Marker(
+                    markerId: MarkerId('mark'),
+                    position: argument,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
+                  );
+                  setState(() {
+                    num = num + 1;
+                    markers[markerId] = marker;
+                    requestModel.lat = argument.latitude.toString();
+                    requestModel.lng = argument.longitude.toString();
+                    getAddress(argument);
+                  });
+                },
+                onCameraMove: (CameraPosition cameraPositiona) {
+                  cameraPosition = cameraPositiona; //when map is dragging
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
         Align(
           alignment: Alignment.topCenter,
           child: SearchLocation(
@@ -355,8 +464,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> Show(SearchRequestModel requestModel) async {
-    // var rs = await http
-    //     .get(Uri.parse('https://kfahrm.cc/laravel/public/api/comparable/list?page=100'));
     setState(() {
       isApiCallProcess = true;
     });
@@ -371,29 +478,9 @@ class _HomePageState extends State<HomePage> {
       var jsonData = jsonDecode(rs.body);
       setState(() {
         list = jsonData['autoverbal'];
-        print(list);
-        //  print(requestModel.comparable_road);
-        print(requestModel.distance);
-        print(requestModel.fromDate);
-        print(requestModel.land_max);
-        print(requestModel.land_min);
-        print(requestModel.lat);
-        print(requestModel.lng);
-        print(requestModel.num);
-        print(requestModel.property_type_id);
-        print(requestModel.toDate);
       });
     }
-
-    print(list.length);
-
     Map map = list.asMap();
-    // List list = [
-    //   {"title": "one", "id": "1", "lat": 11.489, "lon": 105.9214},
-    //   {"title": "two", "id": "2", "lat": 11.5, "lon": 104.9314},
-    //   {"title": "three", "id": "3", "lat": 11.6, "lon": 104.9414},
-    // ];
-    print(map);
     if (requestModel.lat.isEmpty || requestModel.lng.isEmpty) {
       setState(() {
         isApiCallProcess = false;
@@ -427,9 +514,7 @@ class _HomePageState extends State<HomePage> {
         ).show();
       } else {
         adding_price = 0;
-        for (var i = 0; i < map.length; i++)
-        // ignore: curly_braces_in_flow_control_structures
-        {
+        for (var i = 0; i < map.length; i++) {
           print("Index $i");
           if (map[i]['comparable_adding_price'] == '') {
             map[i]['comparable_adding_price'] = '0';
@@ -448,7 +533,6 @@ class _HomePageState extends State<HomePage> {
                 (double.parse(map[i]['comparable_adding_price'])) / map.length;
             print(map[i]['comparable_adding_price']);
           }
-          //  print(adding_price);
           MarkerId markerId = MarkerId('$i');
           listMarkerIds.add(markerId);
           Marker marker = Marker(
@@ -544,7 +628,7 @@ class _HomePageState extends State<HomePage> {
       sendAddrress = message;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text("Address: ${message}"),
         ),
       );
     } catch (e) {
@@ -580,4 +664,93 @@ class _HomePageState extends State<HomePage> {
       rethrow;
     }
   }
+
+  // bool _isShowDial = false;
+  // Widget _getFloatingActionButton() {
+  //   return SpeedDialMenuButton(
+  //     //if needed to close the menu after clicking sub-FAB
+  //     isShowSpeedDial: _isShowDial,
+  //     //manually open or close menu
+  //     updateSpeedDialStatus: (isShow) {
+  //       //return any open or close change within the widget
+  //       this._isShowDial = isShow;
+  //     },
+  //     //general init
+  //     isMainFABMini: false,
+  //     mainMenuFloatingActionButton: MainMenuFloatingActionButton(
+  //         mini: false,
+  //         child: Icon(Icons.menu),
+  //         onPressed: () {},
+  //         closeMenuChild: Icon(Icons.close),
+  //         closeMenuForegroundColor: Colors.white,
+  //         closeMenuBackgroundColor: Colors.red),
+  //     floatingActionButtonWidgetChildren: <FloatingActionButton>[
+  //       FloatingActionButton(
+  //         mini: true,
+  //         child: Icon(Icons.location_history),
+  //         onPressed: () {
+  //           //if need to close menu after click
+  //           _isShowDial = false;
+  //           setState(() {
+  //             num = 0;
+  //           });
+  //         },
+  //         backgroundColor: Colors.pink,
+  //       ),
+  //       FloatingActionButton(
+  //         mini: true,
+  //         child: Icon(Icons.photo_size_select_large),
+  //         onPressed: () {
+  //           //if need to toggle menu after click
+  //           _isShowDial = !_isShowDial;
+  //           setState(() {
+  //             if (index < 1) {
+  //               index = index + 1;
+  //             } else {
+  //               index = 0;
+  //             }
+  //           });
+  //         },
+  //         backgroundColor: Colors.orange,
+  //       ),
+  //     ],
+  //     isSpeedDialFABsMini: true,
+  //     paddingBtwSpeedDialButton: 80.0,
+  //   );
+  // }
+
+  // Widget _getBodyWidget() {
+  //   return Container();
+  // }
+  final circularMenu = CircularMenu(
+      toggleButtonColor: Colors.pink,
+      toggleButtonBoxShadow: [
+        BoxShadow(color: Color.fromRGBO(183, 28, 28, 1), blurRadius: 1)
+      ],
+      radius: 100,
+      items: [
+        CircularMenuItem(
+          color: Color.fromARGB(0, 255, 193, 7),
+          onTap: () {},
+        ),
+        CircularMenuItem(
+            icon: Icons.search,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+            icon: Icons.person_pin_circle,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+            icon: Icons.star,
+            onTap: () {
+              //callback
+            }),
+        CircularMenuItem(
+          color: Color.fromARGB(0, 255, 193, 7),
+          onTap: () {},
+        ),
+      ]);
 }

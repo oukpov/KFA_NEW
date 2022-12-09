@@ -22,8 +22,14 @@ class LandBuilding extends StatefulWidget {
   final int opt;
   final String landId;
   final OnChangeCallback list;
+
+  final String? minvluee;
+  final String? maxvluee;
+
   const LandBuilding({
     super.key,
+    this.maxvluee,
+    this.minvluee,
     required this.asking_price,
     required this.opt,
     required this.address,
@@ -271,7 +277,8 @@ class _LandBuildingState extends State<LandBuilding> {
         Container(
           padding: EdgeInsets.only(left: 22, right: 22),
           width: double.infinity,
-          height: 270,
+          // color: Colors.red,
+          height: 280,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,

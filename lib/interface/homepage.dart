@@ -1,35 +1,77 @@
-import 'package:admin/device/mobile/on_home_page.dart';
-import 'package:admin/device/phone/on_body_home.dart';
+import 'package:admin/Account/account.dart';
+import 'package:admin/device/mobile/navigate_home/on_home_page.dart';
 import 'package:admin/respon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 
-import '../device/mobile/propety.dart';
-import '../device/mobile/user.dart';
+import '../device/mobile/navigate_setting/memu_propety.dart';
 
-class Hompage extends StatefulWidget {
-  const Hompage({super.key});
+class HomePage extends StatefulWidget {
+  final String user;
+  final String first_name;
+  final String last_name;
+  final String email;
+  final String gender;
+  final String from;
+  final String tel;
+  final String id;
+  HomePage({
+    Key? key,
+    required this.user,
+    required this.first_name,
+    required this.last_name,
+    required this.email,
+    required this.gender,
+    required this.from,
+    required this.tel,
+    required this.id,
+  }) : super(key: key);
+  String getUserInfo() {
+    return this.user;
+  }
 
   @override
-  State<Hompage> createState() => _HompageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final _advancedDrawerController = AdvancedDrawerController();
   static int pageIndex = 0;
-  final pages = [
-    const Responsive(
-      phone: OnBody_Home(),
-      mobile: NoBodyHome(),
-      tablet: Center(),
-      desktop: Center(),
-    ),
-    const On_property(),
-    const On_User(),
-    // const Page3(),
-    // const Page4(),
-  ];
+  List pages = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    pages = [
+      NoBodyHome(
+        id: widget.id,
+      ),
+      On_property(
+        username: widget.user,
+        email: widget.email,
+        first_name: widget.first_name,
+        last_name: widget.last_name,
+        gender: widget.gender,
+        from: widget.from,
+        tel: widget.tel,
+        id: widget.id,
+      ),
+      Account(
+        username: widget.user,
+        email: widget.email,
+        first_name: widget.first_name,
+        last_name: widget.last_name,
+        gender: widget.gender,
+        from: widget.from,
+        tel: widget.tel,
+        id: widget.id,
+      ),
+    ];
+    print("widget id = " + widget.id);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
@@ -60,19 +102,18 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                GFAvatar(
+                const GFAvatar(
                   size: 140,
-                  backgroundImage: NetworkImage(
-                      "https://kfa.com.kh/wp-content/uploads/2022/10/Rithy-Noun-photo-300x300.jpg"),
+                  backgroundImage: AssetImage("assets/images/profile1.webp"),
                 ),
                 Container(
                   height: 100.0,
                   // clipBehavior: Clip.antiAlias,
-                  child: const Text("FOUNDER & CHAIRMAN/CEO'S MESSAGE",
+                  child: Text(widget.user,
                       style: TextStyle(
                         //color: Color.fromRGBO(169, 203, 56, 1),
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: MediaQuery.of(context).textScaleFactor * 16,
                         fontWeight: FontWeight.bold,
                       )),
                 ),
@@ -89,12 +130,12 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
                 ListTile(
                   onTap: () {},
                   leading: Icon(Icons.favorite),
-                  title: Text('Favourites'),
+                  title: Text('Favourites '),
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: Icon(Icons.settings),
-                  title: Text('Settings'),
+                  leading: const Icon(Icons.settings),
+                  title: const Text('Settings'),
                 ),
                 const Spacer(),
                 DefaultTextStyle(
@@ -106,7 +147,7 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
                     margin: const EdgeInsets.symmetric(
                       vertical: 16.0,
                     ),
-                    child: const Text('Terms of Service | Privacy Policy'),
+                    child: const Text('info@kfa.com.kh | (855) 23 999 855'),
                   ),
                 ),
               ],
@@ -132,7 +173,35 @@ class _HompageState extends State<Hompage> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        body: pages[pageIndex],
+        body: SingleChildScrollView(
+          child: Responsive(
+            mobile: pages[pageIndex],
+            tablet: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 500,
+                        child: pages[pageIndex],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            desktop: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: pages[pageIndex],
+                )
+              ],
+            ),
+            phone: pages[pageIndex],
+          ),
+        ),
         bottomNavigationBar: buildMyNavBar(context),
       ),
     );

@@ -7,8 +7,11 @@ import 'contants.dart';
 typedef OnChangeCallback = void Function(dynamic value);
 
 class DateComponents extends StatefulWidget {
-  const DateComponents({Key? key, required this.date}) : super(key: key);
+  const DateComponents({Key? key, required this.date, this.date1, this.Label})
+      : super(key: key);
   final OnChangeCallback date;
+  final String? date1;
+  final String? Label;
   @override
   State<DateComponents> createState() => _DateComponentsState();
 }
@@ -36,7 +39,8 @@ class _DateComponentsState extends State<DateComponents> {
               Icons.calendar_today,
               color: kImageColor,
             ), //icon of text field
-            labelText: "Choose Date",
+            labelText: ((widget.Label == null) ? widget.Label : widget.date1),
+
             fillColor: kwhite,
             filled: true,
             focusedBorder: OutlineInputBorder(

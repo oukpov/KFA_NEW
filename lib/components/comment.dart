@@ -13,8 +13,19 @@ class CommentAndOption extends StatefulWidget {
   final OnChangeCallback value;
   final FormFieldSetter<String> comment;
   final OnChangeCallback id;
+  final String? optointpye;
+  final String? label;
+  final String? Label1;
+  final String? commente;
   const CommentAndOption(
-      {Key? key, required this.value, required this.comment, required this.id})
+      {Key? key,
+      this.commente,
+      required this.value,
+      required this.comment,
+      required this.id,
+      this.optointpye,
+      this.label,
+      this.Label1})
       : super(key: key);
 
   @override
@@ -72,7 +83,9 @@ class _CommentAndOptionState extends State<CommentAndOption> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
-                labelText: 'OptionType',
+                labelText: ((widget.optointpye == null)
+                    ? widget.label
+                    : widget.optointpye),
                 hintText: 'Select one',
                 prefixIcon: Icon(
                   Icons.my_library_books_rounded,
@@ -102,7 +115,10 @@ class _CommentAndOptionState extends State<CommentAndOption> {
             height: 55,
             padding: EdgeInsets.only(right: 30),
             child: FormSh(
-              label: 'Comment',
+              // label: 'comment',
+              label: widget.commente!,
+              // label: widget.commente.toString(),
+              //  label: ((widget.commente ==null)? widget.Label1 :widget.commente),
               onSaved: widget.comment,
               iconname: Icon(
                 Icons.comment_sharp,

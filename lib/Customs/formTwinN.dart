@@ -9,10 +9,16 @@ class FormTwinN extends StatefulWidget {
   final String Label2;
   final Widget icon1;
   final Widget icon2;
+  final String? ower;
+  final String? Contact;
+  final String? bankoff;
   final FormFieldSetter<String> onSaved1;
   final FormFieldSetter<String> onSaved2;
   const FormTwinN({
     Key? key,
+    this.bankoff,
+    this.Contact,
+    this.ower,
     required this.Label1,
     required this.Label2,
     required this.icon1,
@@ -29,58 +35,88 @@ class _FormTwinNState extends State<FormTwinN> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-          child: TextFormField(
-            //controller: email,
-            onSaved: widget.onSaved1,
-            decoration: InputDecoration(
-              fillColor: kwhite,
-              filled: true,
-              labelText: widget.Label1,
-              prefixIcon: widget.icon1,
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 1,
-                  color: kPrimaryColor,
+        Expanded(
+          child: SizedBox(
+            height: 55,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+              child: TextFormField(
+                //controller: email,
+                onSaved: widget.onSaved1,
+                decoration: InputDecoration(
+                  fillColor: kwhite,
+                  filled: true,
+                  labelText:
+                      ((widget.ower == null) ? widget.Label1 : widget.ower),
+                  // labelText: (((widget.ower == null) &&
+                  //         (widget.bankoff == null))
+                  //     ? widget.Label1
+                  //     : ((widget.ower != null) && (widget.bankoff == null))
+                  //         ? widget.ower
+                  //         : ((widget.ower == null) && (widget.bankoff != null))
+                  //             ? widget.bankoff
+                  //             : widget.Label1),
+
+                  //    labelText: (((widget.ower == null) && (widget.bankoff == null)) ? widget.Label1:
+                  // ((widget.ower != null) && (widget.bankoff == null))? widget.ower :widget.bankoff),
+                  //  ((widget.ower == null) && (widget.bankoff != null))? widget.bankoff: widget.Label1),
+                  prefixIcon: widget.icon1,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: kPrimaryColor,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(10.0),
               ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
-          child: TextFormField(
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              // for below version 2 use this
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              // for version 2 and greater youcan also use this
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onSaved: widget.onSaved2,
-            decoration: InputDecoration(
-              fillColor: kwhite,
-              filled: true,
-              labelText: widget.Label2,
-              prefixIcon: widget.icon2,
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  width: 1,
-                  color: kPrimaryColor,
+        SizedBox(
+          width: 10.0,
+        ),
+        Expanded(
+          child: SizedBox(
+            height: 55,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 30, 0),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  // for below version 2 use this
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  // for version 2 and greater youcan also use this
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                onSaved: widget.onSaved2,
+                decoration: InputDecoration(
+                  fillColor: kwhite,
+                  filled: true,
+                  labelText: ((widget.Contact == null)
+                      ? widget.Label2
+                      : widget.Contact),
+                  prefixIcon: widget.icon2,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: kPrimaryColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: kPrimaryColor,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(10.0),
               ),
             ),
           ),
@@ -89,73 +125,3 @@ class _FormTwinNState extends State<FormTwinN> {
     );
   }
 }
-
-//  Expanded(
-//           child: SizedBox(
-//             height: 55,
-//             child: Padding(
-//               padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-//               child: TextFormField(
-//                 //controller: email,
-//                 onSaved: widget.onSaved1,
-//                 decoration: InputDecoration(
-//                   fillColor: kwhite,
-//                   filled: true,
-//                   labelText: widget.Label1,
-//                   prefixIcon: widget.icon1,
-//                   focusedBorder: OutlineInputBorder(
-//                     borderSide:
-//                         const BorderSide(color: kPrimaryColor, width: 2.0),
-//                     borderRadius: BorderRadius.circular(10.0),
-//                   ),
-//                   enabledBorder: OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       width: 1,
-//                       color: kPrimaryColor,
-//                     ),
-//                     borderRadius: BorderRadius.circular(10.0),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),
-//         SizedBox(
-//           width: 10.0,
-//         ),
-//         Expanded(
-//           child: SizedBox(
-//             height: 55,
-//             child: Padding(
-//               padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-//               child: TextFormField(
-//                 keyboardType: TextInputType.number,
-//                 inputFormatters: <TextInputFormatter>[
-//                   // for below version 2 use this
-//                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-//                   // for version 2 and greater youcan also use this
-//                   FilteringTextInputFormatter.digitsOnly
-//                 ],
-//                 onSaved: widget.onSaved2,
-//                 decoration: InputDecoration(
-//                   fillColor: kwhite,
-//                   filled: true,
-//                   labelText: widget.Label2,
-//                   prefixIcon: widget.icon2,
-//                   focusedBorder: OutlineInputBorder(
-//                     borderSide:
-//                         const BorderSide(color: kPrimaryColor, width: 2.0),
-//                     borderRadius: BorderRadius.circular(10.0),
-//                   ),
-//                   enabledBorder: OutlineInputBorder(
-//                     borderSide: BorderSide(
-//                       width: 1,
-//                       color: kPrimaryColor,
-//                     ),
-//                     borderRadius: BorderRadius.circular(10.0),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),

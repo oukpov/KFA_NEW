@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 class FormS extends StatelessWidget {
   final String label;
   final Widget iconname;
+  final String? addresse1;
   final FormFieldSetter<String> onSaved;
   const FormS({
     Key? key,
+    this.addresse1,
     required this.label,
     required this.iconname,
     required this.onSaved,
@@ -24,7 +26,7 @@ class FormS extends StatelessWidget {
         decoration: InputDecoration(
           fillColor: kwhite,
           filled: true,
-          labelText: label,
+          labelText: ((addresse1 == null) ? label : addresse1),
           prefixIcon: iconname,
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),

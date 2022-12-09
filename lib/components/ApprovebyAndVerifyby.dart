@@ -8,10 +8,20 @@ typedef OnChangeCallback = void Function(dynamic value);
 
 class ApprovebyAndVerifyby extends StatefulWidget {
   const ApprovebyAndVerifyby(
-      {Key? key, required this.approve, required this.verify})
+      {Key? key,
+      this.approvee,
+      required this.approve,
+      required this.verify,
+      this.verifye,
+      this.label,
+      this.Label1})
       : super(key: key);
   final OnChangeCallback approve;
   final OnChangeCallback verify;
+  final String? verifye;
+  final String? label;
+  final String? Label1;
+  final String? approvee;
   @override
   State<ApprovebyAndVerifyby> createState() => _ApprovebyAndVerifybyState();
 }
@@ -67,7 +77,8 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
-                labelText: 'Verify by',
+                labelText:
+                    ((widget.verifye == null) ? widget.label : widget.verifye),
                 hintText: 'Select one',
                 prefixIcon: Icon(
                   Icons.person_sharp,
@@ -124,7 +135,9 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
               decoration: InputDecoration(
                 fillColor: kwhite,
                 filled: true,
-                labelText: 'Approve by',
+                labelText: ((widget.approvee == null)
+                    ? widget.Label1
+                    : widget.approvee),
                 hintText: 'Select one',
                 prefixIcon: Icon(
                   Icons.person_outlined,
