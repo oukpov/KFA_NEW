@@ -98,6 +98,13 @@ class _On_propertyState extends State<On_property> {
         children: [
           for (int i = 0; i < optionIconList.length; i++)
             InkWell(
+              onTap: (){
+                setState(() {
+                  if(i==0){
+                    
+                  }
+                });
+              },
               child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.07,
