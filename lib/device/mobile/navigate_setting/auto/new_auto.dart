@@ -32,7 +32,8 @@ class _NewAutoState extends State<NewAuto> {
                     color: Colors.green,
                      onPressed: (){},
                      text: "Edit",
-                      icon: Icon(Icons.edit),
+                     shape: GFButtonShape.pills,
+                      icon: Icon(Icons.edit,color: Colors.white,),
                       ),
                   ),
                   Container(
@@ -40,7 +41,8 @@ class _NewAutoState extends State<NewAuto> {
                   child:  GFButton(
                      onPressed: (){},
                      text: "Save",
-                      icon: Icon(Icons.save_alt),
+                     shape: GFButtonShape.pills,
+                      icon: Icon(Icons.save_alt,color: Colors.white,),
                       ),
                   ),
                 ],
