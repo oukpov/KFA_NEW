@@ -1,6 +1,9 @@
+import 'package:admin/device/mobile/navigate_setting/auto/menu_auto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
+import '../navigate_home/AutoVerbal/menu.dart';
 
 class On_property extends StatefulWidget {
   final String username;
@@ -100,8 +103,8 @@ class _On_propertyState extends State<On_property> {
             InkWell(
               onTap: (){
                 setState(() {
-                  if(i==0){
-                    
+                  if(i==2){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MenuAuto()));
                   }
                 });
               },
@@ -117,14 +120,16 @@ class _On_propertyState extends State<On_property> {
                       ),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
+                          bottomRight: Radius.circular(20)
+                          ),
                       boxShadow: [
                         BoxShadow(
                             spreadRadius: 2,
                             blurRadius: 2,
                             color: Color.fromARGB(157, 103, 94, 91),
                             blurStyle: BlurStyle.outer)
-                      ]),
+                      ]
+                      ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -142,7 +147,8 @@ class _On_propertyState extends State<On_property> {
                         width: 60,
                       ),
                     ],
-                  )),
+                  )
+                  ),
             ),
         ],
       ),

@@ -1,16 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class AutoList extends StatefulWidget {
+  const AutoList({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<AutoList> createState() => _AutoListState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _AutoListState extends State<AutoList> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Column(
+        children: [
+          
+        ],
+      ),
+    );
   }
 }

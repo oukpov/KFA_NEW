@@ -29,7 +29,7 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlueAccent[800],
-        title: Text(
+        title: const Text(
           " Auto Verbal",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
@@ -72,8 +72,10 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                             spreadRadius: 1.5,
                             blurRadius: 2,
                             color: Color.fromARGB(157, 103, 94, 91),
-                            blurStyle: BlurStyle.outer)
-                      ]),
+                            blurStyle: BlurStyle.outer
+                            )
+                      ]
+                      ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
