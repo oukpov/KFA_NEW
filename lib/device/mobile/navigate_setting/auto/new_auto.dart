@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 class NewAuto extends StatefulWidget {
   const NewAuto({super.key});
 
@@ -21,6 +22,30 @@ class _NewAutoState extends State<NewAuto> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(2),
+                  child:  GFButton(
+                    color: Colors.green,
+                     onPressed: (){},
+                     text: "Edit",
+                      icon: Icon(Icons.edit),
+                      ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(2),
+                  child:  GFButton(
+                     onPressed: (){},
+                     text: "Save",
+                      icon: Icon(Icons.save_alt),
+                      ),
+                  ),
+                ],
+              ),
+             ),
             Container(
               child: TextFormField(
                          decoration: const InputDecoration(
