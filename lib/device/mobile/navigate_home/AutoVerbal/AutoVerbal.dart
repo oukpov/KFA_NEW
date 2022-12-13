@@ -435,7 +435,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               child: pw.BarcodeWidget(
                   barcode: pw.Barcode.qrCode(),
                   data:
-                      "https://www.google.com/maps/@${data_pdf.elementAt(i).latlongLa},${data_pdf.elementAt(i).latlongLog},15z"),
+                      "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLog}&long=${data_pdf.elementAt(i).latlongLa}"),
             ),
           ],
         ),
@@ -678,7 +678,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("${data_pdf.elementAt(i).latlongLa}",
+                        child: pw.Text("${data_pdf.elementAt(i).latlongLog}",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -703,7 +703,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
-                            "${data_pdf.elementAt(i).latlongLog.toString()} ",
+                            "${data_pdf.elementAt(i).latlongLa.toString()} ",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
