@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'new_auto.dart';
 class MenuAuto extends StatefulWidget {
   const MenuAuto({super.key});
 
@@ -30,8 +32,8 @@ class _MenuAutoState extends State<MenuAuto> {
             InkWell(
             onTap: (){
               setState(() {
-                  if(i==2){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MenuAuto()));
+                  if(i==0){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewAuto()));
                   }
                 });
             },
