@@ -15,244 +15,131 @@ class _AutoListState extends State<AutoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: ListView(
-      //   children: [
-      //     Container(
-      //       margin: EdgeInsets.all(20),
-      //       height: 200,
-      //       decoration: BoxDecoration(
-      //           borderRadius: BorderRadius.circular(10), color: Colors.red),
-      //       child: Column(
-      //         children: [
-      //           Padding(
-      //             padding: const EdgeInsets.all(8.0),
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //               children: [
-      //                 Text(
-      //                   'Commune',
-      //                   style: TextStyle(
-      //                       fontSize: 20, fontWeight: FontWeight.bold),
-      //                 ),
-      //                 Text(
-      //                   'Phum Thum',
-      //                   style: TextStyle(
-      //                       fontSize: 20, fontWeight: FontWeight.bold),
-      //                 )
-      //               ],
-      //             ),
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //             children: [
-      //               Text(
-      //                 'Commune',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               ),
-      //               Text(
-      //                 'Phum Thum',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               )
-      //             ],
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //             children: [
-      //               Text(
-      //                 'Commune',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               ),
-      //               Text(
-      //                 'Phum Thum',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               )
-      //             ],
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //             children: [
-      //               Text(
-      //                 'Commune',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               ),
-      //               Text(
-      //                 'Phum Thum',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               )
-      //             ],
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //             children: [
-      //               Text(
-      //                 'Commune',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               ),
-      //               Text(
-      //                 'Phum Thum',
-      //                 style:
-      //                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      //               )
-      //             ],
-      //           ),
-      //           Divider(
-      //             height: 10,
-      //           ),
-      //           Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //             children: [
-      //               IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
-      //               IconButton(onPressed: () {}, icon: Icon(Icons.delete))
-      //             ],
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
-      body: Column(
-        
-        children: [
-          GFCard(
-            borderRadius: BorderRadius.circular(20),
-            elevation: 15,
-            color: Colors.blue[50],
-            title: GFListTile(
-              title: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Commune',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+        body: ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            GFCard(
+              borderRadius: BorderRadius.circular(80),
+              elevation: 15,
+              color: Colors.blue[50],
+              title: GFListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Commune',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Distruct',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Privince',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Main Road Max value',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Sub Road Min Value',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Sub Road Max Value',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Phum Thum',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Kien Svay',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Kandal Province',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '20' + '\$',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '30 ' + '\$',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '111' + '\$',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        height: 1,
+                        thickness: 7,
+                      ),
                     ],
                   ),
+                ),
+              ),
+
+              // content: Text("Some quick example text to build on the card"),
+              buttonBar: GFButtonBar(
+                children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Deistuct',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                    children: [
+                      GFButton(
+                        onPressed: () {},
+                        text: 'Edit',
+                        color: Color.fromARGB(255, 77, 161, 80),
                       ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Province',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                      GFButton(
+                        onPressed: () {},
+                        text: 'Delete',
+                        color: Color.fromARGB(255, 194, 29, 29),
                       ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Main Road Max Value',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Sub Road Min value',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Sub Road Max Value',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        'Commune',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Phum Thum',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
                     ],
                   ),
                 ],
               ),
             ),
-            // content: Text("Some quick example text to build on the card"),
-            buttonBar: GFButtonBar(
-              children: <Widget>[
-                GFButton(
-                  onPressed: () {},
-                  text: 'Edit',
-                  color: Color.fromARGB(255, 77, 161, 80),
-                ),
-                GFButton(
-                  onPressed: () {},
-                  text: 'Delete',
-                  color: Color.fromARGB(255, 194, 29, 29),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+          ],
+        );
+      },
+    ));
   }
 }
