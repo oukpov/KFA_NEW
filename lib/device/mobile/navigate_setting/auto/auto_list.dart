@@ -124,12 +124,14 @@ class _AutoListState extends State<AutoList> {
                     children: [
                       GFButton(
                         onPressed: () {},
+                        icon: Icon(Icons.edit),
                         text: 'Edit',
                         color: Color.fromARGB(255, 77, 161, 80),
                       ),
                       GFButton(
                         onPressed: () {},
                         text: 'Delete',
+                        icon: Icon(Icons.delete),
                         color: Color.fromARGB(255, 194, 29, 29),
                       ),
                     ],
