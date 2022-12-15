@@ -158,8 +158,8 @@ class _MinmaxState extends State<Minmax> {
 
   void minApi() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/min_max/min'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/min_max/min'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
@@ -172,8 +172,8 @@ class _MinmaxState extends State<Minmax> {
 
   void maxApi() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/min_max/max'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/min_max/max'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

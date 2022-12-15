@@ -36,7 +36,7 @@ class _CodeState extends State<Code> {
       loading = true; //make loading true to show progressindicator
     });
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/verbal?verbal_published=0'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verbal?verbal_published=0'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

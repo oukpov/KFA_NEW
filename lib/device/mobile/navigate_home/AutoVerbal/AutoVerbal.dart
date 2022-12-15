@@ -23,8 +23,8 @@ class Show_autoVerbals extends StatefulWidget {
 
 class _Show_autoVerbalState extends State<Show_autoVerbals> {
   Future<List<AutoVerbal_List>> fetchData() async {
-    final response = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/list'));
+    final response = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       return jsonResponse
@@ -40,7 +40,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     final response = await http
         // ignore: unnecessary_brace_in_string_interps
         .delete(Uri.parse(
-            'https://kfahrm.cc/Laravel/public/api/autoverbal/delete/${verbalIds}'));
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('${verbalIds} deleted successfully')),
@@ -1205,7 +1205,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     double x = 0, n = 0;
     var jsonData;
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/autoverbal/list_land?verbal_landid=$i'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list_land?verbal_landid=$i'));
     if (rs.statusCode == 200) {
       jsonData = jsonDecode(rs.body);
       land = jsonData;

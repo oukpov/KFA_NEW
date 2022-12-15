@@ -117,8 +117,8 @@ class _CommentAndOptionState extends State<CommentAndOption> {
 
   void Load() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/options'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/options'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

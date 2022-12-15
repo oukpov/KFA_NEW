@@ -327,7 +327,8 @@ class _LoginState extends State<Login> {
   void Load(String token) async {
     setState(() {});
     var rs = await http.get(
-      Uri.parse('https://kfahrm.cc/Laravel/public/api/user'),
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/user'),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",

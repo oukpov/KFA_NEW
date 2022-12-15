@@ -10,13 +10,14 @@ import 'dart:convert';
 class APIservice {
   // ទាញData from https://kfahrm.cc/Laravel/public/api/login
   Future<LoginReponseModel> login(LoginRequestModel requestModel) async {
-    final response =
-        await http.post(Uri.parse('https://kfahrm.cc/Laravel/public/api/login'),
-            headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: requestModel.toJson());
+    final response = await http.post(
+        Uri.parse(
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/login'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: requestModel.toJson());
 
     if (response.statusCode == 200 || response.statusCode == 422) {
       return LoginReponseModel.fromJson(json.decode(response.body));
@@ -30,7 +31,8 @@ class APIservice {
   Future<RegisterReponseModel> register(
       RegisterRequestModel requestModel) async {
     final response = await http.post(
-        Uri.parse('https://kfahrm.cc/Laravel/public/api/register'),
+        Uri.parse(
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/register'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -49,7 +51,8 @@ class APIservice {
   Future<AutoVerbalReponseModel> saveAutoVerbal(
       AutoVerbalRequestModel requestModel) async {
     final response = await http.post(
-      Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/save'),
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/save'),
       headers: {
         "Accept": "application/json;charset=UTF-8",
         "Content-Type": "application/json"

@@ -157,8 +157,8 @@ class _LandSizeState extends State<LandSize> {
 
   void Load() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/landsize/min'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/landsize/min'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
@@ -172,8 +172,8 @@ class _LandSizeState extends State<LandSize> {
 
   void Load_() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/landsize/max'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/landsize/max'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

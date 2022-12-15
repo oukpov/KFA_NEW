@@ -93,8 +93,8 @@ class _AutoVerbalTypeDropdownState extends State<AutoVerbalTypeDropdown> {
 
   void Load() async {
     setState(() {});
-    var rs = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/autoverbal/type'));
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/type'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

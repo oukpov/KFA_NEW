@@ -153,7 +153,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
   void LoadApprove() async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/approve?approve_published=0'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/approve?approve_published=0'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
@@ -167,7 +167,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
   void LoadVerify() async {
     setState(() {});
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/verify_by?agenttype_published=0'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/verify_by?agenttype_published=0'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

@@ -49,7 +49,9 @@ class ImageController extends GetxController {
 
   Future<http.StreamedResponse> updateProfile(PickedFile? data) async {
     http.MultipartRequest request = http.MultipartRequest(
-        'POST', Uri.parse("https://kfahrm.cc/Laravel/public/api/upload"));
+        'POST',
+        Uri.parse(
+            "https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/upload"));
     // request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
 
     if (GetPlatform.isMobile && data != null) {

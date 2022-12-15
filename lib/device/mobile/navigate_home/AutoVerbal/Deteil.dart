@@ -253,7 +253,7 @@ class _DetailState extends State<Detail> {
     var code = widget.code;
     print("hii" + code);
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/autoverbal/list?verbal_id=$code'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list?verbal_id=$code'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 
@@ -266,7 +266,7 @@ class _DetailState extends State<Detail> {
 
   void get_user() async {
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/autoverbal/list?verbal_id=$code'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list?verbal_id=$code'));
   }
 }
 

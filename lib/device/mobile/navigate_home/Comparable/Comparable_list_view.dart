@@ -21,15 +21,15 @@ class _ComparableListState extends State<ComparableList> {
   // A function that converts a response body into a List<Photo>.
   static List<String> Idcom = [];
   Future<Comparable> com_data() async {
-    final response = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/comparable/list'));
+    final response = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable/list'));
     final data = jsonDecode(response.body);
     return Comparable.fromJson(data);
   }
 
   Future<properties> com_data_pty() async {
-    final response = await http
-        .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/property'));
+    final response = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/property'));
     final data = jsonDecode(response.body);
     return properties.fromJson(data);
   }

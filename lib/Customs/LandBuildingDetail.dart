@@ -318,7 +318,7 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
     var id = widget.id;
     //print(id);
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/autoverbal/list_land?verbal_landid=$id'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list_land?verbal_landid=$id'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
 

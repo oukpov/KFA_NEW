@@ -441,7 +441,7 @@ class _HomePageState extends State<HomePage> {
 
   void Load() async {
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/laravel/public/api/comparable/list?page=100'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/comparable/list?page=100'));
     if (rs.statusCode == 200) {
       var jsonData = jsonDecode(rs.body);
       setState(() {
@@ -466,7 +466,8 @@ class _HomePageState extends State<HomePage> {
       isApiCallProcess = true;
     });
     final rs = await http.post(
-        Uri.parse('https://kfahrm.cc/Laravel/public/api/map/map_action'),
+        Uri.parse(
+            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/map/map_action'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
