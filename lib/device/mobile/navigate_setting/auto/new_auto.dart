@@ -89,7 +89,7 @@ class _NewAutoState extends State<NewAuto> {
                                   )
             ),
             SizedBox(height: 10,),
-            Divider(height: 5,color: Colors.black,thickness: 2,),
+            Divider(height: 5,color: Colors.blue,thickness: 2,),
             Container(
               
               child: TextFormField(
