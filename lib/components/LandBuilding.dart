@@ -488,7 +488,7 @@ class _LandBuildingState extends State<LandBuilding> {
       isApiCallProcess = true;
     });
     var rs = await http.get(Uri.parse(
-        'https://kfahrm.cc/Laravel/public/api/autoverbal/type?autoverbal_id=$autoverbalTypeValue'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/type?autoverbal_id=$autoverbalTypeValue'));
     //  if (rs.statusCode == 200) {
     var jsonData = jsonDecode(rs.body);
     setState(() {
