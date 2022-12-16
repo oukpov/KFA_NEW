@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'dart:convert';
 import 'package:admin/Customs/formVLDN.dart';
@@ -236,8 +236,6 @@ class _LandBuildingState extends State<LandBuilding> {
                                                 calLs(area);
                                                 Navigator.of(context).pop();
                                               }
-
-                                              ;
                                             } else {
                                               if (_formKey.currentState!
                                                   .validate()) {
@@ -248,7 +246,6 @@ class _LandBuildingState extends State<LandBuilding> {
                                               }
                                             }
                                           }
-                                          ;
                                         },
                                       ),
                                     )

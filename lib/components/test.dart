@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, avoid_print, prefer_const_constructors
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 

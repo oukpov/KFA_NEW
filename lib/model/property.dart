@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, unnecessary_new, prefer_collection_literals, unnecessary_this, prefer_void_to_null, unnecessary_question_mark
+
 class properties {
   List<Property>? property;
 

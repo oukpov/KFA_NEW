@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_question_mark, unnecessary_new, prefer_collection_literals, unnecessary_this, prefer_void_to_null
+
 class Comparable {
   int? currentPage;
   List<Data>? data;
@@ -9,6 +11,7 @@ class Comparable {
   String? nextPageUrl;
   String? path;
   int? perPage;
+
   Null? prevPageUrl;
   int? to;
   int? total;

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unnecessary_import, implementation_imports, non_constant_identifier_names, unused_field, must_call_super, prefer_const_constructors, unnecessary_string_interpolations
+
 import 'package:admin/data/data.dart';
 import 'package:admin/model/comparable.dart';
 import 'package:admin/model/property.dart';

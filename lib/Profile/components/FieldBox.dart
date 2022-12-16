@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types
+
 import 'package:flutter/material.dart';
 
 class Field_box extends StatelessWidget {
@@ -6,7 +8,8 @@ class Field_box extends StatelessWidget {
   //final icon;
   const Field_box({
     Key? key,
-    required this.name, required this.email,
+    required this.name,
+    required this.email,
   }) : super(key: key);
 
   @override

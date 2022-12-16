@@ -1,5 +1,5 @@
 // ignore: import_of_legacy_library_into_null_safe
-// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names, unused_import, use_key_in_widget_constructors, library_private_types_in_public_api, unused_local_variable, avoid_print
 
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -38,6 +38,7 @@ class _HomeMapState extends State<HomeMap> {
   void initState() {
     getAddress(latLng); //call convert to address
     super.initState();
+    // ignore: unnecessary_new
     requestModel = new SearchRequestModel(
       property_type_id: "12",
       num: "5",

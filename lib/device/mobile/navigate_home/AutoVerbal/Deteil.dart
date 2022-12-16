@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_const_constructors, prefer_is_empty, non_constant_identifier_names, avoid_print, prefer_interpolation_to_compose_strings, unused_local_variable
+
 import 'dart:convert';
 
 import 'package:admin/Customs/LandBuildingDetail.dart';

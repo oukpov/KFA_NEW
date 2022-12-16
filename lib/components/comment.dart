@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, non_constant_identifier_names, avoid_print
 
 import 'package:admin/Customs/formSh.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +49,7 @@ class _CommentAndOptionState extends State<CommentAndOption> {
 
                   widget.value(newValue.split(" ")[0]);
                   widget.id(newValue.split(" ")[1]);
-                  // ignore: avoid_print
+
                   print(_list.toString());
                   print(newValue);
                 });

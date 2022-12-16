@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: import_of_legacy_library_into_null_safe, deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables, camel_case_types, unused_field, prefer_typing_uninitialized_variables
 
 import 'dart:io';
 

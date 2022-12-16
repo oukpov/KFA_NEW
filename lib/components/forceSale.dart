@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_const_constructors_in_immutables
 
 import 'package:admin/Customs/formShN.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class _ForceSaleAndValuationState extends State<ForceSaleAndValuation> {
   @override
   void initState() {
     widget.value(Value);
-    // TODO: implement initState
+
     super.initState();
   }
 

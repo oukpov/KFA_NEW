@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, avoid_print
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -45,7 +45,7 @@ class _LandSizeState extends State<LandSize> {
               onChanged: (String? newValue) {
                 setState(() {
                   Valueland = newValue!;
-                  // ignore: avoid_print
+
                   widget.land_min(newValue);
                   print(newValue);
                 });
@@ -107,7 +107,7 @@ class _LandSizeState extends State<LandSize> {
                 setState(() {
                   Value = newValue!;
                   widget.land_max(newValue);
-                  // ignore: avoid_print
+
                   print(newValue);
                 });
               },

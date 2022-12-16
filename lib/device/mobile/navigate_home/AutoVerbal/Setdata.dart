@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
 
@@ -144,7 +144,6 @@ class _AddState extends State<Add> {
                         print(value.message);
                       }
                     }
-                    ;
                   },
                 );
               }

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers, unused_element
+
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:pdf/widgets.dart' as pw;

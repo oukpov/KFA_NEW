@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last, avoid_print
 
 import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/Customs/formTwin.dart';
@@ -216,7 +216,7 @@ class _RegisterState extends State<Register> {
                   onChanged: (String? newValue) {
                     setState(() {
                       genderValue = newValue!;
-                      // ignore: avoid_print
+
                       print(newValue);
                     });
                   },
@@ -410,7 +410,7 @@ class _RegisterState extends State<Register> {
                   onChanged: (String? newValue) {
                     setState(() {
                       fromValue = newValue!;
-                      // ignore: avoid_print
+
                       print(newValue);
                     });
                   },
@@ -522,7 +522,7 @@ class _RegisterState extends State<Register> {
                         print(value.message);
                       }
                     });
-                    // ignore: avoid_print
+
                     print(requestModel.toJson());
                   }
                 },

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:admin/device/mobile/navigate_setting/auto/auto_list.dart';
 import 'package:flutter/material.dart';
 

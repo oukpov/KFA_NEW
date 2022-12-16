@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, unused_import, avoid_print, non_constant_identifier_names
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -51,7 +51,7 @@ class _BankDropdownState extends State<BankDropdown> {
               onChanged: (newValue) {
                 setState(() {
                   bankvalue = newValue as String;
-                  // ignore: avoid_print
+
                   widget.bank(bankvalue);
                   branch(newValue.toString());
                   print(newValue);
@@ -137,10 +137,9 @@ class _BankDropdownState extends State<BankDropdown> {
                 setState(() {
                   branchvalue = newValue!;
                   widget.bankbranch(branchvalue);
-                  // ignore: avoid_print
+
                   print(newValue);
                 });
-                ;
               },
               items: _branch
                   .map<DropdownMenuItem<String>>(

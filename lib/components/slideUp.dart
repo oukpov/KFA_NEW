@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api, non_constant_identifier_names, use_build_context_synchronously, unnecessary_string_interpolations, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, library_private_types_in_public_api, non_constant_identifier_names, use_build_context_synchronously, unnecessary_string_interpolations, prefer_interpolation_to_compose_strings, unused_import, unused_field, unnecessary_new, prefer_collection_literals, prefer_final_fields, unused_element, sized_box_for_whitespace, sort_child_properties_last, avoid_print, unnecessary_brace_in_string_interps
 
 /*
 Name: Akshath Jain
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _getCurrentPosition();
     getAddress(latLng);
-    // ignore: unnecessary_new
+
     requestModel = new SearchRequestModel(
       property_type_id: "",
       num: "5",

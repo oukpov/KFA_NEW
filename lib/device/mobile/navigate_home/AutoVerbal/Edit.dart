@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, avoid_print
+
 import 'dart:convert';
 
 import 'package:admin/Customs/responsive.dart';
@@ -140,7 +142,6 @@ class _EditState extends State<Edit> {
                         print(value.message);
                       }
                     }
-                    ;
                   },
                 );
               }
