@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:admin/Profile/contants.dart';
+import 'package:admin/components/Map.dart';
 import 'package:admin/components/slideUp.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -15,72 +16,6 @@ class NewAuto extends StatefulWidget {
 }
 
 class _NewAutoState extends State<NewAuto> {
-  String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
-  GoogleMapController? mapController; //contrller for Google map
-  CameraPosition? cameraPosition;
-  List<MarkerId> listMarkerIds = List<MarkerId>.empty(growable: true);
-  double latitude = 11.5489; //latitude
-  double longitude = 104.9214;
-  LatLng latLng = const LatLng(11.5489, 104.9214);
-  String address = "";
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  List list = [];
-  // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
-  late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
-
-  ///converts `coordinates` to actual `address` using google map api
-  Future<void> getAddress(double lat, double lng) async {
-    try {
-      final address =
-          await geocoder.findAddressesFromCoordinates(Coordinates(lat, lng));
-      var message = address.first.addressLine;
-      if (message == null) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
-        ),
-      );
-      rethrow;
-    }
-  }
-
-  ///converts `address` to actual `coordinates` using google map api
-  Future<void> getLatLang(String adds) async {
-    try {
-      final address = await geocoder.findAddressesFromQuery(adds);
-      var message = address.first.coordinates.toString();
-      latitude = address.first.coordinates.latitude!;
-      longitude = address.first.coordinates.longitude!;
-      mapController?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
-        ),
-      );
-      rethrow;
-    }
-  }
-
-  @override
-  void initState() {
-    getAddress(latitude, longitude); //call convert to address
-    super.initState();
-    // Load();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,55 +112,27 @@ class _NewAutoState extends State<NewAuto> {
             const SizedBox(
               height: 10,
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: GoogleMap(
-                //   markers: getmarkers(),
-                markers: Set<Marker>.of(markers.values),
-                //Map widget from google_maps_flutter package
-                zoomGesturesEnabled: true, //enable Zoom in, out on map
-                initialCameraPosition: CameraPosition(
-                  //innital position in map
-                  target: LatLng(latitude, longitude), //initial position
-                  zoom: 10.0, //initial zoom level
-                ),
-                mapType: MapType.normal, //map type
-                onMapCreated: (controller) {
-                  //method called when map is created
-                  setState(() {
-                    mapController = controller;
-                  });
-                },
-                onTap: (argument) {
-                  MarkerId markerId = MarkerId('mark');
-                  listMarkerIds.add(markerId);
-                  Marker marker = Marker(
-                    markerId: MarkerId('mark'),
-                    position: argument,
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed),
-                  );
-                  setState(() {
-                    markers[markerId] = marker;
-                    // getAddress(argument);
-                  });
-                },
-                onCameraMove: (CameraPosition cameraPositiona) {
-                  cameraPosition = cameraPositiona; //when map is dragging
-                },
-                onCameraIdle: () {
-                  //when map drag stops
-                  // getAddress(cameraPosition!.target.latitude,
-                  //     cameraPosition!.target.longitude);
-                  setState(() {
-                    //get place name from lat and lang
-                  });
-                },
-              ),
-            ),
-            const Divider(
+            Divider(
               height: 5,
-              color: Colors.blue,
+              color: Colors.green[900],
+              thickness: 2,
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Check_map()));
+                });
+              },
+              child: Container(
+                  margin: const EdgeInsets.all(5),
+                  child: Image.asset("assets/gg_map.png")),
+            ),
+            Divider(
+              height: 5,
+              color: Colors.green[900],
               thickness: 2,
             ),
             Padding(
@@ -312,32 +219,159 @@ class _NewAutoState extends State<NewAuto> {
                 },
               ),
             ),
-            SizedBox(
-              height: 500,
-            ),
           ],
         ),
       ),
     );
   }
+}
 
-  // Future<void> getAddress(LatLng latLng) async {
-  //   final coordinates = Coordinates(latLng.latitude, latLng.longitude);
-  //   try {
-  //     final address = await geocoder.findAddressesFromCoordinates(coordinates);
-  //     var message = address.first.addressLine;
-  //     if (message == null) return;
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(message),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
-  //       ),
-  //     );
-  //     rethrow;
-  //   }
+class Check_map extends StatefulWidget {
+  const Check_map({super.key});
+
+  @override
+  State<Check_map> createState() => _Check_mapState();
+}
+
+class _Check_mapState extends State<Check_map> {
+  String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
+  GoogleMapController? mapController; //contrller for Google map
+  CameraPosition? cameraPosition;
+  List<MarkerId> listMarkerIds = List<MarkerId>.empty(growable: true);
+  double latitude = 11.5489; //latitude
+  double longitude = 104.9214;
+  LatLng latLng = const LatLng(11.5489, 104.9214);
+  String address = "";
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  List list = [];
+  // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
+  late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
+
+  ///converts `coordinates` to actual `address` using google map api
+  Future<void> getAddress(double lat, double lng) async {
+    try {
+      final address =
+          await geocoder.findAddressesFromCoordinates(Coordinates(lat, lng));
+      var message = address.first.addressLine;
+      if (message == null) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
+        ),
+      );
+      rethrow;
+    }
+  }
+
+  ///converts `address` to actual `coordinates` using google map api
+  Future<void> getLatLang(String adds) async {
+    try {
+      final address = await geocoder.findAddressesFromQuery(adds);
+      var message = address.first.coordinates.toString();
+      latitude = address.first.coordinates.latitude!;
+      longitude = address.first.coordinates.longitude!;
+      mapController?.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
+        ),
+      );
+      rethrow;
+    }
+  }
+
+  late List<Model> _data;
+  late MapShapeSource _mapSource;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _data = <Model>[
+      Model('India', 100, "Low"),
+      Model('United States of America', 200, "High"),
+      Model('Pakistan', 75, "Low"),
+    ];
+
+    _mapSource = MapShapeSource.asset("assets/world_map.json",
+        shapeDataField: "name",
+        dataCount: _data.length, primaryValueMapper: (int index) {
+      return _data[index].country;
+    }, shapeColorValueMapper: (int index) {
+      return _data[index].count;
+    }, shapeColorMappers: [
+      MapColorMapper(from: 0, to: 100, color: Colors.red),
+      MapColorMapper(from: 101, to: 200, color: Colors.yellow)
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: GoogleMap(
+        //   markers: getmarkers(),
+        markers: Set<Marker>.of(markers.values),
+        //Map widget from google_maps_flutter package
+        zoomGesturesEnabled: true, //enable Zoom in, out on map
+        initialCameraPosition: CameraPosition(
+          //innital position in map
+          target: LatLng(latitude, longitude), //initial position
+          zoom: 10.0, //initial zoom level
+        ),
+        mapType: MapType.normal, //map type
+        onMapCreated: (controller) {
+          //method called when map is created
+          setState(() {
+            mapController = controller;
+          });
+        },
+        onTap: (argument) {
+          MarkerId markerId = MarkerId('mark');
+          listMarkerIds.add(markerId);
+          Marker marker = Marker(
+            markerId: MarkerId('mark'),
+            position: argument,
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          );
+          setState(() {
+            markers[markerId] = marker;
+            // getAddress(argument);
+          });
+        },
+        onCameraMove: (CameraPosition cameraPositiona) {
+          cameraPosition = cameraPositiona; //when map is dragging
+        },
+        onCameraIdle: () {
+          //when map drag stops
+          // getAddress(cameraPosition!.target.latitude,
+          //     cameraPosition!.target.longitude);
+          setState(() {
+            //get place name from lat and lang
+          });
+        },
+      ),
+    );
+  }
+}
+
+class Model {
+  const Model(this.country, this.count, this.storage);
+
+  final String country;
+  final double count;
+  final String storage;
 }
