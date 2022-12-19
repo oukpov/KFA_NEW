@@ -293,30 +293,6 @@ class _Check_mapState extends State<Check_map> {
     }
   }
 
-  late List<Model> _data;
-  late MapShapeSource _mapSource;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _data = <Model>[
-      Model('India', 100, "Low"),
-      Model('United States of America', 200, "High"),
-      Model('Pakistan', 75, "Low"),
-    ];
-
-    _mapSource = MapShapeSource.asset("assets/world_map.json",
-        shapeDataField: "name",
-        dataCount: _data.length, primaryValueMapper: (int index) {
-      return _data[index].country;
-    }, shapeColorValueMapper: (int index) {
-      return _data[index].count;
-    }, shapeColorMappers: [
-      MapColorMapper(from: 0, to: 100, color: Colors.red),
-      MapColorMapper(from: 101, to: 200, color: Colors.yellow)
-    ]);
-  }
 
   @override
   Widget build(BuildContext context) {
