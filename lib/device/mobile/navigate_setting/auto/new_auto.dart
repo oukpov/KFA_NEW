@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location_geocoder/location_geocoder.dart';
 
 class NewAuto extends StatefulWidget {
   const NewAuto({super.key});
@@ -159,7 +163,6 @@ class _NewAutoState extends State<NewAuto> {
     );
   }
 }
-<<<<<<< HEAD
 
 class Check_map extends StatefulWidget {
   const Check_map({super.key});
@@ -373,5 +376,3 @@ class _Check_mapState extends State<Check_map> {
     );
   }
 }
-=======
->>>>>>> e6e86cb54aa7d1de0af2903f3b32b6a02832d12c
