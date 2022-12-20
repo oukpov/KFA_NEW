@@ -304,6 +304,7 @@ class _Check_mapState extends State<Check_map> {
   }
 
   void _setPolygons() {
+    //ខ័ណ្ឌជ្រោយចង្វា
     List<LatLng> polygonLatLongs = <LatLng>[];
     polygonLatLongs.add(LatLng(11.561098, -615.055674));
     polygonLatLongs.add(LatLng(11.563117, -615.054043));
@@ -405,6 +406,7 @@ class _Check_mapState extends State<Check_map> {
     polygonLatLongs.add(LatLng(11.567153, -615.066532));
     polygonLatLongs.add(LatLng(11.563285, -615.063613));
     polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
     _polygons.add(
       Polygon(
         polygonId: PolygonId("0"),
