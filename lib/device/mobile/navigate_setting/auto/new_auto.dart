@@ -987,7 +987,7 @@ class _Check_mapState extends State<Check_map> {
       Khan_Pou_Senchey.add(LatLng(11.567796, 104.864418));
       Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
 
-//
+// Daun Penh
 List<LatLng> Daun_Penh = <LatLng>[];
       Daun_Penh.add(LatLng(11.587316, 104.922129));
       Daun_Penh.add(LatLng(11.585695, 104.922913));
@@ -1027,6 +1027,7 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Daun_Penh.add(LatLng(11.588464, 104.916797));
       Daun_Penh.add(LatLng(11.589483, 104.921067));
       Daun_Penh.add(LatLng(11.587316, 104.922129));
+
 
     _polygons.add(
       Polygon(
@@ -1069,7 +1070,7 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Polygon(
         polygonId: PolygonId("4"),
         points: Daun_Penh,
-        fillColor: Color.fromARGB(149, 49, 85, 184),
+        fillColor: Color.fromARGB(148, 148, 184, 49),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 192, 116, 22),
       ),
