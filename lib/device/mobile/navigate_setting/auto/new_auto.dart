@@ -343,6 +343,81 @@ class _Check_mapState extends State<Check_map> {
     polygonLatLongs.add(LatLng(11.563285, -615.063613));
     polygonLatLongs.add(LatLng(11.560594, -615.060781));
 // ខ័ណ្ឌព្រែកព្នៅ
+
+    polygonLatLongs.add(LatLng(11.657274, 104.866699));
+    polygonLatLongs.add(LatLng(11.661059, 104.864558));
+    polygonLatLongs.add(LatLng(11.663604, 104.862790));
+    polygonLatLongs.add(LatLng(11.666608, 104.860697));
+///////////////////
+    polygonLatLongs.add(LatLng(11.673005, 104.855537));
+    polygonLatLongs.add(LatLng(11.678023, 104.852180));
+    polygonLatLongs.add(LatLng(11.680674, 104.850520));
+    polygonLatLongs.add(LatLng(11.685904, 104.847814));
+/////////////////////////////////////////
+    polygonLatLongs.add(LatLng(11.692053, 104.845071));
+    polygonLatLongs.add(LatLng(11.699121, 104.841679));
+    polygonLatLongs.add(LatLng(11.705935, 104.839367));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
+    polygonLatLongs.add(LatLng(11.560594, -615.060781));
     _polygons.add(
       Polygon(
         polygonId: PolygonId("0"),
