@@ -630,6 +630,83 @@ class _Check_mapState extends State<Check_map> {
     Khan_Russey_Keo.add(LatLng(11.655037, 104.868084));
     Khan_Russey_Keo.add(LatLng(11.657286, 104.866872));
 
+
+//Khan_Sen_Sok
+    List<LatLng> Khan_Sen_Sok = <LatLng>[];
+
+//1
+    Khan_Sen_Sok.add(LatLng(11.649285, 104.856372));
+    Khan_Sen_Sok.add(LatLng(11.647940, 104.861179));
+    Khan_Sen_Sok.add(LatLng(11.644158, 104.863067));
+    Khan_Sen_Sok.add(LatLng(11.642476, 104.869934));
+    Khan_Sen_Sok.add(LatLng(11.639702, 104.872423));
+    Khan_Sen_Sok.add(LatLng(11.635919, 104.874011));
+//2
+    Khan_Sen_Sok.add(LatLng(11.630371, 104.872637));
+    Khan_Sen_Sok.add(LatLng(11.625747, 104.872852));
+    Khan_Sen_Sok.add(LatLng(11.623708, 104.877701));
+    Khan_Sen_Sok.add(LatLng(11.620429, 104.878710));
+    Khan_Sen_Sok.add(LatLng(11.611812, 104.885297));
+    Khan_Sen_Sok.add(LatLng(11.608554, 104.885920));
+//3
+    Khan_Sen_Sok.add(LatLng(11.598360, 104.891391));
+    Khan_Sen_Sok.add(LatLng(11.590772, 104.896884));
+    Khan_Sen_Sok.add(LatLng(11.588543, 104.893301));
+    Khan_Sen_Sok.add(LatLng(11.585937, 104.891520));
+    Khan_Sen_Sok.add(LatLng(11.585454, 104.890554));
+    Khan_Sen_Sok.add(LatLng(11.585033, 104.889803));
+//4
+    Khan_Sen_Sok.add(LatLng(11.584318, 104.888151));
+    Khan_Sen_Sok.add(LatLng(11.570684, 104.887694));
+    Khan_Sen_Sok.add(LatLng(11.565146, 104.889901));
+    Khan_Sen_Sok.add(LatLng(11.561921, 104.891904));
+    Khan_Sen_Sok.add(LatLng(11.559321, 104.888307));
+    Khan_Sen_Sok.add(LatLng(11.554659, 104.887133));
+//5
+    Khan_Sen_Sok.add(LatLng(11.550109, 104.890054));
+    Khan_Sen_Sok.add(LatLng(11.548721, 104.886916));
+    Khan_Sen_Sok.add(LatLng(11.548058, 104.881200));
+    Khan_Sen_Sok.add(LatLng(11.547508, 104.877462));
+    Khan_Sen_Sok.add(LatLng(11.547321, 104.872371));
+    Khan_Sen_Sok.add(LatLng(11.545958, 104.865455));
+//6
+    Khan_Sen_Sok.add(LatLng(11.545746, 104.863899));
+    Khan_Sen_Sok.add(LatLng(11.545533, 104.860735));
+    Khan_Sen_Sok.add(LatLng(11.554856, 104.862862));
+    Khan_Sen_Sok.add(LatLng(11.560781, 104.862875));
+    Khan_Sen_Sok.add(LatLng(11.567693, 104.863666));
+    Khan_Sen_Sok.add(LatLng(11.566268, 104.850486));
+//7
+    Khan_Sen_Sok.add(LatLng(11.567693, 104.834512));
+    Khan_Sen_Sok.add(LatLng(11.568843, 104.830480));
+    Khan_Sen_Sok.add(LatLng(11.569343, 104.824509));
+    Khan_Sen_Sok.add(LatLng(11.579868, 104.823769));
+    Khan_Sen_Sok.add(LatLng(11.586042, 104.830021));
+    Khan_Sen_Sok.add(LatLng(11.588692, 104.831424));
+//8
+    Khan_Sen_Sok.add(LatLng(11.592167, 104.832521));
+    Khan_Sen_Sok.add(LatLng(11.595916, 104.833185));
+    Khan_Sen_Sok.add(LatLng(11.601115, 104.832419));
+    Khan_Sen_Sok.add(LatLng(11.605715, 104.832853));
+    Khan_Sen_Sok.add(LatLng(11.609614, 104.832828));
+    Khan_Sen_Sok.add(LatLng(11.613338, 104.833466));
+//9
+    Khan_Sen_Sok.add(LatLng(11.618287, 104.835430));
+    Khan_Sen_Sok.add(LatLng(11.620137, 104.838250));
+    Khan_Sen_Sok.add(LatLng(11.634858, 104.836234));
+
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+
+    //   Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
+
+
   //Khan_Pou_Senchey
       List<LatLng> Khan_Pou_Senchey = <LatLng>[];
       Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
@@ -911,45 +988,7 @@ class _Check_mapState extends State<Check_map> {
       Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
 
 //
-List<LatLng> Daun_Penh = <LatLng>[];
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
-      Daun_Penh.add(LatLng(11.585695, 104.922913));
-      Daun_Penh.add(LatLng(11.581573, 104.925674));
-      Daun_Penh.add(LatLng(11.577694, 104.927814));
-      Daun_Penh.add(LatLng(11.573502, 104.930742));
-      Daun_Penh.add(LatLng(11.567096, 104.934869));
-      Daun_Penh.add(LatLng(11.564896, 104.937084));
-      Daun_Penh.add(LatLng(11.563112, 104.939558));
-      Daun_Penh.add(LatLng(11.562101, 104.942486));
-      Daun_Penh.add(LatLng(11.563109, 104.945922));
-      Daun_Penh.add(LatLng(11.560484, 104.948308));
-      Daun_Penh.add(LatLng(11.558106, 104.951476));
-      Daun_Penh.add(LatLng(11.557132, 104.936986));
-      Daun_Penh.add(LatLng(11.557161, 104.932630));
-      Daun_Penh.add(LatLng(11.556596, 104.929158));
-      Daun_Penh.add(LatLng(11.556310, 104.924772));
-      Daun_Penh.add(LatLng(11.556179, 104.922916));
-      Daun_Penh.add(LatLng(11.555909, 104.919497));
-      Daun_Penh.add(LatLng(11.559082, 104.921682));
-      Daun_Penh.add(LatLng(11.562315, 104.919126));
-      Daun_Penh.add(LatLng(11.562321, 104.919676));
-      Daun_Penh.add(LatLng(11.566566, 104.918864));
-      Daun_Penh.add(LatLng(11.567324, 104.918514));
-      Daun_Penh.add(LatLng(11.566902, 104.918093));
-      Daun_Penh.add(LatLng(11.566933, 104.918067));
-      Daun_Penh.add(LatLng(11.571901, 104.918879));
-      Daun_Penh.add(LatLng(11.571109, 104.915673));
-      Daun_Penh.add(LatLng(11.570503, 104.905888));
-      Daun_Penh.add(LatLng(11.573725, 104.904299));
-      Daun_Penh.add(LatLng(11.577518, 104.903499));
-      Daun_Penh.add(LatLng(11.580096, 104.905703));
-      Daun_Penh.add(LatLng(11.582892, 104.907468));
-      Daun_Penh.add(LatLng(11.584302, 104.910725));
-      Daun_Penh.add(LatLng(11.586276, 104.914412));
-      Daun_Penh.add(LatLng(11.587420, 104.915685));
-      Daun_Penh.add(LatLng(11.588464, 104.916797));
-      Daun_Penh.add(LatLng(11.589483, 104.921067));
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
+
 
     _polygons.add(
       Polygon(
@@ -981,10 +1020,11 @@ List<LatLng> Daun_Penh = <LatLng>[];
     _polygons.add(
       Polygon(
         polygonId: PolygonId("3"),
-        points: Khan_Pou_Senchey,
-        fillColor: Color.fromARGB(149, 49, 85, 184),
+        points: Khan_Sen_Sok,
+        fillColor: Color.fromARGB(108, 104, 203, 228),
         strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 192, 116, 22),
+        strokeColor: Color.fromARGB(143, 43, 4, 212),
+       
       ),
     );
      _polygons.add(
