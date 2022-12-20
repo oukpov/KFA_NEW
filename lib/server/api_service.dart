@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 //import 'package:crmproject/model/property_type_models.dart';
+import 'package:admin/model/models/M_commune.dart';
+import 'package:admin/model/models/M_roadAndcommune.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:admin/model/models/login_model.dart';
 import 'package:admin/model/models/register_model.dart';
@@ -92,4 +94,47 @@ class APIservice {
   //       .map((e) => ComparableData.fromJson(e))
   //       .toList();
   // }
+
+  Future<M_CommuneReponeModel> SaveCommune(M_Commune requestModel) async {
+    final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/new_commune'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return M_CommuneReponeModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return M_CommuneReponeModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
+
+  Future<roadAndcommune_ReponeModel> RoadAndCommune(
+      roadAndcommune requestModel) async {
+    final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/new_rc'),
+      headers: {
+        "Accept": "application/json;charset=UTF-8",
+        "Content-Type": "application/json"
+      },
+      body: json.encode(
+        requestModel.toJson(),
+      ),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 422) {
+      return roadAndcommune_ReponeModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 201 || response.statusCode == 401) {
+      return roadAndcommune_ReponeModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
 }
