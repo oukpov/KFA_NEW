@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import, implementation_imports, unused_import, non_constant_identifier_names, camel_case_types, prefer_const_constructors
+
 import 'package:admin/device/mobile/navigate_setting/auto/menu_auto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -101,10 +103,11 @@ class _On_propertyState extends State<On_property> {
         children: [
           for (int i = 0; i < optionIconList.length; i++)
             InkWell(
-              onTap: (){
+              onTap: () {
                 setState(() {
-                  if(i==2){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MenuAuto()));
+                  if (i == 2) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MenuAuto()));
                   }
                 });
               },
@@ -120,16 +123,14 @@ class _On_propertyState extends State<On_property> {
                       ),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)
-                          ),
+                          bottomRight: Radius.circular(20)),
                       boxShadow: [
                         BoxShadow(
                             spreadRadius: 2,
                             blurRadius: 2,
                             color: Color.fromARGB(157, 103, 94, 91),
                             blurStyle: BlurStyle.outer)
-                      ]
-                      ),
+                      ]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -147,8 +148,7 @@ class _On_propertyState extends State<On_property> {
                         width: 60,
                       ),
                     ],
-                  )
-                  ),
+                  )),
             ),
         ],
       ),

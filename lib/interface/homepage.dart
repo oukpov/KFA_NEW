@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors_in_immutables, unnecessary_this, prefer_interpolation_to_compose_strings, avoid_print, unnecessary_const, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors
+
 import 'package:admin/Account/account.dart';
 import 'package:admin/device/mobile/navigate_home/on_home_page.dart';
 import 'package:admin/respon.dart';
@@ -42,7 +44,6 @@ class _HomePageState extends State<HomePage>
   List pages = [];
   @override
   void initState() {
-    // TODO: implement initState
     pages = [
       NoBodyHome(
         id: widget.id,

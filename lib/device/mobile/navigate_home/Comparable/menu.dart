@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import, implementation_imports, prefer_const_constructors
+
 import 'package:admin/device/mobile/navigate_home/Comparable/Comparable_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

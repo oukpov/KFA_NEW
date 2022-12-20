@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, unused_field, use_build_context_synchronously, unnecessary_new, prefer_collection_literals, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -79,7 +81,6 @@ class _Google_MapState extends State<Google_Map> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _getCurrentPosition();
     super.initState();
   }

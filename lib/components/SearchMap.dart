@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:search_map_location/search_map_location.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
@@ -26,6 +28,5 @@ class _MapSearchState extends State<MapSearch> {
         ),
       ),
     );
-    ;
   }
 }

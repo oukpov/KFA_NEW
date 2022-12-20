@@ -1,3 +1,5 @@
+// ignore_for_file: implementation_imports, camel_case_types
+
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 

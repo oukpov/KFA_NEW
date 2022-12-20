@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import, unused_import, camel_case_types, unnecessary_new, unnecessary_brace_in_string_interps, non_constant_identifier_names, unused_field, avoid_unnecessary_containers, prefer_const_constructors, avoid_print, unused_local_variable, unnecessary_string_interpolations, prefer_is_empty, prefer_typing_uninitialized_variables
+
 import 'dart:typed_data';
 
 import 'package:admin/Customs/Contants.dart';
@@ -37,10 +39,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
 //delete id
   void deleteDataId({required String verbalIds}) async {
-    final response = await http
-        // ignore: unnecessary_brace_in_string_interps
-        .delete(Uri.parse(
-            'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/delete/${verbalIds}'));
+    final response = await http.delete(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/delete/${verbalIds}'));
     if (response.statusCode == 200) {
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('${verbalIds} deleted successfully')),
@@ -67,7 +67,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     fsvN = 0;
     fx = 0;
     fn = 0;
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -825,7 +825,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                   if (land.length >= 1)
                     pw.ListView.builder(
                       itemCount: land.length,
-                      // ignore: non_constant_identifier_names
                       itemBuilder: (Context, index) {
                         return pw.Container(
                           child: pw.Row(children: [

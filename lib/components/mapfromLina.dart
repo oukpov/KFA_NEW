@@ -55,7 +55,6 @@ class _Save_ImageState extends State<Save_Image> {
                             )
                           : Text("Please select an image"),
                     ),
-
                     SizedBox(
                       height: 35,
                     ),
@@ -74,7 +73,7 @@ class _Save_ImageState extends State<Save_Image> {
                       color: Colors.grey[300],
                       child: imageController.imagePath != null
                           ? Image.network(
-                              "https://kfahrm.cc/Laravel/public" +
+                              "https://www.oneclickonedollar.com/laravel_kfa_2023/public" +
                                   imageController.imagePath!,
                               fit: BoxFit.cover,
                             )

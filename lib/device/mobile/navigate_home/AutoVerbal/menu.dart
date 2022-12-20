@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import, implementation_imports, prefer_const_constructors_in_immutables, prefer_const_constructors
+
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Setdata.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,10 +74,8 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                             spreadRadius: 1.5,
                             blurRadius: 2,
                             color: Color.fromARGB(157, 103, 94, 91),
-                            blurStyle: BlurStyle.outer
-                            )
-                      ]
-                      ),
+                            blurStyle: BlurStyle.outer)
+                      ]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

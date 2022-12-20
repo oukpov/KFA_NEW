@@ -1,4 +1,5 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: avoid_print, non_constant_identifier_names
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -38,14 +39,14 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
         Expanded(
           child: Container(
             height: 55,
-            padding: EdgeInsets.only(left: 30),
+            padding: const EdgeInsets.only(left: 30),
             child: DropdownButtonFormField<String>(
               //value: genderValue,
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
                   valueagent = newValue!;
-                  // ignore: avoid_print
+
                   widget.verify(valueagent);
                   print(newValue);
                 });
@@ -59,7 +60,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   )
                   .toList(),
               // add extra sugar..
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_drop_down,
                 color: kImageColor,
               ),
@@ -69,7 +70,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                 filled: true,
                 labelText: 'Verify by',
                 hintText: 'Select one',
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.person_sharp,
                   color: kImageColor,
                 ),
@@ -79,7 +80,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     width: 1,
                     color: kPrimaryColor,
                   ),
@@ -89,20 +90,20 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10.0,
         ),
         Expanded(
           child: Container(
             height: 55,
-            padding: EdgeInsets.only(right: 30),
+            padding: const EdgeInsets.only(right: 30),
             child: DropdownButtonFormField<String>(
               //value: genderValue,
               isExpanded: true,
               onChanged: (String? newValue) {
                 setState(() {
                   valueapp = newValue!;
-                  // ignore: avoid_print
+
                   widget.approve(valueapp);
                   print(newValue);
                 });
@@ -116,7 +117,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   )
                   .toList(),
               // add extra sugar..
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_drop_down,
                 color: kImageColor,
               ),
@@ -126,7 +127,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                 filled: true,
                 labelText: 'Approve by',
                 hintText: 'Select one',
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Icons.person_outlined,
                   color: kImageColor,
                 ),
@@ -136,7 +137,7 @@ class _ApprovebyAndVerifybyState extends State<ApprovebyAndVerifyby> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     width: 1,
                     color: kPrimaryColor,
                   ),

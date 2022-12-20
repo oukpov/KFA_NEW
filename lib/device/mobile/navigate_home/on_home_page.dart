@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_const_constructors, unnecessary_const
+
 import 'package:admin/components/Google_Map.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/menu.dart';
 import 'package:admin/device/mobile/navigate_home/Comparable/menu.dart';

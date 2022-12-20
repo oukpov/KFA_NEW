@@ -1,14 +1,7 @@
-import 'dart:collection';
-import 'dart:math';
-import 'dart:ui';
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
-import 'package:admin/Profile/contants.dart';
-import 'package:admin/components/Map.dart';
-import 'package:admin/components/slideUp.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location_geocoder/location_geocoder.dart';
 
 class NewAuto extends StatefulWidget {
   const NewAuto({super.key});
@@ -22,211 +15,151 @@ class _NewAutoState extends State<NewAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.blue,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "New Auto",
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
         ),
-        actions: [
-          GFButton(
-            onPressed: () {},
-            color: Color.fromARGB(255, 23, 11, 179),
-            text: "Save",
-            shape: GFButtonShape.standard,
-            icon: const Icon(
-              Icons.save_alt,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        physics: PageScrollPhysics(),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(left: 50, right: 50),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.travel_explore,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    child: GFButton(
+                      color: Colors.green,
+                      onPressed: () {},
+                      text: "Edit",
+                      shape: GFButtonShape.pills,
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  hintText: 'Do you want to edit commune?',
-                  labelText: 'Commune',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                  Container(
+                    padding: EdgeInsets.all(2),
+                    child: GFButton(
+                      onPressed: () {},
+                      text: "Save",
+                      shape: GFButtonShape.pills,
+                      icon: Icon(
+                        Icons.save_alt,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.travel_explore,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit District?',
-                  labelText: 'District',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit commune?',
+                labelText: 'Commune',
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.travel_explore,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit province?',
-                  labelText: 'Province',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit District?',
+                labelText: 'District',
               ),
-            ),
-            const SizedBox(
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit province?',
+                labelText: 'Province',
+              ),
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
+            SizedBox(
               height: 10,
             ),
             Divider(
               height: 5,
-              color: Colors.green[900],
+              color: Colors.blue,
               thickness: 2,
             ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Check_map()));
-                });
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit province?',
+                labelText: 'Main Road Min Value',
+              ),
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
               },
-              child: Container(
-                  margin: const EdgeInsets.all(5),
-                  child: Image.asset("assets/gg_map.png")),
-            ),
-            Divider(
-              height: 5,
-              color: Colors.green[900],
-              thickness: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.density_large,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit province?',
-                  labelText: 'Main Road Min Value',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+            )),
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit province?',
+                labelText: 'Sub Road Min Value',
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.remove,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit province?',
-                  labelText: 'Sub Road Min Value',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit province?',
+                labelText: 'Main Road Max Value',
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.density_large,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit province?',
-                  labelText: 'Main Road Max Value',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
+            Container(
+                child: TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Do you want to edit province?',
+                labelText: 'Sub Road Max Value',
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  icon: Icon(
-                    Icons.remove,
-                    size: 40,
-                    shadows: [Shadow(blurRadius: 2, color: Colors.green)],
-                  ),
-                  hintText: 'Do you want to edit province?',
-                  labelText: 'Sub Road Max Value',
-                  border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                  ),
-                ),
-                onSaved: (String? value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
-              ),
-            ),
+              onSaved: (String? value) {
+                // This optional block of code can be used to run
+                // code when the user saves the form.
+              },
+            )),
           ],
         ),
       ),
     );
   }
 }
+<<<<<<< HEAD
 
 class Check_map extends StatefulWidget {
   const Check_map({super.key});
@@ -440,3 +373,5 @@ class _Check_mapState extends State<Check_map> {
     );
   }
 }
+=======
+>>>>>>> e6e86cb54aa7d1de0af2903f3b32b6a02832d12c

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_print, prefer_is_empty
 
 import 'package:admin/Auth/register.dart';
 import 'package:admin/Customs/ProgressHUD.dart';
@@ -271,7 +271,7 @@ class _LoginState extends State<Login> {
                         print(value.message);
                       }
                     });
-                    // ignore: avoid_print
+
                     print(requestModel.toJson());
                   }
                   if (list.length > 0) {
