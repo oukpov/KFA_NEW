@@ -406,7 +406,7 @@ class _Check_mapState extends State<Check_map> {
     polygonLatLongs.add(LatLng(11.567153, -615.066532));
     polygonLatLongs.add(LatLng(11.563285, -615.063613));
     polygonLatLongs.add(LatLng(11.560594, -615.060781));
-
+// ខ័ណ្ឌព្រែកព្នៅ
     _polygons.add(
       Polygon(
         polygonId: PolygonId("0"),
