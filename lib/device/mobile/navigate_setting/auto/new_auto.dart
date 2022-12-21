@@ -1006,28 +1006,37 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Daun_Penh.add(LatLng(11.556596, 104.929158));
       Daun_Penh.add(LatLng(11.556310, 104.924772));
       Daun_Penh.add(LatLng(11.556179, 104.922916));
-      Daun_Penh.add(LatLng(11.555909, 104.919497));
-      Daun_Penh.add(LatLng(11.559082, 104.921682));
-      Daun_Penh.add(LatLng(11.562315, 104.919126));
-      Daun_Penh.add(LatLng(11.562321, 104.919676));
-      Daun_Penh.add(LatLng(11.566566, 104.918864));
-      Daun_Penh.add(LatLng(11.567324, 104.918514));
-      Daun_Penh.add(LatLng(11.566902, 104.918093));
-      Daun_Penh.add(LatLng(11.566933, 104.918067));
-      Daun_Penh.add(LatLng(11.571901, 104.918879));
-      Daun_Penh.add(LatLng(11.571109, 104.915673));
-      Daun_Penh.add(LatLng(11.570503, 104.905888));
-      Daun_Penh.add(LatLng(11.573725, 104.904299));
-      Daun_Penh.add(LatLng(11.577518, 104.903499));
-      Daun_Penh.add(LatLng(11.580096, 104.905703));
-      Daun_Penh.add(LatLng(11.582892, 104.907468));
-      Daun_Penh.add(LatLng(11.584302, 104.910725));
-      Daun_Penh.add(LatLng(11.586276, 104.914412));
-      Daun_Penh.add(LatLng(11.587420, 104.915685));
-      Daun_Penh.add(LatLng(11.588464, 104.916797));
-      Daun_Penh.add(LatLng(11.589483, 104.921067));
+
+      Daun_Penh.add(LatLng(11.555896, 104.920561));
+      Daun_Penh.add(LatLng(11.571730, 104.918201));
+      Daun_Penh.add(LatLng(11.570496, 104.905892));
+      Daun_Penh.add(LatLng(11.573765, 104.904269));
+      Daun_Penh.add(LatLng(11.577495, 104.903489));
+
+      Daun_Penh.add(LatLng(11.583479, 104.907531));
+      Daun_Penh.add(LatLng(11.585238, 104.914334));
+      Daun_Penh.add(LatLng(11.587900, 104.914453));
+      Daun_Penh.add(LatLng(11.589526, 104.920947));
+
+
+
+
+
+
+
       Daun_Penh.add(LatLng(11.587316, 104.922129));
 
+// Daun Penh
+      List<LatLng> K7_Makara = <LatLng>[];
+      K7_Makara.add(LatLng(11.570400, 104.906354));
+      K7_Makara.add(LatLng(11.571711, 104.918185));
+      //K7_Makara.add(LatLng(11.567190, 104.918613));
+      K7_Makara.add(LatLng(11.555896, 104.920561));
+      //K7_Makara.add(LatLng(11.571711, 104.918185));
+      K7_Makara.add(LatLng(11.555635, 104.911449));
+      K7_Makara.add(LatLng(11.555773, 104.910608));
+      K7_Makara.add(LatLng(11.557696, 104.908259));
+      K7_Makara.add(LatLng(11.570400, 104.906354));
 
     _polygons.add(
       Polygon(
@@ -1070,12 +1079,32 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Polygon(
         polygonId: PolygonId("4"),
         points: Daun_Penh,
-        fillColor: Color.fromARGB(148, 148, 184, 49),
+       fillColor: Color.fromARGB(121, 1, 255, 14),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 192, 116, 22),
+      ),
+    );
+
+     _polygons.add(
+      Polygon(
+        polygonId: PolygonId("5"),
+        points: K7_Makara,
+        fillColor: Color.fromARGB(146, 224, 103, 33),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 25, 4, 116),
+      ),
+    );
+     _polygons.add(
+      Polygon(
+        polygonId: PolygonId("6"),
+        points: Khan_Pou_Senchey,
+       fillColor: Color.fromARGB(121, 1, 255, 14),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 192, 116, 22),
       ),
     );
   }
+  
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
