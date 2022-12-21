@@ -988,55 +988,7 @@ class _Check_mapState extends State<Check_map> {
       Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
 
 // Daun Penh
-List<LatLng> Daun_Penh = <LatLng>[];
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
-      Daun_Penh.add(LatLng(11.585695, 104.922913));
-      Daun_Penh.add(LatLng(11.581573, 104.925674));
-      Daun_Penh.add(LatLng(11.577694, 104.927814));
-      Daun_Penh.add(LatLng(11.573502, 104.930742));
-      Daun_Penh.add(LatLng(11.567096, 104.934869));
-      Daun_Penh.add(LatLng(11.564896, 104.937084));
-      Daun_Penh.add(LatLng(11.563112, 104.939558));
-      Daun_Penh.add(LatLng(11.562101, 104.942486));
-      Daun_Penh.add(LatLng(11.563109, 104.945922));
-      Daun_Penh.add(LatLng(11.560484, 104.948308));
-      Daun_Penh.add(LatLng(11.558106, 104.951476));
-      Daun_Penh.add(LatLng(11.557132, 104.936986));
-      Daun_Penh.add(LatLng(11.557161, 104.932630));
-      Daun_Penh.add(LatLng(11.556596, 104.929158));
-      Daun_Penh.add(LatLng(11.556310, 104.924772));
-      Daun_Penh.add(LatLng(11.556179, 104.922916));
 
-      Daun_Penh.add(LatLng(11.555896, 104.920561));
-      Daun_Penh.add(LatLng(11.571730, 104.918201));
-      Daun_Penh.add(LatLng(11.570496, 104.905892));
-      Daun_Penh.add(LatLng(11.573765, 104.904269));
-      Daun_Penh.add(LatLng(11.577495, 104.903489));
-
-      Daun_Penh.add(LatLng(11.583479, 104.907531));
-      Daun_Penh.add(LatLng(11.585238, 104.914334));
-      Daun_Penh.add(LatLng(11.587900, 104.914453));
-      Daun_Penh.add(LatLng(11.589526, 104.920947));
-
-
-
-
-
-
-
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
-
-// Daun Penh
-      List<LatLng> K7_Makara = <LatLng>[];
-      K7_Makara.add(LatLng(11.570400, 104.906354));
-      K7_Makara.add(LatLng(11.571711, 104.918185));
-      //K7_Makara.add(LatLng(11.567190, 104.918613));
-      K7_Makara.add(LatLng(11.555896, 104.920561));
-      //K7_Makara.add(LatLng(11.571711, 104.918185));
-      K7_Makara.add(LatLng(11.555635, 104.911449));
-      K7_Makara.add(LatLng(11.555773, 104.910608));
-      K7_Makara.add(LatLng(11.557696, 104.908259));
-      K7_Makara.add(LatLng(11.570400, 104.906354));
 
     _polygons.add(
       Polygon(
