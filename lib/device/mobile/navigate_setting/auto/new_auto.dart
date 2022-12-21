@@ -1056,21 +1056,23 @@ class _Check_mapState extends State<Check_map> {
     Khan_Tuol_Kouk.add(LatLng(11.549578, 104.895784));
     Khan_Tuol_Kouk.add(LatLng(11.549600, 104.890874));
     Khan_Tuol_Kouk.add(LatLng(11.550494, 104.889210));
-    Khan_Tuol_Kouk.add(LatLng(11.551736, 104.888073));
-    Khan_Tuol_Kouk.add(LatLng(11.553593, 104.887171));
-    Khan_Tuol_Kouk.add(LatLng(11.555210, 104.886837));
-    Khan_Tuol_Kouk.add(LatLng(11.556306, 104.886910));
-    Khan_Tuol_Kouk.add(LatLng(11.558189, 104.887568));
-    Khan_Tuol_Kouk.add(LatLng(11.561477, 104.890338));
-    Khan_Tuol_Kouk.add(LatLng(11.565684, 104.888524));
-    Khan_Tuol_Kouk.add(LatLng(11.583493, 104.887424));
-    Khan_Tuol_Kouk.add(LatLng(11.590829, 104.897618));
-    Khan_Tuol_Kouk.add(LatLng(11.585632, 104.900505));
-    Khan_Tuol_Kouk.add(LatLng(11.583347, 104.907834));
-    Khan_Tuol_Kouk.add(LatLng(11.577902, 104.904803));
-    Khan_Tuol_Kouk.add(LatLng(11.574897, 104.904514));
-    Khan_Tuol_Kouk.add(LatLng(11.574228, 104.903885));
-    Khan_Tuol_Kouk.add(LatLng(11.570207, 104.905057));
+    Khan_Tuol_Kouk.add(LatLng(11.553534, 104.887170));
+    Khan_Tuol_Kouk.add(LatLng(11.556682, 104.886910));
+    Khan_Tuol_Kouk.add(LatLng(11.558316, 104.887560));
+    Khan_Tuol_Kouk.add(LatLng(11.561454, 104.890608));
+    Khan_Tuol_Kouk.add(LatLng(11.565733, 104.888681));
+    Khan_Tuol_Kouk.add(LatLng(11.570383, 104.888337));
+    Khan_Tuol_Kouk.add(LatLng(11.583487, 104.887425));
+    Khan_Tuol_Kouk.add(LatLng(11.584915, 104.888584));
+    Khan_Tuol_Kouk.add(LatLng(11.587511, 104.891861));
+    Khan_Tuol_Kouk.add(LatLng(11.589653, 104.895042));
+    Khan_Tuol_Kouk.add(LatLng(11.590868, 104.897605));
+    Khan_Tuol_Kouk.add(LatLng(11.585721, 104.900786));
+    Khan_Tuol_Kouk.add(LatLng(11.583318, 104.907914));
+    Khan_Tuol_Kouk.add(LatLng(11.577802, 104.904778));
+    Khan_Tuol_Kouk.add(LatLng(11.574599, 104.904121));
+    Khan_Tuol_Kouk.add(LatLng(11.574611, 104.903662));
+    Khan_Tuol_Kouk.add(LatLng(11.570294, 104.904799));
     Khan_Tuol_Kouk.add(LatLng(11.570474, 104.906428));
 
 //Chbar Ampov
@@ -1571,9 +1573,9 @@ Chbar_Ampov.add(LatLng(11.518354, 105.027058));
       Polygon(
         polygonId: PolygonId("7"),
         points: Khan_Tuol_Kouk,
-        fillColor: Color.fromARGB(132, 64, 128, 85),
+        fillColor: Color.fromARGB(132, 158, 108, 34),
         strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 134, 89, 60),
+        strokeColor: Color.fromARGB(143, 26, 168, 74),
       ),
     );
 
