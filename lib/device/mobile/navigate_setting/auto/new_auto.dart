@@ -551,16 +551,7 @@ class _Check_mapState extends State<Check_map> {
     Khan_Preaek_Pnov.add(LatLng(11.619421, 104.837714));
     Khan_Preaek_Pnov.add(LatLng(11.620321, 104.838620));
     Khan_Preaek_Pnov.add(LatLng(11.634705, 104.836272));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-
-    //    Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-    //  Khan_Preaek_Pnov.add(LatLng(11.560825, 104.721297));
-
+    
 //Khan_Russey_Keo
     List<LatLng> Khan_Russey_Keo = <LatLng>[];
     Khan_Russey_Keo.add(LatLng(11.657242, 104.866782));
@@ -643,70 +634,98 @@ class _Check_mapState extends State<Check_map> {
 //Khan_Sen_Sok
     List<LatLng> Khan_Sen_Sok = <LatLng>[];
 
-    Khan_Sen_Sok.add(LatLng(11.634853, 104.836252));
-    Khan_Sen_Sok.add(LatLng(11.649732, 104.856165));
-    Khan_Sen_Sok.add(LatLng(11.648598, 104.857066));
-    Khan_Sen_Sok.add(LatLng(11.648303, 104.857860));
-    Khan_Sen_Sok.add(LatLng(11.648408, 104.860049));
-    Khan_Sen_Sok.add(LatLng(11.648408, 104.861122));
-    Khan_Sen_Sok.add(LatLng(11.648406, 104.861121));
-    Khan_Sen_Sok.add(LatLng(11.645145, 104.862691));
-    Khan_Sen_Sok.add(LatLng(11.643369, 104.863431));
-    Khan_Sen_Sok.add(LatLng(11.643099, 104.865880));
-    Khan_Sen_Sok.add(LatLng(11.643188, 104.867746));
-    Khan_Sen_Sok.add(LatLng(11.643166, 104.867731));
-    Khan_Sen_Sok.add(LatLng(11.640660, 104.871676));
-    Khan_Sen_Sok.add(LatLng(11.636566, 104.873883));
-    Khan_Sen_Sok.add(LatLng(11.634820, 104.874407));
-    Khan_Sen_Sok.add(LatLng(11.632680, 104.873967));
-    Khan_Sen_Sok.add(LatLng(11.629693, 104.871934));
-    Khan_Sen_Sok.add(LatLng(11.627501, 104.871661));
-    Khan_Sen_Sok.add(LatLng(11.624380, 104.872139));
-    Khan_Sen_Sok.add(LatLng(11.623666, 104.873079));
-    Khan_Sen_Sok.add(LatLng(11.624536, 104.875052));
-    Khan_Sen_Sok.add(LatLng(11.624432, 104.877328));
-    Khan_Sen_Sok.add(LatLng(11.622834, 104.877912));
-    Khan_Sen_Sok.add(LatLng(11.621129, 104.878121));
-    Khan_Sen_Sok.add(LatLng(11.620400, 104.878955));
-    Khan_Sen_Sok.add(LatLng(11.619732, 104.879198));
-    Khan_Sen_Sok.add(LatLng(11.615540, 104.882065));
-    Khan_Sen_Sok.add(LatLng(11.614768, 104.882278));
-    Khan_Sen_Sok.add(LatLng(11.614025, 104.883613));
-    Khan_Sen_Sok.add(LatLng(11.612553, 104.885009));
-    Khan_Sen_Sok.add(LatLng(11.611022, 104.885616));
-    Khan_Sen_Sok.add(LatLng(11.608912, 104.885737));
-    Khan_Sen_Sok.add(LatLng(11.607470, 104.885631));
-    Khan_Sen_Sok.add(LatLng(11.590331, 104.896329));
-    Khan_Sen_Sok.add(LatLng(11.561522, 104.890587));
-    Khan_Sen_Sok.add(LatLng(11.561558, 104.890615));
-    Khan_Sen_Sok.add(LatLng(11.559640, 104.888540));
-    Khan_Sen_Sok.add(LatLng(11.558332, 104.887583));
-    Khan_Sen_Sok.add(LatLng(11.556316, 104.886843));
-    Khan_Sen_Sok.add(LatLng(11.555163, 104.886888));
-    Khan_Sen_Sok.add(LatLng(11.553376, 104.887274));
-    Khan_Sen_Sok.add(LatLng(11.551725, 104.888004));
-    Khan_Sen_Sok.add(LatLng(11.550916, 104.888744));
-    Khan_Sen_Sok.add(LatLng(11.550359, 104.889452));
-    Khan_Sen_Sok.add(LatLng(11.549728, 104.890686));
-    Khan_Sen_Sok.add(LatLng(11.549071, 104.889522));
-    Khan_Sen_Sok.add(LatLng(11.548777, 104.887956));
-    Khan_Sen_Sok.add(LatLng(11.548083, 104.883010));
-    Khan_Sen_Sok.add(LatLng(11.547200, 104.872356));
-    Khan_Sen_Sok.add(LatLng(11.546359, 104.868215));
-    Khan_Sen_Sok.add(LatLng(11.545182, 104.861713));
-    Khan_Sen_Sok.add(LatLng(11.550627, 104.862282));
-    Khan_Sen_Sok.add(LatLng(11.554748, 104.862872));
-    Khan_Sen_Sok.add(LatLng(11.560613, 104.863011));
-    Khan_Sen_Sok.add(LatLng(11.567582, 104.864384));
-    Khan_Sen_Sok.add(LatLng(11.567130, 104.858999));
-    Khan_Sen_Sok.add(LatLng(11.566594, 104.856134));
-    Khan_Sen_Sok.add(LatLng(11.566278, 104.850458));
-    Khan_Sen_Sok.add(LatLng(11.566573, 104.834934));
-    Khan_Sen_Sok.add(LatLng(11.572848, 104.834934));
-    Khan_Sen_Sok.add(LatLng(11.575643, 104.844504));
-    Khan_Sen_Sok.add(LatLng(11.585492, 104.842777));
-    Khan_Sen_Sok.add(LatLng(11.616916, 104.839290));
-    Khan_Sen_Sok.add(LatLng(11.634633, 104.836286));
+    Khan_Sen_Sok.add(LatLng(11.634704, 104.836300));
+    Khan_Sen_Sok.add(LatLng(11.649625, 104.856213));
+    Khan_Sen_Sok.add(LatLng(11.648743, 104.857028));
+    Khan_Sen_Sok.add(LatLng(11.648406, 104.857929));
+    Khan_Sen_Sok.add(LatLng(11.648490, 104.861062));
+    Khan_Sen_Sok.add(LatLng(11.644960, 104.862864));
+//////////////1
+
+    Khan_Sen_Sok.add(LatLng(11.643531, 104.863294));
+    Khan_Sen_Sok.add(LatLng(11.643110, 104.865504));
+    Khan_Sen_Sok.add(LatLng(11.643215, 104.867639));
+    Khan_Sen_Sok.add(LatLng(11.642564, 104.869377));
+    Khan_Sen_Sok.add(LatLng(11.642333, 104.869956));
+    Khan_Sen_Sok.add(LatLng(11.641587, 104.870739));
+
+/////////////////2
+
+    Khan_Sen_Sok.add(LatLng(11.640284, 104.871973));
+    Khan_Sen_Sok.add(LatLng(11.638844, 104.872864));
+    Khan_Sen_Sok.add(LatLng(11.636564, 104.873883));
+    Khan_Sen_Sok.add(LatLng(11.634819, 104.874409));
+    Khan_Sen_Sok.add(LatLng(11.632697, 104.873980));
+    Khan_Sen_Sok.add(LatLng(11.629691, 104.871920));
+
+////////////////////3
+
+    Khan_Sen_Sok.add(LatLng(11.627474, 104.871651));
+    Khan_Sen_Sok.add(LatLng(11.624321, 104.872123));
+    Khan_Sen_Sok.add(LatLng(11.623649, 104.873025));
+    Khan_Sen_Sok.add(LatLng(11.624531, 104.875095));
+    Khan_Sen_Sok.add(LatLng(11.624447, 104.877327));
+    Khan_Sen_Sok.add(LatLng(11.622871, 104.877906));
+
+////////////4
+
+    Khan_Sen_Sok.add(LatLng(11.620990, 104.878217));
+    Khan_Sen_Sok.add(LatLng(11.620401, 104.878979));
+    Khan_Sen_Sok.add(LatLng(11.619655, 104.879204));
+    Khan_Sen_Sok.add(LatLng(11.616986, 104.881222));
+    Khan_Sen_Sok.add(LatLng(11.615483, 104.882101));
+    Khan_Sen_Sok.add(LatLng(11.614779, 104.882294));
+
+/////////////////5
+
+    Khan_Sen_Sok.add(LatLng(11.614085, 104.883571));
+    Khan_Sen_Sok.add(LatLng(11.612677, 104.884955));
+    Khan_Sen_Sok.add(LatLng(11.611122, 104.885631));
+    Khan_Sen_Sok.add(LatLng(11.609009, 104.885771));
+    Khan_Sen_Sok.add(LatLng(11.607444, 104.885653));
+    Khan_Sen_Sok.add(LatLng(11.590344, 104.896167));
+////////////////////6
+    Khan_Sen_Sok.add(LatLng(11.588358, 104.893271));
+    Khan_Sen_Sok.add(LatLng(11.586718, 104.891415));
+    Khan_Sen_Sok.add(LatLng(11.584879, 104.888400));
+    Khan_Sen_Sok.add(LatLng(11.583523, 104.887499));
+    Khan_Sen_Sok.add(LatLng(11.565623, 104.888675));
+    Khan_Sen_Sok.add(LatLng(11.564351, 104.889243));
+////////////7
+    Khan_Sen_Sok.add(LatLng(11.562943, 104.889758));
+    Khan_Sen_Sok.add(LatLng(11.561524, 104.890574));
+    Khan_Sen_Sok.add(LatLng(11.559800, 104.888718));
+    Khan_Sen_Sok.add(LatLng(11.558276, 104.887494));
+    Khan_Sen_Sok.add(LatLng(11.556352, 104.886829));
+    Khan_Sen_Sok.add(LatLng(11.555028, 104.886904));
+////////////////8
+    Khan_Sen_Sok.add(LatLng(11.553356, 104.887258));
+    Khan_Sen_Sok.add(LatLng(11.551864, 104.887934));
+    Khan_Sen_Sok.add(LatLng(11.550729, 104.889039));
+    Khan_Sen_Sok.add(LatLng(11.550361, 104.889479));
+    Khan_Sen_Sok.add(LatLng(11.549719, 104.890681));
+    Khan_Sen_Sok.add(LatLng(11.548563, 104.887012));
+/////////9
+    Khan_Sen_Sok.add(LatLng(11.547838, 104.881207));
+    Khan_Sen_Sok.add(LatLng(11.547596, 104.877678));
+    Khan_Sen_Sok.add(LatLng(11.547281, 104.873772));
+    Khan_Sen_Sok.add(LatLng(11.547223, 104.872300));
+    Khan_Sen_Sok.add(LatLng(11.545155, 104.861767));
+    Khan_Sen_Sok.add(LatLng(11.550632, 104.862293));
+///////10
+    Khan_Sen_Sok.add(LatLng(11.554763, 104.862851));
+    Khan_Sen_Sok.add(LatLng(11.560744, 104.863012));
+    Khan_Sen_Sok.add(LatLng(11.567587, 104.864417));
+    Khan_Sen_Sok.add(LatLng(11.567177, 104.858635));
+    Khan_Sen_Sok.add(LatLng(11.566588, 104.856210));
+    Khan_Sen_Sok.add(LatLng(11.566252, 104.850438));
+
+    ///////////11
+    Khan_Sen_Sok.add(LatLng(11.566492, 104.842057));
+    Khan_Sen_Sok.add(LatLng(11.566660, 104.834869));
+    Khan_Sen_Sok.add(LatLng(11.572925, 104.834912));
+    Khan_Sen_Sok.add(LatLng(11.575658, 104.844439));
+    Khan_Sen_Sok.add(LatLng(11.585306, 104.842830));
 
     //Khan_Pou_Senchey
     List<LatLng> Khan_Pou_Senchey = <LatLng>[];
@@ -1009,28 +1028,417 @@ class _Check_mapState extends State<Check_map> {
 
     Daun_Penh.add(LatLng(11.555896, 104.920561));
     Daun_Penh.add(LatLng(11.571730, 104.918201));
-    Daun_Penh.add(LatLng(11.570496, 104.905892));
-    Daun_Penh.add(LatLng(11.573765, 104.904269));
-    Daun_Penh.add(LatLng(11.577495, 104.903489));
+    Daun_Penh.add(LatLng(11.570207, 104.905057));
+    Daun_Penh.add(LatLng(11.574572, 104.903581));
+    Daun_Penh.add(LatLng(11.574587, 104.904119));
 
-    Daun_Penh.add(LatLng(11.583479, 104.907531));
-    Daun_Penh.add(LatLng(11.585238, 104.914334));
-    Daun_Penh.add(LatLng(11.587900, 104.914453));
-    Daun_Penh.add(LatLng(11.589526, 104.920947));
-
+    Daun_Penh.add(LatLng(11.577845, 104.904895));
+    Daun_Penh.add(LatLng(11.583414, 104.907474));
+    Daun_Penh.add(LatLng(11.585131, 104.914097));
+    Daun_Penh.add(LatLng(11.587912, 104.914582));
+    Daun_Penh.add(LatLng(11.589535, 104.921090));
     Daun_Penh.add(LatLng(11.587316, 104.922129));
 
 // Daun Penh
     List<LatLng> K7_Makara = <LatLng>[];
     K7_Makara.add(LatLng(11.570400, 104.906354));
     K7_Makara.add(LatLng(11.571711, 104.918185));
-    //K7_Makara.add(LatLng(11.567190, 104.918613));
     K7_Makara.add(LatLng(11.555896, 104.920561));
-    //K7_Makara.add(LatLng(11.571711, 104.918185));
     K7_Makara.add(LatLng(11.555635, 104.911449));
     K7_Makara.add(LatLng(11.555773, 104.910608));
     K7_Makara.add(LatLng(11.557696, 104.908259));
     K7_Makara.add(LatLng(11.570400, 104.906354));
+// Khan Tuol Kouk
+    List<LatLng> Khan_Tuol_Kouk = <LatLng>[];
+    Khan_Tuol_Kouk.add(LatLng(11.570474, 104.906428));
+    Khan_Tuol_Kouk.add(LatLng(11.557632, 104.908255));
+    Khan_Tuol_Kouk.add(LatLng(11.548301, 104.898532));
+    Khan_Tuol_Kouk.add(LatLng(11.548548, 104.897783));
+    Khan_Tuol_Kouk.add(LatLng(11.548064, 104.897247));
+    Khan_Tuol_Kouk.add(LatLng(11.549578, 104.895784));
+    Khan_Tuol_Kouk.add(LatLng(11.549600, 104.890874));
+    Khan_Tuol_Kouk.add(LatLng(11.550494, 104.889210));
+    Khan_Tuol_Kouk.add(LatLng(11.551736, 104.888073));
+    Khan_Tuol_Kouk.add(LatLng(11.553593, 104.887171));
+    Khan_Tuol_Kouk.add(LatLng(11.555210, 104.886837));
+    Khan_Tuol_Kouk.add(LatLng(11.556306, 104.886910));
+    Khan_Tuol_Kouk.add(LatLng(11.558189, 104.887568));
+    Khan_Tuol_Kouk.add(LatLng(11.561477, 104.890338));
+    Khan_Tuol_Kouk.add(LatLng(11.565684, 104.888524));
+    Khan_Tuol_Kouk.add(LatLng(11.583493, 104.887424));
+    Khan_Tuol_Kouk.add(LatLng(11.590829, 104.897618));
+    Khan_Tuol_Kouk.add(LatLng(11.585632, 104.900505));
+    Khan_Tuol_Kouk.add(LatLng(11.583347, 104.907834));
+    Khan_Tuol_Kouk.add(LatLng(11.577902, 104.904803));
+    Khan_Tuol_Kouk.add(LatLng(11.574897, 104.904514));
+    Khan_Tuol_Kouk.add(LatLng(11.574228, 104.903885));
+    Khan_Tuol_Kouk.add(LatLng(11.570207, 104.905057));
+    Khan_Tuol_Kouk.add(LatLng(11.570474, 104.906428));
+
+//Chbar Ampov
+List<LatLng> Chbar_Ampov = <LatLng>[];
+Chbar_Ampov.add(LatLng(11.518354, 105.027058));
+Chbar_Ampov.add(LatLng(11.515482, 105.026347));
+Chbar_Ampov.add(LatLng(11.510274, 105.027151));
+Chbar_Ampov.add(LatLng(11.510211, 105.026925));
+Chbar_Ampov.add(LatLng(11.510337, 105.026518));
+Chbar_Ampov.add(LatLng(11.510154, 105.026490));
+Chbar_Ampov.add(LatLng(11.509550, 105.026862));
+Chbar_Ampov.add(LatLng(11.509297, 105.027108));
+Chbar_Ampov.add(LatLng(11.509089, 105.027218));
+Chbar_Ampov.add(LatLng(11.508939, 105.027249));
+Chbar_Ampov.add(LatLng(11.508727, 105.027376));
+Chbar_Ampov.add(LatLng(11.508673, 105.027450));
+Chbar_Ampov.add(LatLng(11.500335, 105.028473));
+Chbar_Ampov.add(LatLng(11.494456, 105.028189));
+Chbar_Ampov.add(LatLng(11.491206, 105.029107));
+Chbar_Ampov.add(LatLng(11.483504, 105.029413));
+Chbar_Ampov.add(LatLng(11.483104, 105.044647));
+Chbar_Ampov.add(LatLng(11.480403, 105.044571));
+Chbar_Ampov.add(LatLng(11.477727, 105.038319));
+Chbar_Ampov.add(LatLng(11.472526, 105.031404));
+Chbar_Ampov.add(LatLng(11.469114, 105.028884));
+Chbar_Ampov.add(LatLng(11.467442, 105.028637));
+Chbar_Ampov.add(LatLng(11.467652, 105.023938));
+Chbar_Ampov.add(LatLng(11.468136, 105.017941));
+Chbar_Ampov.add(LatLng(11.468273, 105.013188));
+Chbar_Ampov.add(LatLng(11.467789, 105.003124));
+Chbar_Ampov.add(LatLng(11.466285, 104.998554));
+Chbar_Ampov.add(LatLng(11.465592, 104.996204));
+Chbar_Ampov.add(LatLng(11.464719, 104.992567));
+Chbar_Ampov.add(LatLng(11.464477, 104.990893));
+Chbar_Ampov.add(LatLng(11.464172, 104.990067));
+Chbar_Ampov.add(LatLng(11.463720, 104.986816));
+Chbar_Ampov.add(LatLng(11.464287, 104.970319));
+Chbar_Ampov.add(LatLng(11.465447, 104.967163));
+Chbar_Ampov.add(LatLng(11.468629, 104.963370));
+Chbar_Ampov.add(LatLng(11.472807, 104.960108));
+Chbar_Ampov.add(LatLng(11.482539, 104.953881));
+Chbar_Ampov.add(LatLng(11.496543, 104.947241));
+Chbar_Ampov.add(LatLng(11.509910, 104.942442));
+Chbar_Ampov.add(LatLng(11.521402, 104.938111));
+Chbar_Ampov.add(LatLng(11.531692, 104.933673));
+Chbar_Ampov.add(LatLng(11.534109, 104.932547));
+Chbar_Ampov.add(LatLng(11.536590, 104.932343));
+Chbar_Ampov.add(LatLng(11.537841, 104.932729));
+Chbar_Ampov.add(LatLng(11.539375, 104.933910));
+Chbar_Ampov.add(LatLng(11.539680, 104.934521));
+Chbar_Ampov.add(LatLng(11.540103, 104.935075));
+Chbar_Ampov.add(LatLng(11.540144, 104.935321));
+Chbar_Ampov.add(LatLng(11.540155, 104.935727));
+Chbar_Ampov.add(LatLng(11.540427, 104.937206));
+Chbar_Ampov.add(LatLng(11.540713, 104.938765));
+Chbar_Ampov.add(LatLng(11.540802, 104.939479));
+Chbar_Ampov.add(LatLng(11.541006, 104.940029));
+Chbar_Ampov.add(LatLng(11.541229, 104.940408));
+Chbar_Ampov.add(LatLng(11.541504, 104.940981));
+Chbar_Ampov.add(LatLng(11.542099, 104.941785));
+Chbar_Ampov.add(LatLng(11.543249, 104.943546));
+Chbar_Ampov.add(LatLng(11.544743, 104.945064));
+Chbar_Ampov.add(LatLng(11.546762, 104.946537));
+Chbar_Ampov.add(LatLng(11.547549, 104.947494));
+Chbar_Ampov.add(LatLng(11.548012, 104.947890));
+Chbar_Ampov.add(LatLng(11.548326, 104.948367));
+Chbar_Ampov.add(LatLng(11.548428, 104.948366));
+Chbar_Ampov.add(LatLng(11.546698, 104.951505));
+Chbar_Ampov.add(LatLng(11.546575, 104.951860));
+Chbar_Ampov.add(LatLng(11.546425, 104.952102));
+Chbar_Ampov.add(LatLng(11.546309, 104.952150));
+Chbar_Ampov.add(LatLng(11.546077, 104.952165));
+Chbar_Ampov.add(LatLng(11.545769, 104.952326));
+Chbar_Ampov.add(LatLng(11.545630, 104.952467));
+Chbar_Ampov.add(LatLng(11.545561, 104.952602));
+Chbar_Ampov.add(LatLng(11.545558, 104.952664));
+Chbar_Ampov.add(LatLng(11.545572, 104.952735));
+Chbar_Ampov.add(LatLng(11.545639, 104.952876));
+Chbar_Ampov.add(LatLng(11.545651, 104.952946));
+Chbar_Ampov.add(LatLng(11.545646, 104.953056));
+Chbar_Ampov.add(LatLng(11.545623, 104.953138));
+Chbar_Ampov.add(LatLng(11.545558, 104.953307));
+Chbar_Ampov.add(LatLng(11.545548, 104.953371));
+Chbar_Ampov.add(LatLng(11.545517, 104.953433));
+Chbar_Ampov.add(LatLng(11.545446, 104.953535));
+Chbar_Ampov.add(LatLng(11.545172, 104.953903));
+Chbar_Ampov.add(LatLng(11.545199, 104.954152));
+Chbar_Ampov.add(LatLng(11.545117, 104.954306));
+Chbar_Ampov.add(LatLng(11.545032, 104.954396));
+Chbar_Ampov.add(LatLng(11.544960, 104.954509));
+Chbar_Ampov.add(LatLng(11.544942, 104.954578));
+Chbar_Ampov.add(LatLng(11.544940, 104.954620));
+Chbar_Ampov.add(LatLng(11.544903, 104.954708));
+Chbar_Ampov.add(LatLng(11.544869, 104.954752));
+Chbar_Ampov.add(LatLng(11.544745, 104.954792));
+Chbar_Ampov.add(LatLng(11.544705, 104.954811));
+Chbar_Ampov.add(LatLng(11.544383, 104.955455));
+Chbar_Ampov.add(LatLng(11.544205, 104.955857));
+Chbar_Ampov.add(LatLng(11.543841, 104.956024));
+Chbar_Ampov.add(LatLng(11.542629, 104.958505));
+Chbar_Ampov.add(LatLng(11.542451, 104.958702));
+Chbar_Ampov.add(LatLng(11.542346, 104.959294));
+Chbar_Ampov.add(LatLng(11.541856, 104.960651));
+Chbar_Ampov.add(LatLng(11.541670, 104.961425));
+Chbar_Ampov.add(LatLng(11.541707, 104.961752));
+Chbar_Ampov.add(LatLng(11.541618, 104.962047));
+Chbar_Ampov.add(LatLng(11.541469, 104.962639));
+Chbar_Ampov.add(LatLng(11.541246, 104.962897));
+Chbar_Ampov.add(LatLng(11.541291, 104.963542));
+Chbar_Ampov.add(LatLng(11.541715, 104.963807));
+Chbar_Ampov.add(LatLng(11.540473, 104.979906));
+Chbar_Ampov.add(LatLng(11.542281, 104.994368));
+Chbar_Ampov.add(LatLng(11.542071, 105.001964));
+Chbar_Ampov.add(LatLng(11.540725, 105.013637));
+Chbar_Ampov.add(LatLng(11.539758, 105.027241));
+Chbar_Ampov.add(LatLng(11.537908, 105.036082));
+Chbar_Ampov.add(LatLng(11.536605, 105.039815));
+Chbar_Ampov.add(LatLng(11.531475, 105.037412));
+Chbar_Ampov.add(LatLng(11.527985, 105.035223));
+Chbar_Ampov.add(LatLng(11.524578, 105.031361));
+Chbar_Ampov.add(LatLng(11.518354, 105.027058));
+ ////////Khan_Dangkor
+    List<LatLng> Khan_Dangkor = <LatLng>[];
+
+    Khan_Dangkor.add(LatLng(11.482224, 104.913889));
+    Khan_Dangkor.add(LatLng(11.484495, 104.921527));
+    Khan_Dangkor.add(LatLng(11.466537, 104.918266));
+    Khan_Dangkor.add(LatLng(11.451627, 104.922922));
+    Khan_Dangkor.add(LatLng(11.446979, 104.923094));
+    Khan_Dangkor.add(LatLng(11.443551, 104.922751));
+////////////1
+    Khan_Dangkor.add(LatLng(11.428787, 104.922729));
+    Khan_Dangkor.add(LatLng(11.430154, 104.914296));
+    Khan_Dangkor.add(LatLng(11.430175, 104.913695));
+    Khan_Dangkor.add(LatLng(11.431163, 104.912665));
+    Khan_Dangkor.add(LatLng(11.432341, 104.913116));
+    Khan_Dangkor.add(LatLng(11.435306, 104.907859));
+////////////2
+    Khan_Dangkor.add(LatLng(11.435517, 104.905885));
+    Khan_Dangkor.add(LatLng(11.435412, 104.903675));
+    Khan_Dangkor.add(LatLng(11.434823, 104.901422));
+    Khan_Dangkor.add(LatLng(11.434865, 104.899984));
+    Khan_Dangkor.add(LatLng(11.435285, 104.898503));
+    Khan_Dangkor.add(LatLng(11.435349, 104.896615));
+///////////3
+
+    Khan_Dangkor.add(LatLng(11.430196, 104.888783));
+    Khan_Dangkor.add(LatLng(11.430364, 104.887388));
+    Khan_Dangkor.add(LatLng(11.432614, 104.886358));
+    Khan_Dangkor.add(LatLng(11.434297, 104.885049));
+    Khan_Dangkor.add(LatLng(11.435895, 104.882689));
+    Khan_Dangkor.add(LatLng(11.436064, 104.880779));
+//////////////////////4
+
+    Khan_Dangkor.add(LatLng(11.422550, 104.873473));
+    Khan_Dangkor.add(LatLng(11.426328, 104.864675));
+    Khan_Dangkor.add(LatLng(11.425992, 104.863881));
+    Khan_Dangkor.add(LatLng(11.424436, 104.862330));
+    Khan_Dangkor.add(LatLng(11.423516, 104.857837));
+    Khan_Dangkor.add(LatLng(11.424100, 104.856321));
+
+////////////////////5
+
+    Khan_Dangkor.add(LatLng(11.425019, 104.855654));
+    Khan_Dangkor.add(LatLng(11.428150, 104.854751));
+    Khan_Dangkor.add(LatLng(11.428539, 104.853127));
+    Khan_Dangkor.add(LatLng(11.430308, 104.852261));
+    Khan_Dangkor.add(LatLng(11.430679, 104.830970));
+    Khan_Dangkor.add(LatLng(11.435702, 104.827668));
+////////////////////6
+
+    Khan_Dangkor.add(LatLng(11.437240, 104.826946));
+    Khan_Dangkor.add(LatLng(11.439009, 104.826874));
+    Khan_Dangkor.add(LatLng(11.439628, 104.825683));
+    Khan_Dangkor.add(LatLng(11.442670, 104.823644));
+    Khan_Dangkor.add(LatLng(11.444031, 104.822327));
+    Khan_Dangkor.add(LatLng(11.443536, 104.820577));
+
+///////////////////////////7
+    Khan_Dangkor.add(LatLng(11.440547, 104.818123));
+    Khan_Dangkor.add(LatLng(11.439699, 104.816517));
+    Khan_Dangkor.add(LatLng(11.439433, 104.815651));
+    Khan_Dangkor.add(LatLng(11.438797, 104.815272));
+    Khan_Dangkor.add(LatLng(11.437948, 104.815705));
+    Khan_Dangkor.add(LatLng(11.437311, 104.818844));
+
+//////////////////////8
+    Khan_Dangkor.add(LatLng(11.436674, 104.819404));
+    Khan_Dangkor.add(LatLng(11.435737, 104.819422));
+    Khan_Dangkor.add(LatLng(11.432359, 104.818105));
+    Khan_Dangkor.add(LatLng(11.430827, 104.816225));
+    Khan_Dangkor.add(LatLng(11.430585, 104.813735));
+    Khan_Dangkor.add(LatLng(11.429923, 104.810731));
+//////////////////////9
+
+    Khan_Dangkor.add(LatLng(11.430417, 104.809229));
+    Khan_Dangkor.add(LatLng(11.430669, 104.808629));
+    Khan_Dangkor.add(LatLng(11.431500, 104.804949));
+    Khan_Dangkor.add(LatLng(11.432310, 104.803994));
+    Khan_Dangkor.add(LatLng(11.433887, 104.801558));
+    Khan_Dangkor.add(LatLng(11.436117, 104.801086));
+
+//////////////////10
+    Khan_Dangkor.add(LatLng(11.439082, 104.798973));
+    Khan_Dangkor.add(LatLng(11.440218, 104.797674));
+    Khan_Dangkor.add(LatLng(11.440975, 104.797503));
+    Khan_Dangkor.add(LatLng(11.441921, 104.797792));
+    Khan_Dangkor.add(LatLng(11.442931, 104.799209));
+    Khan_Dangkor.add(LatLng(11.444708, 104.799455));
+
+//////////////4///11
+    Khan_Dangkor.add(LatLng(11.445013, 104.798576));
+    Khan_Dangkor.add(LatLng(11.444887, 104.797267));
+    Khan_Dangkor.add(LatLng(11.444445, 104.796473));
+    Khan_Dangkor.add(LatLng(11.443772, 104.795647));
+    Khan_Dangkor.add(LatLng(11.443351, 104.794842));
+    Khan_Dangkor.add(LatLng(11.443393, 104.793265));
+////////12
+
+    Khan_Dangkor.add(LatLng(11.444329, 104.793093));
+    Khan_Dangkor.add(LatLng(11.446243, 104.793823));
+    Khan_Dangkor.add(LatLng(11.447053, 104.793436));
+    Khan_Dangkor.add(LatLng(11.447147, 104.791548));
+    Khan_Dangkor.add(LatLng(11.445297, 104.789488));
+    Khan_Dangkor.add(LatLng(11.445244, 104.788619));
+
+///////////////13
+
+    Khan_Dangkor.add(LatLng(11.446033, 104.787396));
+    Khan_Dangkor.add(LatLng(11.446380, 104.786634));
+    Khan_Dangkor.add(LatLng(11.446800, 104.785862));
+    Khan_Dangkor.add(LatLng(11.447400, 104.783630));
+    Khan_Dangkor.add(LatLng(11.449114, 104.782397));
+    Khan_Dangkor.add(LatLng(11.450092, 104.782246));
+
+/////////////////////14
+
+    Khan_Dangkor.add(LatLng(11.452847, 104.784692));
+    Khan_Dangkor.add(LatLng(11.454287, 104.785261));
+    Khan_Dangkor.add(LatLng(11.455370, 104.784714));
+    Khan_Dangkor.add(LatLng(11.456043, 104.783598));
+    Khan_Dangkor.add(LatLng(11.455854, 104.781098));
+    Khan_Dangkor.add(LatLng(11.476105, 104.786396));
+//////////////////////////15
+
+    Khan_Dangkor.add(LatLng(11.476684, 104.790988));
+    Khan_Dangkor.add(LatLng(11.478745, 104.799228));
+    Khan_Dangkor.add(LatLng(11.480742, 104.803337));
+    Khan_Dangkor.add(LatLng(11.481247, 104.808873));
+    Khan_Dangkor.add(LatLng(11.481378, 104.815230));
+    Khan_Dangkor.add(LatLng(11.488170, 104.817059));
+
+//////////////16
+    Khan_Dangkor.add(LatLng(11.488703, 104.817164));
+    Khan_Dangkor.add(LatLng(11.489982, 104.817726));
+    Khan_Dangkor.add(LatLng(11.491045, 104.820138));
+    Khan_Dangkor.add(LatLng(11.492398, 104.820085));
+    Khan_Dangkor.add(LatLng(11.494219, 104.818431));
+    Khan_Dangkor.add(LatLng(11.495401, 104.817711));
+
+//////////////////17
+    Khan_Dangkor.add(LatLng(11.500813, 104.818644));
+    Khan_Dangkor.add(LatLng(11.500129, 104.819638));
+    Khan_Dangkor.add(LatLng(11.500077, 104.821527));
+    Khan_Dangkor.add(LatLng(11.500494, 104.829159));
+    Khan_Dangkor.add(LatLng(11.500248, 104.836601));
+    Khan_Dangkor.add(LatLng(11.499921, 104.837792));
+
+//////////////////18
+    Khan_Dangkor.add(LatLng(11.499542, 104.838573));
+    Khan_Dangkor.add(LatLng(11.501296, 104.838573));
+    Khan_Dangkor.add(LatLng(11.502620, 104.837944));
+    Khan_Dangkor.add(LatLng(11.503675, 104.837966));
+    Khan_Dangkor.add(LatLng(11.505028, 104.838687));
+    Khan_Dangkor.add(LatLng(11.505950, 104.840235));
+
+/////////19
+    Khan_Dangkor.add(LatLng(11.506322, 104.845318));
+    Khan_Dangkor.add(LatLng(11.505623, 104.853329));
+    Khan_Dangkor.add(LatLng(11.505608, 104.857183));
+    Khan_Dangkor.add(LatLng(11.506604, 104.860931));
+    Khan_Dangkor.add(LatLng(11.510039, 104.865695));
+    Khan_Dangkor.add(LatLng(11.511466, 104.872735));
+
+///////////////////20
+    Khan_Dangkor.add(LatLng(11.514529, 104.877257));
+    Khan_Dangkor.add(LatLng(11.516179, 104.878304));
+    Khan_Dangkor.add(LatLng(11.517919, 104.878182));
+    Khan_Dangkor.add(LatLng(11.520431, 104.876771));
+    Khan_Dangkor.add(LatLng(11.521812, 104.875641));
+    Khan_Dangkor.add(LatLng(11.521972, 104.883841));
+
+////////////////////21
+    Khan_Dangkor.add(LatLng(11.522184, 104.887252));
+    Khan_Dangkor.add(LatLng(11.522557, 104.888650));
+    Khan_Dangkor.add(LatLng(11.521679, 104.894059));
+    Khan_Dangkor.add(LatLng(11.522951, 104.896805));
+    Khan_Dangkor.add(LatLng(11.522594, 104.898004));
+    Khan_Dangkor.add(LatLng(11.521479, 104.902252));
+////////////////////22
+
+    Khan_Dangkor.add(LatLng(11.520051, 104.907623));
+    Khan_Dangkor.add(LatLng(11.518867, 104.913378));
+
+      List<LatLng> meanchen = <LatLng>[];
+
+    meanchen.add(LatLng(11.545477, 104.860727));
+    meanchen.add(LatLng(11.541514, 104.861714));
+    meanchen.add(LatLng(11.536478, 104.862122));
+    meanchen.add(LatLng(11.531559, 104.862336));
+    meanchen.add(LatLng(11.528300, 104.862594));
+    // meanchen.add(LatLng(11.524747, 104.862894));
+    meanchen.add(LatLng(11.522555, 104.863125));
+
+//////////1
+    meanchen.add(LatLng(11.522182, 104.868666));
+    meanchen.add(LatLng(11.522161, 104.872314));
+    meanchen.add(LatLng(11.520521, 104.876777));
+    meanchen.add(LatLng(11.522203, 104.882507));
+    meanchen.add(LatLng(11.522549, 104.889148));
+    meanchen.add(LatLng(11.521971, 104.893911));
+///////////////2
+
+    meanchen.add(LatLng(11.522907, 104.897699));
+    meanchen.add(LatLng(11.520153, 104.907891));
+    meanchen.add(LatLng(11.519112, 104.912880));
+    meanchen.add(LatLng(11.514802, 104.913717));
+    meanchen.add(LatLng(11.505161, 104.913824));
+    meanchen.add(LatLng(11.502292, 104.912504));
+///////////////3
+
+    meanchen.add(LatLng(11.482315, 104.913813));
+
+    meanchen.add(LatLng(11.484495, 104.921424));
+    meanchen.add(LatLng(11.493768, 104.947023));
+    meanchen.add(LatLng(11.499425, 104.943783));
+    meanchen.add(LatLng(11.503336, 104.942839));
+    meanchen.add(LatLng(11.517150, 104.938161));
+    meanchen.add(LatLng(11.526906, 104.935887));
+/////////////4
+
+    meanchen.add(LatLng(11.531195, 104.932067));
+    meanchen.add(LatLng(11.530280, 104.927094));
+    meanchen.add(LatLng(11.528172, 104.925007));
+    meanchen.add(LatLng(11.525750, 104.921520));
+    meanchen.add(LatLng(11.527100, 104.918088));
+    meanchen.add(LatLng(11.528963, 104.915485));
+/////////////////////5
+
+    meanchen.add(LatLng(11.533488, 104.913903));
+    meanchen.add(LatLng(11.536426, 104.911364));
+    meanchen.add(LatLng(11.540751, 104.909310));
+    meanchen.add(LatLng(11.543539, 104.905489));
+    meanchen.add(LatLng(11.544689, 104.900709));
+    meanchen.add(LatLng(11.548075, 104.898096));
+
+///////////////////6
+
+    meanchen.add(LatLng(11.549575, 104.895050));
+    meanchen.add(LatLng(11.550133, 104.890040));
+    meanchen.add(LatLng(11.548703, 104.886907));
+    meanchen.add(LatLng(11.547526, 104.877176));
+    meanchen.add(LatLng(11.547357, 104.872370));
+    meanchen.add(LatLng(11.546348, 104.868014));
+
+    meanchen.add(LatLng(11.545718, 104.863980));
 
     _polygons.add(
       Polygon(
@@ -1079,7 +1487,7 @@ class _Check_mapState extends State<Check_map> {
     );
     _polygons.add(
       Polygon(
-        polygonId: PolygonId("4"),
+        polygonId: PolygonId("5"),
         points: K7_Makara,
         fillColor: Color.fromARGB(104, 255, 0, 234),
         strokeWidth: 1,
@@ -1088,11 +1496,50 @@ class _Check_mapState extends State<Check_map> {
     );
     _polygons.add(
       Polygon(
-        polygonId: PolygonId("4"),
+        polygonId: PolygonId("6"),
         points: Daun_Penh,
         fillColor: Color.fromARGB(132, 128, 64, 124),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 43, 4, 212),
+      ),
+    );
+
+     _polygons.add(
+      Polygon(
+        polygonId: PolygonId("7"),
+        points: Khan_Tuol_Kouk,
+        fillColor: Color.fromARGB(132, 64, 128, 85),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 134, 89, 60),
+      ),
+    );
+
+    _polygons.add(
+      Polygon(
+        polygonId: PolygonId("8"),
+        points: Chbar_Ampov,
+        fillColor: Color.fromARGB(132, 127, 56, 145),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 212, 19, 19),
+      ),
+    );
+     _polygons.add(
+      Polygon(
+        polygonId: PolygonId("9"),
+        points: Khan_Dangkor,
+        fillColor: Color.fromARGB(132, 128, 64, 124),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 43, 4, 212),
+      ),
+    );
+
+    _polygons.add(
+      Polygon(
+        polygonId: PolygonId("10"),
+        points: meanchen,
+        fillColor: Color.fromARGB(132, 58, 139, 55),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 151, 48, 112),
       ),
     );
   }
