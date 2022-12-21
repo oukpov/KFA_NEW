@@ -707,7 +707,6 @@ class _Check_mapState extends State<Check_map> {
     Khan_Sen_Sok.add(LatLng(11.585492, 104.842777));
     Khan_Sen_Sok.add(LatLng(11.616916, 104.839290));
     Khan_Sen_Sok.add(LatLng(11.634633, 104.836286));
-<<<<<<< HEAD
 
     //Khan_Pou_Senchey
     List<LatLng> Khan_Pou_Senchey = <LatLng>[];
@@ -989,357 +988,55 @@ class _Check_mapState extends State<Check_map> {
     Khan_Pou_Senchey.add(LatLng(11.567796, 104.864418));
     Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
 
-// Daun Penh
+    List<LatLng> Daun_Penh = <LatLng>[];
+    Daun_Penh.add(LatLng(11.587316, 104.922129));
+    Daun_Penh.add(LatLng(11.585695, 104.922913));
+    Daun_Penh.add(LatLng(11.581573, 104.925674));
+    Daun_Penh.add(LatLng(11.577694, 104.927814));
+    Daun_Penh.add(LatLng(11.573502, 104.930742));
+    Daun_Penh.add(LatLng(11.567096, 104.934869));
+    Daun_Penh.add(LatLng(11.564896, 104.937084));
+    Daun_Penh.add(LatLng(11.563112, 104.939558));
+    Daun_Penh.add(LatLng(11.562101, 104.942486));
+    Daun_Penh.add(LatLng(11.563109, 104.945922));
+    Daun_Penh.add(LatLng(11.560484, 104.948308));
+    Daun_Penh.add(LatLng(11.558106, 104.951476));
+    Daun_Penh.add(LatLng(11.557132, 104.936986));
+    Daun_Penh.add(LatLng(11.557161, 104.932630));
+    Daun_Penh.add(LatLng(11.556596, 104.929158));
+    Daun_Penh.add(LatLng(11.556310, 104.924772));
+    Daun_Penh.add(LatLng(11.556179, 104.922916));
 
-=======
+    Daun_Penh.add(LatLng(11.555896, 104.920561));
+    Daun_Penh.add(LatLng(11.571730, 104.918201));
+    Daun_Penh.add(LatLng(11.570496, 104.905892));
+    Daun_Penh.add(LatLng(11.573765, 104.904269));
+    Daun_Penh.add(LatLng(11.577495, 104.903489));
 
-    //Khan_Pou_Senchey
-    List<LatLng> Khan_Pou_Senchey = <LatLng>[];
-    Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
-    Khan_Pou_Senchey.add(LatLng(11.562447, 104.863424));
-    Khan_Pou_Senchey.add(LatLng(11.561445, 104.863214));
-    Khan_Pou_Senchey.add(LatLng(11.560983, 104.863129));
-    Khan_Pou_Senchey.add(LatLng(11.560331, 104.863064));
-    Khan_Pou_Senchey.add(LatLng(11.558208, 104.863021));
-    Khan_Pou_Senchey.add(LatLng(11.557494, 104.863043));
-    Khan_Pou_Senchey.add(LatLng(11.556186, 104.862997));
-    Khan_Pou_Senchey.add(LatLng(11.555145, 104.862982));
-    Khan_Pou_Senchey.add(LatLng(11.553525, 104.862846));
-    Khan_Pou_Senchey.add(LatLng(11.552737, 104.862724));
-    Khan_Pou_Senchey.add(LatLng(11.544338, 104.861586));
-    Khan_Pou_Senchey.add(LatLng(11.542792, 104.861617));
-    Khan_Pou_Senchey.add(LatLng(11.541617, 104.861753));
-    Khan_Pou_Senchey.add(LatLng(11.539455, 104.861989));
-    Khan_Pou_Senchey.add(LatLng(11.536326, 104.862242));
-    Khan_Pou_Senchey.add(LatLng(11.534240, 104.862368));
-    Khan_Pou_Senchey.add(LatLng(11.531517, 104.862440));
-    Khan_Pou_Senchey.add(LatLng(11.528171, 104.862600));
-    Khan_Pou_Senchey.add(LatLng(11.524828, 104.862857));
-    Khan_Pou_Senchey.add(LatLng(11.522031, 104.863093));
-    Khan_Pou_Senchey.add(LatLng(11.522116, 104.872449));
-    Khan_Pou_Senchey.add(LatLng(11.521905, 104.874702));
-    Khan_Pou_Senchey.add(LatLng(11.522073, 104.875624));
-    Khan_Pou_Senchey.add(LatLng(11.520665, 104.876826));
-    Khan_Pou_Senchey.add(LatLng(11.519067, 104.877727));
-    Khan_Pou_Senchey.add(LatLng(11.517974, 104.878285));
-    Khan_Pou_Senchey.add(LatLng(11.516649, 104.878435));
-    Khan_Pou_Senchey.add(LatLng(11.514609, 104.877234));
-    Khan_Pou_Senchey.add(LatLng(11.511308, 104.872749));
-    Khan_Pou_Senchey.add(LatLng(11.509900, 104.865711));
-    Khan_Pou_Senchey.add(LatLng(11.506472, 104.860861));
-    Khan_Pou_Senchey.add(LatLng(11.505526, 104.857214));
-    Khan_Pou_Senchey.add(LatLng(11.505589, 104.853265));
-    Khan_Pou_Senchey.add(LatLng(11.505905, 104.850369));
-    Khan_Pou_Senchey.add(LatLng(11.506094, 104.846034));
-    Khan_Pou_Senchey.add(LatLng(11.506073, 104.843760));
-    Khan_Pou_Senchey.add(LatLng(11.505884, 104.840326));
-    Khan_Pou_Senchey.add(LatLng(11.504979, 104.838867));
-    Khan_Pou_Senchey.add(LatLng(11.503718, 104.838095));
-    Khan_Pou_Senchey.add(LatLng(11.502772, 104.838031));
-    Khan_Pou_Senchey.add(LatLng(11.501300, 104.838674));
-    Khan_Pou_Senchey.add(LatLng(11.500206, 104.838545));
-    Khan_Pou_Senchey.add(LatLng(11.499231, 104.838615));
-    Khan_Pou_Senchey.add(LatLng(11.500135, 104.836534));
-    Khan_Pou_Senchey.add(LatLng(11.500198, 104.836019));
-    Khan_Pou_Senchey.add(LatLng(11.500030, 104.833980));
-    Khan_Pou_Senchey.add(LatLng(11.500261, 104.832328));
-    Khan_Pou_Senchey.add(LatLng(11.500387, 104.830955));
-    Khan_Pou_Senchey.add(LatLng(11.500219, 104.826706));
-    Khan_Pou_Senchey.add(LatLng(11.499904, 104.821235));
-    Khan_Pou_Senchey.add(LatLng(11.500156, 104.819690));
-    Khan_Pou_Senchey.add(LatLng(11.500576, 104.818703));
-    Khan_Pou_Senchey.add(LatLng(11.495635, 104.817887));
-    Khan_Pou_Senchey.add(LatLng(11.494331, 104.818488));
-    Khan_Pou_Senchey.add(LatLng(11.492523, 104.820076));
-    Khan_Pou_Senchey.add(LatLng(11.491135, 104.820290));
-    Khan_Pou_Senchey.add(LatLng(11.490294, 104.819282));
-    Khan_Pou_Senchey.add(LatLng(11.489810, 104.817780));
-    Khan_Pou_Senchey.add(LatLng(11.481904, 104.815505));
-    Khan_Pou_Senchey.add(LatLng(11.481336, 104.813510));
-    Khan_Pou_Senchey.add(LatLng(11.481042, 104.809883));
-    Khan_Pou_Senchey.add(LatLng(11.480832, 104.807094));
-    Khan_Pou_Senchey.add(LatLng(11.480558, 104.803403));
-    Khan_Pou_Senchey.add(LatLng(11.478518, 104.799326));
-    Khan_Pou_Senchey.add(LatLng(11.476458, 104.790915));
-    Khan_Pou_Senchey.add(LatLng(11.476079, 104.786495));
-    Khan_Pou_Senchey.add(LatLng(11.455996, 104.781130));
-    Khan_Pou_Senchey.add(LatLng(11.455659, 104.779843));
-    Khan_Pou_Senchey.add(LatLng(11.456143, 104.778684));
-    Khan_Pou_Senchey.add(LatLng(11.457005, 104.777847));
-    Khan_Pou_Senchey.add(LatLng(11.457615, 104.777740));
-    Khan_Pou_Senchey.add(LatLng(11.457258, 104.776474));
-    Khan_Pou_Senchey.add(LatLng(11.457090, 104.775079));
-    Khan_Pou_Senchey.add(LatLng(11.457678, 104.774178));
-    Khan_Pou_Senchey.add(LatLng(11.459150, 104.773813));
-    Khan_Pou_Senchey.add(LatLng(11.461527, 104.774221));
-    Khan_Pou_Senchey.add(LatLng(11.463819, 104.776152));
-    Khan_Pou_Senchey.add(LatLng(11.464534, 104.778512));
-    Khan_Pou_Senchey.add(LatLng(11.465480, 104.778727));
-    Khan_Pou_Senchey.add(LatLng(11.466301, 104.778362));
-    Khan_Pou_Senchey.add(LatLng(11.466763, 104.777311));
-    Khan_Pou_Senchey.add(LatLng(11.466532, 104.776495));
-    Khan_Pou_Senchey.add(LatLng(11.465312, 104.775444));
-    Khan_Pou_Senchey.add(LatLng(11.464555, 104.774414));
-    Khan_Pou_Senchey.add(LatLng(11.462993, 104.773491));
-    Khan_Pou_Senchey.add(LatLng(11.462194, 104.772525));
-    Khan_Pou_Senchey.add(LatLng(11.461690, 104.771302));
-    Khan_Pou_Senchey.add(LatLng(11.461732, 104.769478));
-    Khan_Pou_Senchey.add(LatLng(11.463414, 104.766903));
-    Khan_Pou_Senchey.add(LatLng(11.463687, 104.765573));
-    Khan_Pou_Senchey.add(LatLng(11.463309, 104.764500));
-    Khan_Pou_Senchey.add(LatLng(11.462762, 104.763942));
-    Khan_Pou_Senchey.add(LatLng(11.461227, 104.765058));
-    Khan_Pou_Senchey.add(LatLng(11.459671, 104.765594));
-    Khan_Pou_Senchey.add(LatLng(11.458178, 104.765079));
-    Khan_Pou_Senchey.add(LatLng(11.456895, 104.762955));
-    Khan_Pou_Senchey.add(LatLng(11.457084, 104.760187));
-    Khan_Pou_Senchey.add(LatLng(11.458556, 104.758621));
-    Khan_Pou_Senchey.add(LatLng(11.458808, 104.758106));
-    Khan_Pou_Senchey.add(LatLng(11.458661, 104.756968));
-    Khan_Pou_Senchey.add(LatLng(11.457562, 104.755896));
-    Khan_Pou_Senchey.add(LatLng(11.456616, 104.755960));
-    Khan_Pou_Senchey.add(LatLng(11.455017, 104.757698));
-    Khan_Pou_Senchey.add(LatLng(11.453982, 104.759522));
-    Khan_Pou_Senchey.add(LatLng(11.452699, 104.760359));
-    Khan_Pou_Senchey.add(LatLng(11.451500, 104.760466));
-    Khan_Pou_Senchey.add(LatLng(11.450533, 104.759683));
-    Khan_Pou_Senchey.add(LatLng(11.450280, 104.757666));
-    Khan_Pou_Senchey.add(LatLng(11.450974, 104.755048));
-    Khan_Pou_Senchey.add(LatLng(11.451984, 104.754168));
-    Khan_Pou_Senchey.add(LatLng(11.452972, 104.753718));
-    Khan_Pou_Senchey.add(LatLng(11.455727, 104.753889));
-    Khan_Pou_Senchey.add(LatLng(11.456253, 104.752795));
-    Khan_Pou_Senchey.add(LatLng(11.456358, 104.751765));
-    Khan_Pou_Senchey.add(LatLng(11.454802, 104.748396));
-    Khan_Pou_Senchey.add(LatLng(11.454423, 104.746830));
-    Khan_Pou_Senchey.add(LatLng(11.454718, 104.745607));
-    Khan_Pou_Senchey.add(LatLng(11.454613, 104.744255));
-    Khan_Pou_Senchey.add(LatLng(11.459849, 104.744641));
-    Khan_Pou_Senchey.add(LatLng(11.463845, 104.744555));
-    Khan_Pou_Senchey.add(LatLng(11.478123, 104.744877));
-    Khan_Pou_Senchey.add(LatLng(11.479112, 104.746207));
-    Khan_Pou_Senchey.add(LatLng(11.483927, 104.746336));
-    Khan_Pou_Senchey.add(LatLng(11.484705, 104.748332));
-    Khan_Pou_Senchey.add(LatLng(11.486493, 104.748589));
-    Khan_Pou_Senchey.add(LatLng(11.486619, 104.749684));
-    Khan_Pou_Senchey.add(LatLng(11.488133, 104.749855));
-    Khan_Pou_Senchey.add(LatLng(11.489500, 104.749812));
-    Khan_Pou_Senchey.add(LatLng(11.489121, 104.751808));
-    Khan_Pou_Senchey.add(LatLng(11.489121, 104.758288));
-    Khan_Pou_Senchey.add(LatLng(11.490635, 104.758782));
-    Khan_Pou_Senchey.add(LatLng(11.491666, 104.758717));
-    Khan_Pou_Senchey.add(LatLng(11.491497, 104.760391));
-    Khan_Pou_Senchey.add(LatLng(11.491834, 104.762365));
-    Khan_Pou_Senchey.add(LatLng(11.492486, 104.762794));
-    Khan_Pou_Senchey.add(LatLng(11.495577, 104.762601));
-    Khan_Pou_Senchey.add(LatLng(11.497490, 104.763953));
-    Khan_Pou_Senchey.add(LatLng(11.499929, 104.765219));
-    Khan_Pou_Senchey.add(LatLng(11.501317, 104.766700));
-    Khan_Pou_Senchey.add(LatLng(11.502074, 104.767987));
-    Khan_Pou_Senchey.add(LatLng(11.507310, 104.768395));
-    Khan_Pou_Senchey.add(LatLng(11.515089, 104.768159));
-    Khan_Pou_Senchey.add(LatLng(11.518516, 104.768159));
-    Khan_Pou_Senchey.add(LatLng(11.520640, 104.764210));
-    Khan_Pou_Senchey.add(LatLng(11.523605, 104.760842));
-    Khan_Pou_Senchey.add(LatLng(11.527557, 104.757430));
-    Khan_Pou_Senchey.add(LatLng(11.530669, 104.756035));
-    Khan_Pou_Senchey.add(LatLng(11.530627, 104.754876));
-    Khan_Pou_Senchey.add(LatLng(11.527431, 104.748868));
-    Khan_Pou_Senchey.add(LatLng(11.528461, 104.745671));
-    Khan_Pou_Senchey.add(LatLng(11.529723, 104.744384));
-    Khan_Pou_Senchey.add(LatLng(11.532141, 104.744062));
-    Khan_Pou_Senchey.add(LatLng(11.534558, 104.743504));
-    Khan_Pou_Senchey.add(LatLng(11.536261, 104.742560));
-    Khan_Pou_Senchey.add(LatLng(11.538406, 104.743396));
-    Khan_Pou_Senchey.add(LatLng(11.541097, 104.743289));
-    Khan_Pou_Senchey.add(LatLng(11.543830, 104.741680));
-    Khan_Pou_Senchey.add(LatLng(11.545638, 104.739749));
-    Khan_Pou_Senchey.add(LatLng(11.545722, 104.738654));
-    Khan_Pou_Senchey.add(LatLng(11.543431, 104.735543));
-    Khan_Pou_Senchey.add(LatLng(11.543725, 104.732153));
-    Khan_Pou_Senchey.add(LatLng(11.544124, 104.730565));
-    Khan_Pou_Senchey.add(LatLng(11.544061, 104.727861));
-    Khan_Pou_Senchey.add(LatLng(11.548203, 104.727689));
-    Khan_Pou_Senchey.add(LatLng(11.550999, 104.727174));
-    Khan_Pou_Senchey.add(LatLng(11.554846, 104.725866));
-    Khan_Pou_Senchey.add(LatLng(11.557894, 104.724406));
-    Khan_Pou_Senchey.add(LatLng(11.559240, 104.722990));
-    Khan_Pou_Senchey.add(LatLng(11.560669, 104.720651));
-    Khan_Pou_Senchey.add(LatLng(11.562435, 104.719192));
-    Khan_Pou_Senchey.add(LatLng(11.563886, 104.721767));
-    Khan_Pou_Senchey.add(LatLng(11.565042, 104.722926));
-    Khan_Pou_Senchey.add(LatLng(11.566829, 104.723205));
-    Khan_Pou_Senchey.add(LatLng(11.568490, 104.721059));
-    Khan_Pou_Senchey.add(LatLng(11.572021, 104.721274));
-    Khan_Pou_Senchey.add(LatLng(11.571769, 104.717111));
-    Khan_Pou_Senchey.add(LatLng(11.572021, 104.713957));
-    Khan_Pou_Senchey.add(LatLng(11.572820, 104.713163));
-    Khan_Pou_Senchey.add(LatLng(11.573997, 104.712626));
-    Khan_Pou_Senchey.add(LatLng(11.575553, 104.712948));
-    Khan_Pou_Senchey.add(LatLng(11.576120, 104.714300));
-    Khan_Pou_Senchey.add(LatLng(11.575994, 104.719364));
-    Khan_Pou_Senchey.add(LatLng(11.575217, 104.720737));
-    Khan_Pou_Senchey.add(LatLng(11.574754, 104.722540));
-    Khan_Pou_Senchey.add(LatLng(11.575111, 104.724085));
-    Khan_Pou_Senchey.add(LatLng(11.576183, 104.725029));
-    Khan_Pou_Senchey.add(LatLng(11.574649, 104.728398));
-    Khan_Pou_Senchey.add(LatLng(11.577613, 104.731080));
-    Khan_Pou_Senchey.add(LatLng(11.581481, 104.733011));
-    Khan_Pou_Senchey.add(LatLng(11.581670, 104.734599));
-    Khan_Pou_Senchey.add(LatLng(11.581523, 104.734749));
-    Khan_Pou_Senchey.add(LatLng(11.581859, 104.735564));
-    Khan_Pou_Senchey.add(LatLng(11.583057, 104.736509));
-    Khan_Pou_Senchey.add(LatLng(11.583373, 104.737860));
-    Khan_Pou_Senchey.add(LatLng(11.583226, 104.738611));
-    Khan_Pou_Senchey.add(LatLng(11.582973, 104.739169));
-    Khan_Pou_Senchey.add(LatLng(11.583289, 104.740092));
-    Khan_Pou_Senchey.add(LatLng(11.587430, 104.741058));
-    Khan_Pou_Senchey.add(LatLng(11.589448, 104.742238));
-    Khan_Pou_Senchey.add(LatLng(11.589532, 104.744362));
-    Khan_Pou_Senchey.add(LatLng(11.589763, 104.745456));
-    Khan_Pou_Senchey.add(LatLng(11.590520, 104.746143));
-    Khan_Pou_Senchey.add(LatLng(11.590393, 104.747216));
-    Khan_Pou_Senchey.add(LatLng(11.591192, 104.750714));
-    Khan_Pou_Senchey.add(LatLng(11.590246, 104.751915));
-    Khan_Pou_Senchey.add(LatLng(11.591066, 104.752666));
-    Khan_Pou_Senchey.add(LatLng(11.591402, 104.753353));
-    Khan_Pou_Senchey.add(LatLng(11.590898, 104.754318));
-    Khan_Pou_Senchey.add(LatLng(11.591802, 104.754898));
-    Khan_Pou_Senchey.add(LatLng(11.591571, 104.755434));
-    Khan_Pou_Senchey.add(LatLng(11.590856, 104.755842));
-    Khan_Pou_Senchey.add(LatLng(11.590667, 104.757215));
-    Khan_Pou_Senchey.add(LatLng(11.590772, 104.758996));
-    Khan_Pou_Senchey.add(LatLng(11.591613, 104.760133));
-    Khan_Pou_Senchey.add(LatLng(11.592012, 104.762236));
-    Khan_Pou_Senchey.add(LatLng(11.591907, 104.762880));
-    Khan_Pou_Senchey.add(LatLng(11.592601, 104.765584));
-    Khan_Pou_Senchey.add(LatLng(11.592832, 104.768223));
-    Khan_Pou_Senchey.add(LatLng(11.593294, 104.770605));
-    Khan_Pou_Senchey.add(LatLng(11.593946, 104.772000));
-    Khan_Pou_Senchey.add(LatLng(11.594892, 104.772751));
-    Khan_Pou_Senchey.add(LatLng(11.595669, 104.773823));
-    Khan_Pou_Senchey.add(LatLng(11.596931, 104.774639));
-    Khan_Pou_Senchey.add(LatLng(11.598444, 104.776077));
-    Khan_Pou_Senchey.add(LatLng(11.598486, 104.777729));
-    Khan_Pou_Senchey.add(LatLng(11.599285, 104.778394));
-    Khan_Pou_Senchey.add(LatLng(11.602606, 104.778394));
-    Khan_Pou_Senchey.add(LatLng(11.605107, 104.779810));
-    Khan_Pou_Senchey.add(LatLng(11.605401, 104.780518));
-    Khan_Pou_Senchey.add(LatLng(11.605170, 104.781763));
-    Khan_Pou_Senchey.add(LatLng(11.605864, 104.782407));
-    Khan_Pou_Senchey.add(LatLng(11.607209, 104.782986));
-    Khan_Pou_Senchey.add(LatLng(11.608785, 104.784316));
-    Khan_Pou_Senchey.add(LatLng(11.610005, 104.784359));
-    Khan_Pou_Senchey.add(LatLng(11.610446, 104.785067));
-    Khan_Pou_Senchey.add(LatLng(11.610341, 104.786205));
-    Khan_Pou_Senchey.add(LatLng(11.609584, 104.787127));
-    Khan_Pou_Senchey.add(LatLng(11.608428, 104.789917));
-    Khan_Pou_Senchey.add(LatLng(11.606957, 104.792041));
-    Khan_Pou_Senchey.add(LatLng(11.603888, 104.797148));
-    Khan_Pou_Senchey.add(LatLng(11.601429, 104.798371));
-    Khan_Pou_Senchey.add(LatLng(11.595606, 104.799422));
-    Khan_Pou_Senchey.add(LatLng(11.591276, 104.799852));
-    Khan_Pou_Senchey.add(LatLng(11.586589, 104.801010));
-    Khan_Pou_Senchey.add(LatLng(11.585412, 104.802298));
-    Khan_Pou_Senchey.add(LatLng(11.584445, 104.804336));
-    Khan_Pou_Senchey.add(LatLng(11.581691, 104.807383));
-    Khan_Pou_Senchey.add(LatLng(11.579841, 104.809250));
-    Khan_Pou_Senchey.add(LatLng(11.579589, 104.811074));
-    Khan_Pou_Senchey.add(LatLng(11.579610, 104.814421));
-    Khan_Pou_Senchey.add(LatLng(11.579274, 104.820043));
-    Khan_Pou_Senchey.add(LatLng(11.579421, 104.823412));
-    Khan_Pou_Senchey.add(LatLng(11.579925, 104.824313));
-    Khan_Pou_Senchey.add(LatLng(11.586084, 104.830085));
-    Khan_Pou_Senchey.add(LatLng(11.588291, 104.831437));
-    Khan_Pou_Senchey.add(LatLng(11.592222, 104.832532));
-    Khan_Pou_Senchey.add(LatLng(11.595922, 104.833090));
-    Khan_Pou_Senchey.add(LatLng(11.599768, 104.832532));
-    Khan_Pou_Senchey.add(LatLng(11.602291, 104.832489));
-    Khan_Pou_Senchey.add(LatLng(11.605633, 104.833047));
-    Khan_Pou_Senchey.add(LatLng(11.609185, 104.832875));
-    Khan_Pou_Senchey.add(LatLng(11.612106, 104.832982));
-    Khan_Pou_Senchey.add(LatLng(11.614713, 104.834162));
-    Khan_Pou_Senchey.add(LatLng(11.617592, 104.835192));
-    Khan_Pou_Senchey.add(LatLng(11.618475, 104.835900));
-    Khan_Pou_Senchey.add(LatLng(11.619358, 104.837703));
-    Khan_Pou_Senchey.add(LatLng(11.620430, 104.838840));
-    Khan_Pou_Senchey.add(LatLng(11.585328, 104.842917));
-    Khan_Pou_Senchey.add(LatLng(11.575763, 104.844612));
-    Khan_Pou_Senchey.add(LatLng(11.572862, 104.835042));
-    Khan_Pou_Senchey.add(LatLng(11.566598, 104.834956));
-    Khan_Pou_Senchey.add(LatLng(11.566451, 104.850985));
-    Khan_Pou_Senchey.add(LatLng(11.566598, 104.854011));
-    Khan_Pou_Senchey.add(LatLng(11.567375, 104.859719));
-    Khan_Pou_Senchey.add(LatLng(11.567796, 104.864418));
-    Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
+    Daun_Penh.add(LatLng(11.583479, 104.907531));
+    Daun_Penh.add(LatLng(11.585238, 104.914334));
+    Daun_Penh.add(LatLng(11.587900, 104.914453));
+    Daun_Penh.add(LatLng(11.589526, 104.920947));
 
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
-    //  Khan_Sen_Sok.add(LatLng(11.560825, 104.721297));
->>>>>>> 39f65db0ee94e1ba999bb8d09608d5ae07024126
-
-
-List<LatLng> Daun_Penh = <LatLng>[];
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
-      Daun_Penh.add(LatLng(11.585695, 104.922913));
-      Daun_Penh.add(LatLng(11.581573, 104.925674));
-      Daun_Penh.add(LatLng(11.577694, 104.927814));
-      Daun_Penh.add(LatLng(11.573502, 104.930742));
-      Daun_Penh.add(LatLng(11.567096, 104.934869));
-      Daun_Penh.add(LatLng(11.564896, 104.937084));
-      Daun_Penh.add(LatLng(11.563112, 104.939558));
-      Daun_Penh.add(LatLng(11.562101, 104.942486));
-      Daun_Penh.add(LatLng(11.563109, 104.945922));
-      Daun_Penh.add(LatLng(11.560484, 104.948308));
-      Daun_Penh.add(LatLng(11.558106, 104.951476));
-      Daun_Penh.add(LatLng(11.557132, 104.936986));
-      Daun_Penh.add(LatLng(11.557161, 104.932630));
-      Daun_Penh.add(LatLng(11.556596, 104.929158));
-      Daun_Penh.add(LatLng(11.556310, 104.924772));
-      Daun_Penh.add(LatLng(11.556179, 104.922916));
-      Daun_Penh.add(LatLng(11.555909, 104.919497));
-      Daun_Penh.add(LatLng(11.559082, 104.921682));
-      Daun_Penh.add(LatLng(11.562315, 104.919126));
-      Daun_Penh.add(LatLng(11.562321, 104.919676));
-      Daun_Penh.add(LatLng(11.566566, 104.918864));
-      Daun_Penh.add(LatLng(11.567324, 104.918514));
-      Daun_Penh.add(LatLng(11.566902, 104.918093));
-      Daun_Penh.add(LatLng(11.566933, 104.918067));
-      Daun_Penh.add(LatLng(11.571901, 104.918879));
-      Daun_Penh.add(LatLng(11.571109, 104.915673));
-      Daun_Penh.add(LatLng(11.570503, 104.905888));
-      Daun_Penh.add(LatLng(11.573725, 104.904299));
-      Daun_Penh.add(LatLng(11.577518, 104.903499));
-      Daun_Penh.add(LatLng(11.580096, 104.905703));
-      Daun_Penh.add(LatLng(11.582892, 104.907468));
-      Daun_Penh.add(LatLng(11.584302, 104.910725));
-      Daun_Penh.add(LatLng(11.586276, 104.914412));
-      Daun_Penh.add(LatLng(11.587420, 104.915685));
-      Daun_Penh.add(LatLng(11.588464, 104.916797));
-      Daun_Penh.add(LatLng(11.589483, 104.921067));
-      Daun_Penh.add(LatLng(11.587316, 104.922129));
-
+    Daun_Penh.add(LatLng(11.587316, 104.922129));
 
 // Daun Penh
-      List<LatLng> K7_Makara = <LatLng>[];
-      K7_Makara.add(LatLng(11.570400, 104.906354));
-      K7_Makara.add(LatLng(11.571505, 104.918507));
-      K7_Makara.add(LatLng(11.567190, 104.918613));
-      K7_Makara.add(LatLng(11.555896, 104.920561));
-      K7_Makara.add(LatLng(11.555639, 104.918249));
-      K7_Makara.add(LatLng(11.555635, 104.911449));
-      K7_Makara.add(LatLng(11.555773, 104.910608));
-      K7_Makara.add(LatLng(11.557696, 104.908259));
-      K7_Makara.add(LatLng(11.570400, 104.906354));
+    List<LatLng> K7_Makara = <LatLng>[];
+    K7_Makara.add(LatLng(11.570400, 104.906354));
+    K7_Makara.add(LatLng(11.571711, 104.918185));
+    //K7_Makara.add(LatLng(11.567190, 104.918613));
+    K7_Makara.add(LatLng(11.555896, 104.920561));
+    //K7_Makara.add(LatLng(11.571711, 104.918185));
+    K7_Makara.add(LatLng(11.555635, 104.911449));
+    K7_Makara.add(LatLng(11.555773, 104.910608));
+    K7_Makara.add(LatLng(11.557696, 104.908259));
+    K7_Makara.add(LatLng(11.570400, 104.906354));
 
     _polygons.add(
       Polygon(
         polygonId: PolygonId("0"),
         points: polygonLatLongs,
-        fillColor: Color.fromARGB(54, 139, 80, 76),
+        fillColor: Color.fromARGB(108, 136, 69, 69),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 255, 17, 0),
       ),
@@ -1348,7 +1045,7 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Polygon(
         polygonId: PolygonId("1"),
         points: Khan_Preaek_Pnov,
-        fillColor: Color.fromARGB(123, 93, 78, 175),
+        fillColor: Color.fromARGB(129, 77, 67, 136),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 140, 0, 255),
       ),
@@ -1357,7 +1054,7 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Polygon(
         polygonId: PolygonId("2"),
         points: Khan_Russey_Keo,
-        fillColor: Color.fromARGB(150, 64, 175, 80),
+        fillColor: Color.fromARGB(127, 63, 129, 118),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 192, 116, 22),
       ),
@@ -1375,7 +1072,25 @@ List<LatLng> Daun_Penh = <LatLng>[];
       Polygon(
         polygonId: PolygonId("4"),
         points: Khan_Pou_Senchey,
-        fillColor: Color.fromARGB(132, 127, 231, 87),
+        fillColor: Color.fromARGB(132, 80, 124, 63),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 255, 0, 0),
+      ),
+    );
+    _polygons.add(
+      Polygon(
+        polygonId: PolygonId("4"),
+        points: K7_Makara,
+        fillColor: Color.fromARGB(104, 255, 0, 234),
+        strokeWidth: 1,
+        strokeColor: Color.fromARGB(143, 255, 0, 0),
+      ),
+    );
+    _polygons.add(
+      Polygon(
+        polygonId: PolygonId("4"),
+        points: Daun_Penh,
+        fillColor: Color.fromARGB(132, 128, 64, 124),
         strokeWidth: 1,
         strokeColor: Color.fromARGB(143, 43, 4, 212),
       ),
