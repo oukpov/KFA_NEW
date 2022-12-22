@@ -721,35 +721,5 @@ class _HomePageState extends State<HomePage> {
   // Widget _getBodyWidget() {
   //   return Container();
   // }
-  final circularMenu = CircularMenu(
-      toggleButtonColor: Colors.pink,
-      toggleButtonBoxShadow: [
-        BoxShadow(color: Color.fromRGBO(183, 28, 28, 1), blurRadius: 1)
-      ],
-      radius: 100,
-      items: [
-        CircularMenuItem(
-          color: Color.fromARGB(0, 255, 193, 7),
-          onTap: () {},
-        ),
-        CircularMenuItem(
-            icon: Icons.search,
-            onTap: () {
-              //callback
-            }),
-        CircularMenuItem(
-            icon: Icons.person_pin_circle,
-            onTap: () {
-              //callback
-            }),
-        CircularMenuItem(
-            icon: Icons.star,
-            onTap: () {
-              //callback
-            }),
-        CircularMenuItem(
-          color: Color.fromARGB(0, 255, 193, 7),
-          onTap: () {},
-        ),
-      ]);
+
 }

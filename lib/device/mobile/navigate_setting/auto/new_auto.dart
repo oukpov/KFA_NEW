@@ -6,6 +6,8 @@ import 'package:admin/model/models/M_commune.dart';
 import 'package:admin/model/models/M_roadAndcommune.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_geocoder/location_geocoder.dart';
@@ -21,7 +23,7 @@ class NewAuto extends StatefulWidget {
 
 class _NewAutoState extends State<NewAuto> {
   TextStyle colorizeTextStyle = TextStyle(
-    fontSize: 16.0,
+    fontSize: 20.0,
     fontFamily: 'Horizon',
     fontWeight: FontWeight.bold,
   );
@@ -74,7 +76,7 @@ class _NewAutoState extends State<NewAuto> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Check_map()));
+                    .push(MaterialPageRoute(builder: (context) => Menu_map()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -88,7 +90,7 @@ class _NewAutoState extends State<NewAuto> {
                   AnimatedTextKit(
                     animatedTexts: [
                       ColorizeAnimatedText(
-                        'Please select Location on the map',
+                        'Please select on the map',
                         textStyle: colorizeTextStyle,
                         colors: [
                           Colors.purple,
@@ -294,13 +296,15 @@ class _NewAutoState extends State<NewAuto> {
 }
 
 class Check_map extends StatefulWidget {
-  const Check_map({super.key});
-
+  const Check_map({super.key, required this.index_pg});
+  final int index_pg;
   @override
   State<Check_map> createState() => _Check_mapState();
 }
 
 class _Check_mapState extends State<Check_map> {
+  double _panelHeightOpen = 0;
+  final double _panelHeightClosed = 95.0;
   String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
   GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
@@ -311,19 +315,132 @@ class _Check_mapState extends State<Check_map> {
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List list = [];
+  double adding_price = 0.0;
+  String sendAddrress = '';
+  List data = [];
+
+  bool isApiCallProcess = false;
   // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
   late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
+  String? _currentAddress;
+  Position? _currentPosition;
+// use for check user access to the location
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  ///converts `coordinates` to actual `address` using google map api
-  Future<void> getAddress(double lat, double lng) async {
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+        lat = _currentPosition!.latitude;
+        log = _currentPosition!.longitude;
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  void Clear() {
+    setState(() {
+      for (var i = 0; i < list.length; i++) {
+        MarkerId markerId = MarkerId('$i');
+        listMarkerIds.remove(markerId);
+      }
+    });
+  }
+
+  Set<Marker> getmarkers() {
+    //markers to place on map
+    setState(() {
+      marker.add(Marker(
+        //add second marker
+        markerId: MarkerId("showLocation.toString()"),
+        position: LatLng(lat, log), //position of marker
+        infoWindow: InfoWindow(
+          //popup info
+          title: 'Thanks for using us',
+        ),
+        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+      ));
+      // requestModel.lat = lat.toString();
+      // requestModel.lng = log.toString();
+      //add more markers here
+    });
+
+    return marker;
+  }
+
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    index = _selectedIndex;
+    setState(() {
+      if (_selectedIndex == 0) {
+        num = 0;
+      } else {
+        if (index < 1) {
+          index = index + 1;
+        } else {
+          index = 0;
+        }
+      }
+    });
+  }
+
+  Future<void> getAddress(LatLng latLng) async {
+    final coordinates = Coordinates(latLng.latitude, latLng.longitude);
     try {
-      final address =
-          await geocoder.findAddressesFromCoordinates(Coordinates(lat, lng));
-      var message = address.first.addressLine;
+      final address = await geocoder.findAddressesFromCoordinates(coordinates);
+      // subAdminArea=ខ័ណ្ឌ
+      // adminArea = ខេត្ត
+      var message = address.first.subThoroughfare;
       if (message == null) return;
+      sendAddrress = message;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(message),
+          content: Text("Address: ${message}"),
         ),
       );
     } catch (e) {
@@ -336,38 +453,28 @@ class _Check_mapState extends State<Check_map> {
     }
   }
 
-  ///converts `address` to actual `coordinates` using google map api
-  Future<void> getLatLang(String adds) async {
-    try {
-      final address = await geocoder.findAddressesFromQuery(adds);
-      var message = address.first.coordinates.toString();
-      latitude = address.first.coordinates.latitude!;
-      longitude = address.first.coordinates.longitude!;
-      mapController?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
-        ),
-      );
-      rethrow;
-    }
-  }
-
-  Set<Polygon> _polygons = HashSet<Polygon>();
+  List<MapType> style_map = [
+    MapType.hybrid,
+    MapType.normal,
+  ];
+  Future showLocation() async {}
+  dynamic lat, log;
+  final Set<Marker> marker = new Set();
+  int num = 0;
 
   @override
   void initState() {
-    super.initState();
+    _getCurrentPosition();
+    getAddress(latLng);
     _setPolygons();
+    super.initState();
   }
 
+  Set<Polygon> _Find_polygons = HashSet<Polygon>();
+
+  int index = 0;
+
+  List _pg = [];
   void _setPolygons() {
     //ខ័ណ្ឌជ្រោយចង្វា
     List<LatLng> polygonLatLongs = <LatLng>[];
@@ -1629,119 +1736,20 @@ class _Check_mapState extends State<Check_map> {
     Khan_Chamkar_Mon.add(LatLng(11.557671, 104.908230));
     Khan_Chamkar_Mon.add(LatLng(11.555646, 104.910758));
     Khan_Chamkar_Mon.add(LatLng(11.555881, 104.920626));
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("0"),
-        points: polygonLatLongs,
-        fillColor: Color.fromARGB(108, 189, 116, 33),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 255, 17, 0),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("1"),
-        points: Khan_Preaek_Pnov,
-        fillColor: Color.fromARGB(129, 77, 67, 136),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 140, 0, 255),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("2"),
-        points: Khan_Russey_Keo,
-        fillColor: Color.fromARGB(127, 63, 129, 118),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 192, 116, 22),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("3"),
-        points: Khan_Sen_Sok,
-        fillColor: Color.fromARGB(108, 104, 203, 228),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 43, 4, 212),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("4"),
-        points: Khan_Pou_Senchey,
-        fillColor: Color.fromARGB(132, 80, 124, 63),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 255, 0, 0),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("5"),
-        points: K7_Makara,
-        fillColor: Color.fromARGB(104, 255, 0, 234),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 255, 0, 0),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("6"),
-        points: Daun_Penh,
-        fillColor: Color.fromARGB(132, 128, 64, 124),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 43, 4, 212),
-      ),
-    );
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("7"),
-        points: Khan_Tuol_Kouk,
-        fillColor: Color.fromARGB(132, 158, 108, 34),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 26, 168, 74),
-      ),
-    );
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("8"),
-        points: Chbar_Ampov,
-        fillColor: Color.fromARGB(132, 127, 56, 145),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 212, 19, 19),
-      ),
-    );
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("9"),
-        points: Khan_Dangkor,
-        fillColor: Color.fromARGB(132, 128, 64, 124),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 43, 4, 212),
-      ),
-    );
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("10"),
-        points: meanchen,
-        fillColor: Color.fromARGB(132, 58, 139, 55),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(143, 151, 48, 112),
-      ),
-    );
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId("11"),
-        points: Khan_Chamkar_Mon,
-        fillColor: Color.fromARGB(132, 145, 131, 52),
-        strokeWidth: 1,
-        strokeColor: Color.fromARGB(199, 151, 48, 111),
-      ),
-    );
+    _pg = [
+      Khan_Chamkar_Mon,
+      Daun_Penh,
+      K7_Makara,
+      Khan_Tuol_Kouk,
+      meanchen,
+      Chbar_Ampov,
+      polygonLatLongs,
+      Khan_Sen_Sok,
+      Khan_Russey_Keo,
+      Khan_Dangkor,
+      Khan_Pou_Senchey,
+      Khan_Preaek_Pnov
+    ];
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -1750,19 +1758,209 @@ class _Check_mapState extends State<Check_map> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GoogleMap(
-        mapType: MapType.normal,
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(11.562108, 104.888535),
-          zoom: 12,
+    setState(() {
+      _Find_polygons.add(
+        Polygon(
+          polygonId: PolygonId("7"),
+          points: _pg.elementAt(widget.index_pg),
+          fillColor: Color.fromARGB(132, 158, 108, 34),
+          strokeWidth: 2,
+          strokeColor: Color.fromARGB(151, 190, 30, 30),
         ),
-        polygons: _polygons,
-        myLocationEnabled: true,
-        indoorViewEnabled: true,
-        myLocationButtonEnabled: true,
+      );
+    });
+    return Scaffold(
+      appBar: AppBar(
+          centerTitle: true,
+          toolbarHeight: 50,
+          title: const Text(
+            "Google Map",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              setState(() {
+                _Find_polygons.clear();
+                Navigator.of(context).pop();
+              });
+            },
+            icon: Icon(Icons.arrow_back_outlined, size: 25),
+          )),
+      body: Container(
+        height: MediaQuery.of(context).size.height * 1,
+        child: Stack(
+          children: [
+            (lat != null)
+                ? GoogleMap(
+                    // markers: getmarkers(),
+                    markers: ((num > 0)
+                        ? Set<Marker>.of(markers.values)
+                        : getmarkers()),
+                    //Map widget from google_maps_flutter package
+                    zoomGesturesEnabled: true, //enable Zoom in, out on map
+                    initialCameraPosition: CameraPosition(
+                      //innital position in map
+                      target: LatLng(latitude, longitude), //initial position
+                      zoom: 10.0, //initial zoom level
+                    ),
+                    mapType: style_map[index], //map type
+                    onMapCreated: (controller) {
+                      //method called when map is created
+                      setState(() {
+                        mapController = controller;
+                      });
+                    },
+                    onTap: (argument) {
+                      MarkerId markerId = MarkerId('mark');
+                      listMarkerIds.add(markerId);
+                      Marker marker = Marker(
+                        markerId: MarkerId('mark'),
+                        position: argument,
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueRed),
+                      );
+                      setState(() {
+                        num = num + 1;
+                        markers[markerId] = marker;
+                        // requestModel.lat = argument.latitude.toString();
+                        // requestModel.lng = argument.longitude.toString();
+                        getAddress(argument);
+                      });
+                    },
+                    onCameraMove: (CameraPosition cameraPositiona) {
+                      cameraPosition = cameraPositiona; //when map is dragging
+                    },
+                    polygons: _Find_polygons,
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: MediaQuery.of(context).size.height * 0.06,
+        color: Colors.blue[50],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon:
+                  Icon(Icons.person_pin_circle, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  num = 0;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.business, size: 40, color: Colors.black),
+              onPressed: () {
+                setState(() {
+                  if (index < 1) {
+                    index = index + 1;
+                  } else {
+                    index = 0;
+                  }
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+class Menu_map extends StatefulWidget {
+  const Menu_map({super.key});
+
+  @override
+  State<Menu_map> createState() => _Menu_mapState();
+}
+
+class _Menu_mapState extends State<Menu_map> {
+  List<String> Title = [
+    "CHAMKAMORN",
+    "DAUN PENH",
+    "7 MAKARA",
+    "TUOL KORK ",
+    "MEANCHEY",
+    "CHBAR AMPOV",
+    "CHROUY CHANGVA",
+    "SEN SOK ",
+    "RUSSEY KEO",
+    "DANGKOR",
+    "POSENCHEY",
+    "PRAEK PNOV"
+  ];
+  TextStyle textStyle = TextStyle(
+    fontSize: 16.0,
+    fontFamily: 'Courgette',
+    fontWeight: FontWeight.bold,
+  );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          toolbarHeight: 50,
+          title: const Text(
+            "LAND__MARKET__PRICE \nIN__PHNOM_PENH_CITY",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          ),
+        ),
+        body: ListView.builder(
+            itemCount: Title.length,
+            itemBuilder: (context, index) {
+              return GFButton(
+                shape: GFButtonShape.pills,
+                type: GFButtonType.solid,
+                color: Color.fromRGBO(24, 255, 255, 1),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Check_map(
+                            index_pg: index,
+                          )));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: const [
+                        BoxShadow(blurRadius: 5, color: Colors.black)
+                      ]),
+                  child: Text(
+                    Title.elementAt(index),
+                    style: textStyle,
+                  ),
+                ),
+              );
+            }));
+  }
+}
+//  body: ListView.builder(
+//             itemCount: Title.length,
+//             itemBuilder: (context, index) {
+//               return GFButton(
+//                 shape: GFButtonShape.pills,
+//                 type: GFButtonType.solid,
+//                 color: Color.fromRGBO(24, 255, 255, 1),
+//                 onPressed: () {
+//                   Navigator.of(context).push(MaterialPageRoute(
+//                       builder: (context) => on_map(context, index)));
+//                 },
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(20),
+//                       boxShadow: const [
+//                         BoxShadow(blurRadius: 5, color: Colors.black)
+//                       ]),
+//                   child: Text(
+//                     Title.elementAt(index),
+//                     style: textStyle,
+//                   ),
+//                 ),
+//               );
+//             })
