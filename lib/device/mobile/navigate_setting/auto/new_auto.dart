@@ -2,6 +2,7 @@
 
 import 'dart:collection';
 
+import 'package:admin/components/road.dart';
 import 'package:admin/model/models/M_commune.dart';
 import 'package:admin/model/models/M_roadAndcommune.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -51,6 +52,10 @@ class _NewAutoState extends State<NewAuto> {
     super.initState();
   }
 
+  int groupValue = 0;
+  var name_r;
+  var id_r;
+  bool onClick = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,84 +200,124 @@ class _NewAutoState extends State<NewAuto> {
             color: Colors.blue,
             thickness: 2,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.edit_road,
-                  color: Colors.cyan[600],
-                  size: 30,
-                ),
-                hintText: 'Please Enter Value',
-                labelText: 'Main Road Min Value',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  M_min = value;
-                });
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.edit_road,
-                  color: Colors.cyan[600],
-                  size: 30,
-                ),
-                hintText: 'Please Enter Value',
-                labelText: 'Sub Road Min Value',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onChanged: (value) {
-                S_min = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.edit_road,
-                  color: Colors.cyan[600],
-                  size: 30,
-                ),
-                hintText: 'Please Enter Value',
-                labelText: 'Main Road Max Value',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onChanged: (value) {
-                M_max = value;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.edit_road,
-                  color: Colors.cyan[600],
-                  size: 30,
-                ),
-                hintText: 'Please Enter Value',
-                labelText: 'Sub Road Max Value',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onChanged: (value) {
-                S_max = value;
-              },
-            ),
-          ),
+          GFCard(
+              elevation: 8,
+              title: GFListTile(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                  titleText: 'Please select road',
+                  icon: Icon(Icons.call_split)),
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Single road",
+                    style: TextStyle(
+                        color: ((groupValue == 1)
+                            ? Colors.red[900]
+                            : Colors.black)),
+                  ),
+                  GFRadio(
+                    size: 20,
+                    value: 1,
+                    groupValue: groupValue,
+                    onChanged: (value) {
+                      setState(() {
+                        groupValue = value;
+                      });
+                    },
+                    inactiveIcon: null,
+                    activeBorderColor: Color.fromARGB(255, 0, 4, 255),
+                    radioColor: Color.fromRGBO(183, 28, 28, 1),
+                  ),
+                  Text(
+                    "Multi road",
+                    style: TextStyle(
+                        color:
+                            ((groupValue == 2) ? Colors.green : Colors.black)),
+                  ),
+                  GFRadio(
+                    size: 20,
+                    value: 2,
+                    groupValue: groupValue,
+                    onChanged: (value) {
+                      setState(() {
+                        groupValue = value;
+                      });
+                    },
+                    inactiveIcon: null,
+                    activeBorderColor: Color.fromARGB(255, 0, 4, 255),
+                    radioColor: Color.fromRGBO(183, 28, 28, 1),
+                  )
+                ],
+              )),
+          ((groupValue == 1)
+              ? Column(
+                  children: [
+                    RoadDropdown(
+                      id_road: (value) {
+                        id_r = value;
+                        setState(() {
+                          onClick = true;
+                        });
+                      },
+                      Name_road: (value) {
+                        name_r = value;
+                      },
+                    ),
+                    ((onClick == true)
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.blue[50],
+                                    prefixIcon: Icon(
+                                      Icons.edit_road,
+                                      color: Colors.cyan[600],
+                                      size: 30,
+                                    ),
+                                    hintText: 'Please Enter Value',
+                                    labelText: '${name_r} Min Value',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      M_min = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.blue[50],
+                                    prefixIcon: Icon(
+                                      Icons.edit_road,
+                                      color: Colors.cyan[600],
+                                      size: 30,
+                                    ),
+                                    hintText: 'Please Enter Value',
+                                    labelText: '${name_r} Min Value',
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  ),
+                                  onChanged: (value) {
+                                    S_min = value;
+                                  },
+                                ),
+                              )
+                            ],
+                          )
+                        : Text(""))
+                  ],
+                )
+              : Column(children: [])),
           GFButton(
             onPressed: () {
               rac.add(roadAndcommune(
