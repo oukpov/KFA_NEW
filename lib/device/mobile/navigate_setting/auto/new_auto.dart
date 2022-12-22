@@ -1239,18 +1239,50 @@ class _Check_mapState extends State<Check_map> {
     Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
 
     List<LatLng> Daun_Penh = <LatLng>[];
-    Daun_Penh.add(LatLng(11.587316, 104.922129));
-    Daun_Penh.add(LatLng(11.585695, 104.922913));
-    Daun_Penh.add(LatLng(11.581573, 104.925674));
-    Daun_Penh.add(LatLng(11.577694, 104.927814));
-    Daun_Penh.add(LatLng(11.573502, 104.930742));
-    Daun_Penh.add(LatLng(11.567096, 104.934869));
-    Daun_Penh.add(LatLng(11.564896, 104.937084));
-    Daun_Penh.add(LatLng(11.563112, 104.939558));
-    Daun_Penh.add(LatLng(11.562101, 104.942486));
-    Daun_Penh.add(LatLng(11.563109, 104.945922));
-    Daun_Penh.add(LatLng(11.560484, 104.948308));
-    Daun_Penh.add(LatLng(11.558106, 104.951476));
+
+    //  Daun_Penh.add(LatLng(11.560808, 104.937000));
+    //  Daun_Penh.add(LatLng(11.560808, 104.937000));
+    Daun_Penh.add(LatLng(11.588611, 104.918210));
+    Daun_Penh.add(LatLng(11.588730, 104.919682));
+    Daun_Penh.add(LatLng(11.586590, 104.920350));
+    Daun_Penh.add(LatLng(11.585103, 104.920957));
+
+    Daun_Penh.add(LatLng(11.582740, 104.922353));
+    Daun_Penh.add(LatLng(11.579663, 104.924173));
+    Daun_Penh.add(LatLng(11.577211, 104.926131));
+    Daun_Penh.add(LatLng(11.574877, 104.927936));
+    Daun_Penh.add(LatLng(11.573762, 104.928953));
+    Daun_Penh.add(LatLng(11.572707, 104.929742));
+
+    Daun_Penh.add(LatLng(11.572045, 104.929947));
+    Daun_Penh.add(LatLng(11.571547, 104.930242));
+    Daun_Penh.add(LatLng(11.571131, 104.930409));
+    Daun_Penh.add(LatLng(11.566601, 104.932344));
+    Daun_Penh.add(LatLng(11.566315, 104.932469));
+    Daun_Penh.add(LatLng(11.565672, 104.933065));
+    Daun_Penh.add(LatLng(11.565170, 104.933470));
+
+    Daun_Penh.add(LatLng(11.564207, 104.934099));
+    Daun_Penh.add(LatLng(11.563720, 104.934501));
+    Daun_Penh.add(LatLng(11.563248, 104.935042));
+    Daun_Penh.add(LatLng(11.563093, 104.935155));
+    Daun_Penh.add(LatLng(11.562646, 104.935719));
+    Daun_Penh.add(LatLng(11.561683, 104.936202));
+
+    Daun_Penh.add(LatLng(11.560808, 104.937000));
+    Daun_Penh.add(LatLng(11.560684, 104.937027));
+    Daun_Penh.add(LatLng(11.560331, 104.937483));
+    Daun_Penh.add(LatLng(11.559836, 104.937731));
+    Daun_Penh.add(LatLng(11.559447, 104.938019));
+    Daun_Penh.add(LatLng(11.558899, 104.938367));
+
+    Daun_Penh.add(LatLng(11.558855, 104.938556));
+    Daun_Penh.add(LatLng(11.558333, 104.939228));
+    Daun_Penh.add(LatLng(11.557957, 104.939576));
+    Daun_Penh.add(LatLng(11.558249, 104.940424));
+    Daun_Penh.add(LatLng(11.558161, 104.942278));
+    Daun_Penh.add(LatLng(11.557630, 104.943126));
+
     Daun_Penh.add(LatLng(11.557132, 104.936986));
     Daun_Penh.add(LatLng(11.557161, 104.932630));
     Daun_Penh.add(LatLng(11.556596, 104.929158));
@@ -1267,8 +1299,8 @@ class _Check_mapState extends State<Check_map> {
     Daun_Penh.add(LatLng(11.583414, 104.907474));
     Daun_Penh.add(LatLng(11.585131, 104.914097));
     Daun_Penh.add(LatLng(11.587912, 104.914582));
-    Daun_Penh.add(LatLng(11.589535, 104.921090));
-    Daun_Penh.add(LatLng(11.587316, 104.922129));
+    // Daun_Penh.add(LatLng(11.589535, 104.921090));
+    // Daun_Penh.add(LatLng(11.587316, 104.922129));
 
 // Daun Penh
     List<LatLng> K7_Makara = <LatLng>[];
@@ -1609,21 +1641,21 @@ class _Check_mapState extends State<Check_map> {
 
     Khan_Dangkor.add(LatLng(11.520051, 104.907623));
     Khan_Dangkor.add(LatLng(11.518867, 104.913378));
-
+///////////meanchen
     List<LatLng> meanchen = <LatLng>[];
 
-    meanchen.add(LatLng(11.545477, 104.860727));
+    meanchen.add(LatLng(11.545208, 104.861411));
     meanchen.add(LatLng(11.541514, 104.861714));
     meanchen.add(LatLng(11.536478, 104.862122));
     meanchen.add(LatLng(11.531559, 104.862336));
     meanchen.add(LatLng(11.528300, 104.862594));
-    // meanchen.add(LatLng(11.524747, 104.862894));
-    meanchen.add(LatLng(11.522555, 104.863125));
+    meanchen.add(LatLng(11.521941, 104.863028));
+    meanchen.add(LatLng(11.521916, 104.863666));
 
 //////////1
     meanchen.add(LatLng(11.522182, 104.868666));
     meanchen.add(LatLng(11.522161, 104.872314));
-    meanchen.add(LatLng(11.520521, 104.876777));
+    meanchen.add(LatLng(11.521441, 104.876633));
     meanchen.add(LatLng(11.522203, 104.882507));
     meanchen.add(LatLng(11.522549, 104.889148));
     meanchen.add(LatLng(11.521971, 104.893911));
@@ -1638,40 +1670,67 @@ class _Check_mapState extends State<Check_map> {
 ///////////////3
 
     meanchen.add(LatLng(11.482315, 104.913813));
-
     meanchen.add(LatLng(11.484495, 104.921424));
-    meanchen.add(LatLng(11.493768, 104.947023));
-    meanchen.add(LatLng(11.499425, 104.943783));
-    meanchen.add(LatLng(11.503336, 104.942839));
-    meanchen.add(LatLng(11.517150, 104.938161));
-    meanchen.add(LatLng(11.526906, 104.935887));
+
+    // meanchen.add(LatLng(11.493768, 104.947023));
+    meanchen.add(LatLng(11.492927, 104.944820));
+
+    meanchen.add(LatLng(11.495019, 104.944047));
+    meanchen.add(LatLng(11.496428, 104.943554));
+    meanchen.add(LatLng(11.497841, 104.942963));
+    meanchen.add(LatLng(11.499019, 104.942598));
 /////////////4
+/////////
+    meanchen.add(LatLng(11.501421, 104.941509));
+    meanchen.add(LatLng(11.506031, 104.939830));
 
-    meanchen.add(LatLng(11.531195, 104.932067));
-    meanchen.add(LatLng(11.530280, 104.927094));
-    meanchen.add(LatLng(11.528172, 104.925007));
-    meanchen.add(LatLng(11.525750, 104.921520));
-    meanchen.add(LatLng(11.527100, 104.918088));
-    meanchen.add(LatLng(11.528963, 104.915485));
-/////////////////////5
+    meanchen.add(LatLng(11.523157, 104.934674));
+/////////////
+    meanchen.add(LatLng(11.530752, 104.932603));
+///////////////////////////////////////////////////////////////
+    meanchen.add(LatLng(11.530885, 104.930831));
+    meanchen.add(LatLng(11.529797, 104.928335));
+//////////////////11.527527, 104.922949///5
 
-    meanchen.add(LatLng(11.533488, 104.913903));
-    meanchen.add(LatLng(11.536426, 104.911364));
-    meanchen.add(LatLng(11.540751, 104.909310));
-    meanchen.add(LatLng(11.543539, 104.905489));
-    meanchen.add(LatLng(11.544689, 104.900709));
-    meanchen.add(LatLng(11.548075, 104.898096));
+    meanchen.add(LatLng(11.526913, 104.921674));
+    meanchen.add(LatLng(11.526630, 104.918897));
+    meanchen.add(LatLng(11.527151, 104.917228));
+    meanchen.add(LatLng(11.528860, 104.915180));
+    meanchen.add(LatLng(11.536175, 104.911371));
 
-///////////////////6
+    // meanchen.add(LatLng(11.548539, 104.897408));
+    meanchen.add(LatLng(11.540233, 104.909095));
+    // meanchen.add(LatLng(11.546791, 104.898873));
 
-    meanchen.add(LatLng(11.549575, 104.895050));
-    meanchen.add(LatLng(11.550133, 104.890040));
-    meanchen.add(LatLng(11.548703, 104.886907));
-    meanchen.add(LatLng(11.547526, 104.877176));
-    meanchen.add(LatLng(11.547357, 104.872370));
-    meanchen.add(LatLng(11.546348, 104.868014));
+///////////////////6///11.549742, 104.895544//11.542966, 104.906914
 
-    meanchen.add(LatLng(11.545718, 104.863980));
+    meanchen.add(LatLng(11.541946, 104.908150));
+
+    meanchen.add(LatLng(11.543102, 104.906734));
+    meanchen.add(LatLng(11.543528, 104.904859));
+    meanchen.add(LatLng(11.543851, 104.902697));
+    meanchen.add(LatLng(11.544703, 104.900691));
+    meanchen.add(LatLng(11.545764, 104.899425));
+
+    meanchen.add(LatLng(11.546900, 104.898845));
+
+///////////////2222
+    meanchen.add(LatLng(11.547877, 104.898641));
+    meanchen.add(LatLng(11.548445, 104.898588));
+    meanchen.add(LatLng(11.548576, 104.898234));
+    meanchen.add(LatLng(11.548681, 104.897729));
+    meanchen.add(LatLng(11.548545, 104.897086));
+
+    meanchen.add(LatLng(11.548650, 104.896699));
+    meanchen.add(LatLng(11.549302, 104.896028));
+    meanchen.add(LatLng(11.549700, 104.895755));
+    meanchen.add(LatLng(11.549733, 104.895458));
+    meanchen.add(LatLng(11.549677, 104.891173));
+    meanchen.add(LatLng(11.549901, 104.890661));
+
+    meanchen.add(LatLng(11.548451, 104.886899));
+    meanchen.add(LatLng(11.547462, 104.875377));
+    meanchen.add(LatLng(11.547303, 104.872292));
 
 ////////Khan_Chamkar_Mon
     List<LatLng> Khan_Chamkar_Mon = <LatLng>[];
@@ -1736,6 +1795,7 @@ class _Check_mapState extends State<Check_map> {
     Khan_Chamkar_Mon.add(LatLng(11.557671, 104.908230));
     Khan_Chamkar_Mon.add(LatLng(11.555646, 104.910758));
     Khan_Chamkar_Mon.add(LatLng(11.555881, 104.920626));
+
     _pg = [
       Khan_Chamkar_Mon,
       Daun_Penh,

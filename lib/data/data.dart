@@ -1,57 +1,71 @@
-// import 'dart:convert';
+import 'dart:collection';
 
-// import 'package:admin/model/comparable.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/container.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// class data {
-//   static List<String> Com = [];
-// }
+class List_pc extends StatefulWidget {
+  const List_pc({super.key});
 
-// class All_data extends StatefulWidget {
-//   const All_data({super.key});
+  @override
+  State<List_pc> createState() => _List_pcState();
+}
 
-//   @override
-//   State<All_data> createState() => _All_dataState();
-// }
+class _List_pcState extends State<List_pc> {
+  double _panelHeightOpen = 0;
+  final double _panelHeightClosed = 95.0;
+  String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
+  GoogleMapController? mapController; //contrller for Google map
+  CameraPosition? cameraPosition;
+  double latitude = 11.5489; //latitude
+  double longitude = 104.9214;
+  Set<Polygon> _Find_polygons = HashSet<Polygon>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          centerTitle: true,
+          toolbarHeight: 50,
+          title: const Text(
+            "Google Map",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              setState(() {
+                _Find_polygons.clear();
+                Navigator.of(context).pop();
+              });
+            },
+            icon: Icon(Icons.arrow_back_outlined, size: 25),
+          )),
+      body: Container(
+        height: MediaQuery.of(context).size.height * 1,
+        child: Stack(
+          children: [
+            GoogleMap(
+              // markers: getmarkers(),
 
-// class _All_dataState extends State<All_data> with data {
-//   Future<Comparable> com_data() async {
-//     final response = await http
-//         .get(Uri.parse('https://kfahrm.cc/Laravel/public/api/comparable/list'));
-//     final data = jsonDecode(response.body);
-//     return Comparable.fromJson(data);
-//   }
+              //Map widget from google_maps_flutter package
+              zoomGesturesEnabled: true, //enable Zoom in, out on map
+              initialCameraPosition: CameraPosition(
+                //innital position in map
+                target: LatLng(latitude, longitude), //initial position
+                zoom: 10.0, //initial zoom level
+              ),
+              mapType: MapType.hybrid, //map type
 
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     com_data();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//       future: com_data(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return Center(
-//             child: CircularProgressIndicator(),
-//           );
-//         }
-//         return ListView.builder(
-//           itemCount: snapshot.data.data,
-//           itemBuilder: (context, index) {
-//             final cdt = snapshot.data!.data![index];
-//             data.Com = cdt.comparableId.toString() as List<String>;
-//             return InkWell();
-//           },
-//         );
-//       },
-//     );
-//     ;
-//   }
-// }
+              onTap: (argument) {},
+              onCameraMove: (CameraPosition cameraPositiona) {
+                cameraPosition = cameraPositiona; //when map is dragging
+              },
+              polygons: _Find_polygons,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
