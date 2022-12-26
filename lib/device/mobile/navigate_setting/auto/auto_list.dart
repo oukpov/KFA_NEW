@@ -1,10 +1,13 @@
 // ignore_for_file: unnecessary_import, implementation_imports, unused_import, prefer_adjacent_string_concatenation, prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
 
 class AutoList extends StatefulWidget {
   const AutoList({super.key});
@@ -14,136 +17,108 @@ class AutoList extends StatefulWidget {
 }
 
 class _AutoListState extends State<AutoList> {
+  late List _list;
+  late List M_v;
+  late List N_v;
+  @override
+  void initState() {
+    _list = [];
+    Load();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            GFCard(
-              borderRadius: BorderRadius.circular(80),
-              elevation: 15,
-              color: Colors.blue[50],
-              title: GFListTile(
-                title: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        appBar: AppBar(),
+        body: (_list.length > 0)
+            ? ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (context, i) {
+                  return Container(
+                      height: 300,
+                      color: Colors.blue[100],
+                      margin: const EdgeInsets.all(15),
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Commune',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text("Commune : "),
                               ),
-                              Text(
-                                'Distruct',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Privince',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Main Road Max value',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Sub Road Min Value',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Sub Road Max Value',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  _list[i]['commune_name'],
+                                  textAlign: TextAlign.right,
+                                ),
+                              )
                             ],
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Phum Thum',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text("District : "),
                               ),
-                              Text(
-                                'Kien Svay',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  _list[i]['district'],
+                                  textAlign: TextAlign.right,
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text("Province : "),
                               ),
-                              Text(
-                                'Kandal Province',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '20' + '\$',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '30 ' + '\$',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '111' + '\$',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  _list[i]['province'],
+                                  textAlign: TextAlign.right,
+                                ),
+                              )
                             ],
                           ),
                         ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Divider(
-                        height: 1,
-                        thickness: 7,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                      ));
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
+  }
 
-              // content: Text("Some quick example text to build on the card"),
-              buttonBar: GFButtonBar(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GFButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.edit),
-                        text: 'Edit',
-                        color: Color.fromARGB(255, 77, 161, 80),
-                      ),
-                      GFButton(
-                        onPressed: () {},
-                        text: 'Delete',
-                        icon: Icon(Icons.delete),
-                        color: Color.fromARGB(255, 194, 29, 29),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    ));
+  void Load() async {
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/commune_list'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+      setState(() async {
+        _list = jsonData;
+        for (int i = 0; i < _list.length; i++) {
+          var rs = await http.get(Uri.parse(
+              'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list?cid=${_list[i]['cid']}'));
+          if (rs.statusCode == 200) {
+            var jsonData = jsonDecode(rs.body);
+            setState(() {
+              M_v.add(jsonData[i]['max_value']);
+              N_v.add(jsonData[i]['min_value']);
+            });
+          }
+        }
+        print(M_v);
+      });
+    }
   }
 }

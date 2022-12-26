@@ -97,7 +97,8 @@ class APIservice {
 
   Future<M_CommuneReponeModel> SaveCommune(M_Commune requestModel) async {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/new_commune'),
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/new_commune'),
       headers: {
         "Accept": "application/json;charset=UTF-8",
         "Content-Type": "application/json"
@@ -119,7 +120,8 @@ class APIservice {
   Future<roadAndcommune_ReponeModel> RoadAndCommune(
       roadAndcommune requestModel) async {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/new_rc'),
+      Uri.parse(
+          'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/new_rc'),
       headers: {
         "Accept": "application/json;charset=UTF-8",
         "Content-Type": "application/json"

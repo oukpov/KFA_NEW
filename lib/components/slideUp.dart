@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
   List<MarkerId> listMarkerIds = List<MarkerId>.empty(growable: true);
   double latitude = 11.5489; //latitude
   double longitude = 104.9214;
-  LatLng latLng = const LatLng(11.5489, 104.9214);
+  LatLng latLng = LatLng(11.5489, 104.9214);
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List list = [];
@@ -138,8 +138,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // getmarkers();
     _getCurrentPosition();
-    getAddress(latLng);
+    // getAddress(LatLng(lat, log));
 
     requestModel = new SearchRequestModel(
       property_type_id: "",
@@ -264,7 +265,8 @@ class _HomePageState extends State<HomePage> {
       marker.add(Marker(
         //add second marker
         markerId: MarkerId("showLocation.toString()"),
-        position: LatLng(lat, log), //position of marker
+        // position: LatLng(lat, log),
+        position: ((num > 0) ? LatLng(lat, log) : latLng), //position of marker
         infoWindow: InfoWindow(
           //popup info
           title: 'Thanks for using us',
@@ -388,8 +390,11 @@ class _HomePageState extends State<HomePage> {
                 zoomGesturesEnabled: true, //enable Zoom in, out on map
                 initialCameraPosition: CameraPosition(
                   //innital position in map
-                  target: LatLng(latitude, longitude), //initial position
-                  zoom: 10.0, //initial zoom level
+                  target: LatLng(latitude, longitude),
+                  // target: ((num < 0)
+                  //     ? LatLng(lat, log)
+                  //     : latLng), //initial position
+                  zoom: 16, //initial zoom level
                 ),
                 mapType: style_map[index], //map type
                 onMapCreated: (controller) {
@@ -398,6 +403,8 @@ class _HomePageState extends State<HomePage> {
                     mapController = controller;
                   });
                 },
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
                 onTap: (argument) {
                   MarkerId markerId = MarkerId('mark');
                   listMarkerIds.add(markerId);
@@ -422,16 +429,20 @@ class _HomePageState extends State<HomePage> {
             : Center(
                 child: CircularProgressIndicator(),
               ),
-        Align(
-          alignment: Alignment.topCenter,
+        Container(
+          margin: EdgeInsets.only(left: 5),
+          alignment: Alignment.topLeft,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: SearchLocation(
             apiKey:
                 'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
             country: 'KH',
             onSelected: (Place place) {
-              address = place.description;
-              print(place.description);
-              getLatLang(address);
+              setState(() {
+                address = place.description;
+                print(place.description);
+                getLatLang(address);
+              });
             },
           ),
         ),
@@ -647,8 +658,9 @@ class _HomePageState extends State<HomePage> {
       var message = address.first.coordinates.toString();
       latitude = address.first.coordinates.latitude!;
       longitude = address.first.coordinates.longitude!;
+      latLng = LatLng(latitude, longitude);
       mapController?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(latitude, longitude), zoom: 10)));
+          CameraPosition(target: LatLng(latitude, longitude), zoom: 13)));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),

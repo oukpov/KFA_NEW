@@ -35,8 +35,8 @@ class _RoadDropdownState extends State<RoadDropdown> {
     return Column(
       children: [
         Container(
-          height: 55,
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          height: 60,
+          margin: EdgeInsets.all(10),
           child: DropdownButtonFormField<String>(
             //value: genderValue,
             isExpanded: true,

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:collection';
-
+import 'dart:convert';
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:admin/components/road.dart';
 import 'package:admin/model/models/M_commune.dart';
 import 'package:admin/model/models/M_roadAndcommune.dart';
@@ -23,39 +25,57 @@ class NewAuto extends StatefulWidget {
 }
 
 class _NewAutoState extends State<NewAuto> {
+  late List _list;
+  String? district;
+  String? province;
+  String? commune;
+  double? lat, log;
   TextStyle colorizeTextStyle = TextStyle(
     fontSize: 20.0,
     fontFamily: 'Horizon',
     fontWeight: FontWeight.bold,
   );
   late M_Commune Commune;
-  late List<roadAndcommune> rac = [];
-  static String? M_max;
-  static String? M_min;
-  static String? S_max;
-  static String? S_min;
+  List<roadAndcommune>? rac;
+  String? S_M_V;
+  String? S_N_V;
+  String? M_1_M_V;
+  String? M_1_N_V;
+  String? M_2_M_V;
+  String? M_2_N_V;
+  var M_1_idr;
+  var M_2_idr;
   @override
   void initState() {
-    M_max;
-    M_min;
-    S_max;
-    S_min;
+    rac = [];
+    M_1_idr;
+    M_2_idr;
+    Load();
+    S_M_V;
+    S_N_V;
     // TODO: implement initState
     Commune = M_Commune(
         communename: "Null",
         district: "Null",
         province: "Null",
-        longitude: 0,
-        latitude: 0);
+        longitude: 0.0,
+        latitude: 0.0);
+    onClick1 = false;
+    onClick2 = false;
     // rac.add(roadAndcommune(rid: 0, cid: 0, maxvalue: 0, minvalue: 0));
     // rac.add(roadAndcommune(rid: 0, cid: 0, maxvalue: 0, minvalue: 0));
     super.initState();
   }
 
+  bool click_r = false;
   int groupValue = 0;
-  var name_r;
-  var id_r;
+  var S_name_r;
+  var S_id_r;
+  var M_name_r1;
+  var M_name_r2;
   bool onClick = false;
+  bool? onClick1;
+  bool? onClick2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +86,46 @@ class _NewAutoState extends State<NewAuto> {
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
         ),
+        actions: [
+          if (groupValue != 0)
+            GFButton(
+              onPressed: () {
+                setState(() {
+                  if (groupValue == 1) {
+                    rac!.add(roadAndcommune(
+                        rid: int.parse(
+                          S_id_r,
+                        ),
+                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
+                        maxvalue: double.parse(S_M_V!),
+                        minvalue: double.parse(S_N_V!)));
+                    APIservice setdata = APIservice();
+                    setdata.RoadAndCommune(rac!.elementAt(0));
+                  } else if (groupValue == 2) {
+                    APIservice setdata = APIservice();
+                    rac!.add(roadAndcommune(
+                        rid: int.parse(M_1_idr),
+                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
+                        maxvalue: double.parse(M_1_M_V!),
+                        minvalue: double.parse(M_1_N_V!)));
+                    rac!.add(roadAndcommune(
+                        rid: int.parse(M_2_idr),
+                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
+                        maxvalue: double.parse(M_2_M_V!),
+                        minvalue: double.parse(M_2_N_V!)));
+                    setdata.RoadAndCommune(rac!.elementAt(0));
+                    setdata.RoadAndCommune(rac!.elementAt(1));
+                  }
+                  Navigator.of(context).pop();
+                });
+              },
+              icon: Icon(Icons.save_alt_outlined),
+              color: Color.fromRGBO(13, 71, 161, 1),
+              text: 'Submit',
+            ),
+        ],
       ),
       body: ListView(
-        shrinkWrap: true,
         children: [
           Container(
             padding: EdgeInsets.all(5),
@@ -80,8 +137,34 @@ class _NewAutoState extends State<NewAuto> {
                 ]),
             child: InkWell(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Menu_map()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Check_map(
+                          lat: (value) {
+                            setState(() {
+                              lat = value;
+                            });
+                          },
+                          log: (value) {
+                            setState(() {
+                              log = value;
+                            });
+                          },
+                          commune: (value) {
+                            setState(() {
+                              commune = value;
+                            });
+                          },
+                          district: (value) {
+                            setState(() {
+                              district = value;
+                            });
+                          },
+                          province: (value) {
+                            setState(() {
+                              province = value;
+                            });
+                          },
+                        )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -133,136 +216,162 @@ class _NewAutoState extends State<NewAuto> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.travel_explore,
-                    color: Colors.cyan[600],
-                    size: 30,
+          if (lat != null)
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.travel_explore,
+                          color: Colors.cyan[600],
+                          size: 30,
+                        ),
+                        hintText: 'Do you want to edit commune?',
+                        labelText: ((commune == null) ? 'Commune' : '$commune'),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    onSaved: (String? value) {
+                      // This optional block of code can be used to run
+                      // code when the user saves the form.
+                    },
                   ),
-                  hintText: 'Do you want to edit commune?',
-                  labelText: 'Commune',
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              onSaved: (String? value) {
-                // This optional block of code can be used to run
-                // code when the user saves the form.
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.travel_explore,
-                  color: Colors.cyan[600],
-                  size: 30,
                 ),
-                hintText: 'Do you want to edit District?',
-                labelText: 'District',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onSaved: (String? value) {
-                // This optional block of code can be used to run
-                // code when the user saves the form.
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.travel_explore,
-                  color: Colors.cyan[600],
-                  size: 30,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.travel_explore,
+                        color: Colors.cyan[600],
+                        size: 30,
+                      ),
+                      hintText: 'Do you want to edit District?',
+                      labelText:
+                          ((district == null) ? 'District' : '$district'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                    onSaved: (String? value) {
+                      // This optional block of code can be used to run
+                      // code when the user saves the form.
+                    },
+                  ),
                 ),
-                hintText: 'Do you want to edit province?',
-                labelText: 'Province',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-              ),
-              onSaved: (String? value) {
-                // This optional block of code can be used to run
-                // code when the user saves the form.
-              },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(
+                        Icons.travel_explore,
+                        color: Colors.cyan[600],
+                        size: 30,
+                      ),
+                      hintText: 'Do you want to edit province?',
+                      labelText:
+                          ((province == null) ? 'province' : '$province'),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                    onSaved: (String? value) {
+                      // This optional block of code can be used to run
+                      // code when the user saves the form.
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Divider(
-            height: 5,
-            color: Colors.blue,
-            thickness: 2,
-          ),
-          GFCard(
-              elevation: 8,
-              title: GFListTile(
+          if (lat != null)
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  click_r = true;
+                  Commune = M_Commune(
+                      communename: commune,
+                      district: district,
+                      province: province,
+                      longitude: log,
+                      latitude: lat);
+                  APIservice setData = APIservice();
+                  setData.SaveCommune(Commune);
+                });
+              },
+              child: GFListTile(
+                  color: Colors.blue[400],
                   margin:
                       const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   titleText: 'Please select road',
-                  icon: Icon(Icons.call_split)),
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Single road",
-                    style: TextStyle(
-                        color: ((groupValue == 1)
-                            ? Colors.red[900]
-                            : Colors.black)),
-                  ),
-                  GFRadio(
-                    size: 20,
-                    value: 1,
-                    groupValue: groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        groupValue = value;
-                      });
-                    },
-                    inactiveIcon: null,
-                    activeBorderColor: Color.fromARGB(255, 0, 4, 255),
-                    radioColor: Color.fromRGBO(183, 28, 28, 1),
-                  ),
-                  Text(
-                    "Multi road",
-                    style: TextStyle(
-                        color:
-                            ((groupValue == 2) ? Colors.green : Colors.black)),
-                  ),
-                  GFRadio(
-                    size: 20,
-                    value: 2,
-                    groupValue: groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        groupValue = value;
-                      });
-                    },
-                    inactiveIcon: null,
-                    activeBorderColor: Color.fromARGB(255, 0, 4, 255),
-                    radioColor: Color.fromRGBO(183, 28, 28, 1),
-                  )
-                ],
-              )),
+                  icon: Icon(
+                    Icons.call_split,
+                    color: Colors.black,
+                  )),
+            ),
+          SizedBox(
+            height: 10,
+          ),
+          ((click_r == false)
+              ? Text('')
+              : GFCard(
+                  height: 90,
+                  elevation: 8,
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Single road",
+                        style: TextStyle(
+                            color: ((groupValue == 1)
+                                ? Colors.red[900]
+                                : Colors.black)),
+                      ),
+                      GFRadio(
+                        size: 20,
+                        value: 1,
+                        groupValue: groupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            groupValue = value;
+                          });
+                        },
+                        inactiveIcon: null,
+                        activeBorderColor: Color.fromARGB(255, 0, 4, 255),
+                        radioColor: Color.fromRGBO(183, 28, 28, 1),
+                      ),
+                      Text(
+                        "Multi road",
+                        style: TextStyle(
+                            color: ((groupValue == 2)
+                                ? Colors.green
+                                : Colors.black)),
+                      ),
+                      GFRadio(
+                        size: 20,
+                        value: 2,
+                        groupValue: groupValue,
+                        onChanged: (value) {
+                          setState(() {
+                            groupValue = value;
+                          });
+                        },
+                        inactiveIcon: null,
+                        activeBorderColor: Color.fromARGB(255, 0, 4, 255),
+                        radioColor: Color.fromRGBO(183, 28, 28, 1),
+                      )
+                    ],
+                  ))),
           ((groupValue == 1)
               ? Column(
                   children: [
                     RoadDropdown(
                       id_road: (value) {
-                        id_r = value;
+                        S_id_r = value;
                         setState(() {
                           onClick = true;
                         });
                       },
                       Name_road: (value) {
-                        name_r = value;
+                        S_name_r = value;
                       },
                     ),
                     ((onClick == true)
@@ -272,21 +381,29 @@ class _NewAutoState extends State<NewAuto> {
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                                 child: TextFormField(
                                   decoration: InputDecoration(
-                                    fillColor: Colors.blue[50],
                                     prefixIcon: Icon(
                                       Icons.edit_road,
-                                      color: Colors.cyan[600],
+                                      color: Colors.red,
                                       size: 30,
                                     ),
+                                    hintStyle: TextStyle(color: Colors.red),
+                                    labelStyle: TextStyle(color: Colors.red),
                                     hintText: 'Please Enter Value',
-                                    labelText: '${name_r} Min Value',
-                                    border: OutlineInputBorder(
+                                    labelText: '${S_name_r} Max Value',
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.red),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.red),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                   ),
                                   onChanged: (value) {
                                     setState(() {
-                                      M_min = value;
+                                      S_M_V = value;
                                     });
                                   },
                                 ),
@@ -298,17 +415,26 @@ class _NewAutoState extends State<NewAuto> {
                                     fillColor: Colors.blue[50],
                                     prefixIcon: Icon(
                                       Icons.edit_road,
-                                      color: Colors.cyan[600],
+                                      color: Colors.red,
                                       size: 30,
                                     ),
+                                    hintStyle: TextStyle(color: Colors.red),
+                                    labelStyle: TextStyle(color: Colors.red),
                                     hintText: 'Please Enter Value',
-                                    labelText: '${name_r} Min Value',
-                                    border: OutlineInputBorder(
+                                    labelText: '${S_name_r} Min Value',
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.red),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.red),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                   ),
                                   onChanged: (value) {
-                                    S_min = value;
+                                    S_N_V = value;
                                   },
                                 ),
                               )
@@ -317,32 +443,191 @@ class _NewAutoState extends State<NewAuto> {
                         : Text(""))
                   ],
                 )
-              : Column(children: [])),
-          GFButton(
-            onPressed: () {
-              rac.add(roadAndcommune(
-                  rid: 1,
-                  maxvalue: double.parse(M_max!),
-                  minvalue: double.parse(M_min!)));
-              rac.add(roadAndcommune(
-                  rid: 2,
-                  maxvalue: double.parse(S_max!),
-                  minvalue: double.parse(S_min!)));
-              APIservice setdata = APIservice();
-              setdata.RoadAndCommune(rac.elementAt(0));
-              setdata.RoadAndCommune(rac.elementAt(1));
-            },
-            text: 'Submit',
-          )
+              : Text("")),
+          if (groupValue == 2)
+            Column(
+              children: [
+                RoadDropdown(
+                  id_road: (value) {
+                    M_1_idr = value;
+                  },
+                  Name_road: (value) {
+                    M_name_r1 = value;
+                    setState(() {
+                      onClick1 = true;
+                    });
+                  },
+                ),
+                if (onClick1 == true)
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.edit_road,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            hintStyle: TextStyle(color: Colors.red),
+                            labelStyle: TextStyle(color: Colors.red),
+                            hintText: 'Please Enter Value',
+                            labelText: '${M_name_r1} Max Value',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              M_1_M_V = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            fillColor: Colors.blue[50],
+                            prefixIcon: Icon(
+                              Icons.edit_road,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            hintStyle: TextStyle(color: Colors.red),
+                            labelStyle: TextStyle(color: Colors.red),
+                            hintText: 'Please Enter Value',
+                            labelText: '${M_name_r1} Min Value',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onChanged: (value) {
+                            M_1_N_V = value;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                RoadDropdown(
+                  id_road: (value) {
+                    M_2_idr = value;
+                  },
+                  Name_road: (value) {
+                    M_name_r2 = value;
+                    setState(() {
+                      onClick2 = true;
+                    });
+                  },
+                ),
+                if (onClick2 == true)
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.edit_road,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            hintStyle: TextStyle(color: Colors.red),
+                            labelStyle: TextStyle(color: Colors.red),
+                            hintText: 'Please Enter Value',
+                            labelText: '${M_name_r2} Max Value',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              M_2_M_V = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            fillColor: Colors.blue[50],
+                            prefixIcon: Icon(
+                              Icons.edit_road,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            hintStyle: TextStyle(color: Colors.red),
+                            labelStyle: TextStyle(color: Colors.red),
+                            hintText: 'Please Enter Value',
+                            labelText: '${M_name_r2} Min Value',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: Colors.red),
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          onChanged: (value) {
+                            M_2_N_V = value;
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+              ],
+            ),
         ],
       ),
     );
   }
+
+  void Load() async {
+    setState(() {});
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/commune_list'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+      setState(() {
+        _list = jsonData;
+      });
+    }
+  }
 }
 
+typedef OnChangeCallback = void Function(dynamic value);
+
 class Check_map extends StatefulWidget {
-  const Check_map({super.key, required this.index_pg});
-  final int index_pg;
+  const Check_map(
+      {super.key,
+      required this.province,
+      required this.district,
+      required this.commune,
+      required this.log,
+      required this.lat});
+  final OnChangeCallback province;
+  final OnChangeCallback district;
+  final OnChangeCallback commune;
+  final OnChangeCallback log;
+  final OnChangeCallback lat;
   @override
   State<Check_map> createState() => _Check_mapState();
 }
@@ -422,6 +707,11 @@ class _Check_mapState extends State<Check_map> {
             '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
         lat = _currentPosition!.latitude;
         log = _currentPosition!.longitude;
+        widget.lat(lat);
+        widget.log(log);
+        widget.commune(place.name);
+        widget.district(place.subLocality);
+        widget.province(place.administrativeArea);
       });
     }).catchError((e) {
       debugPrint(e);
@@ -478,9 +768,16 @@ class _Check_mapState extends State<Check_map> {
     final coordinates = Coordinates(latLng.latitude, latLng.longitude);
     try {
       final address = await geocoder.findAddressesFromCoordinates(coordinates);
+      // final address_of_latLng = await geocoder.findAddressesFromQuery();
+      setState(() {
+        widget.commune(address.first.addressLine);
+        widget.district(address.first.subLocality);
+        widget.province(address.first.adminArea);
+      });
+
       // subAdminArea=ខ័ណ្ឌ
       // adminArea = ខេត្ត
-      var message = address.first.subThoroughfare;
+      var message = address.first.addressLine;
       if (message == null) return;
       sendAddrress = message;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -510,7 +807,7 @@ class _Check_mapState extends State<Check_map> {
   @override
   void initState() {
     _getCurrentPosition();
-    getAddress(latLng);
+    // getAddress(latLng);
     _setPolygons();
     super.initState();
   }
@@ -522,312 +819,251 @@ class _Check_mapState extends State<Check_map> {
   List _pg = [];
   void _setPolygons() {
     //ខ័ណ្ឌជ្រោយចង្វា
-    List<LatLng> polygonLatLongs = <LatLng>[];
-
-    polygonLatLongs.add(LatLng(11.671157, 104.861930));
-    polygonLatLongs.add(LatLng(11.672557, 104.862785));
-    polygonLatLongs.add(LatLng(11.672619, 104.878829));
-    polygonLatLongs.add(LatLng(11.672294, 104.885055));
-    polygonLatLongs.add(LatLng(11.672594, 104.899549));
-    polygonLatLongs.add(LatLng(11.682990, 104.899855));
-//////////1
-    polygonLatLongs.add(LatLng(11.683839, 104.899817));
-    polygonLatLongs.add(LatLng(11.684727, 104.898465));
-    polygonLatLongs.add(LatLng(11.685226, 104.897903));
-    polygonLatLongs.add(LatLng(11.686938, 104.898656));
-    polygonLatLongs.add(LatLng(11.688412, 104.899957));
-    polygonLatLongs.add(LatLng(11.691411, 104.900480));
-////////////2
-    polygonLatLongs.add(LatLng(11.695784, 104.905737));
-    polygonLatLongs.add(LatLng(11.700348, 104.909264));
-    polygonLatLongs.add(LatLng(11.704960, 104.910058));
-    polygonLatLongs.add(LatLng(11.707875, 104.910798));
-    polygonLatLongs.add(LatLng(11.712504, 104.912530));
-    polygonLatLongs.add(LatLng(11.715401, 104.915345));
-/////////////////3
-    polygonLatLongs.add(LatLng(11.717840, 104.916752));
-    polygonLatLongs.add(LatLng(11.725295, 104.917690));
-    polygonLatLongs.add(LatLng(11.732645, 104.917618));
-    polygonLatLongs.add(LatLng(11.736355, 104.917474));
-    polygonLatLongs.add(LatLng(11.736496, 104.920794));
-    polygonLatLongs.add(LatLng(11.736143, 104.923284));
-///////////////////////4
-    polygonLatLongs.add(LatLng(11.735895, 104.940173));
-    polygonLatLongs.add(LatLng(11.735259, 104.943204));
-    polygonLatLongs.add(LatLng(11.734553, 104.945550));
-    polygonLatLongs.add(LatLng(11.732998, 104.947210));
-    polygonLatLongs.add(LatLng(11.726037, 104.949231));
-    polygonLatLongs.add(LatLng(11.721974, 104.952298));
-///////////////////////5
-    polygonLatLongs.add(LatLng(11.716885, 104.957278));
-    polygonLatLongs.add(LatLng(11.715631, 104.958397));
-    polygonLatLongs.add(LatLng(11.711780, 104.960238));
-    polygonLatLongs.add(LatLng(11.711073, 104.963630));
-    polygonLatLongs.add(LatLng(11.710896, 104.967599));
-    polygonLatLongs.add(LatLng(11.697009, 104.963666));
-//////////////6
-    polygonLatLongs.add(LatLng(11.690082, 104.962367));
-    polygonLatLongs.add(LatLng(11.678951, 104.958108));
-    polygonLatLongs.add(LatLng(11.675169, 104.954536));
-    polygonLatLongs.add(LatLng(11.669291, 104.951973));
-    polygonLatLongs.add(LatLng(11.655145, 104.946814));
-    polygonLatLongs.add(LatLng(11.651994, 104.943840));
-/////////////////7
-    polygonLatLongs.add(LatLng(11.648071, 104.941898));
-    polygonLatLongs.add(LatLng(11.642454, 104.937801));
-    polygonLatLongs.add(LatLng(11.639125, 104.936284));
-    polygonLatLongs.add(LatLng(11.631249, 104.933917));
-    polygonLatLongs.add(LatLng(11.623759, 104.932263));
-    polygonLatLongs.add(LatLng(11.611141, 104.935465));
-///////////////////8
-    polygonLatLongs.add(LatLng(11.605671, 104.939167));
-    polygonLatLongs.add(LatLng(11.600707, 104.939258));
-    polygonLatLongs.add(LatLng(11.592606, 104.942567));
-    polygonLatLongs.add(LatLng(11.588970, 104.943426));
-    polygonLatLongs.add(LatLng(11.577500, 104.945031));
-    polygonLatLongs.add(LatLng(11.563186, 104.945948));
-/////////////////9
-    polygonLatLongs.add(LatLng(11.562260, 104.942317));
-    polygonLatLongs.add(LatLng(11.563085, 104.939280));
-    polygonLatLongs.add(LatLng(11.563660, 104.938055));
-    polygonLatLongs.add(LatLng(11.587451, 104.922480));
-    polygonLatLongs.add(LatLng(11.588617, 104.923599));
-    polygonLatLongs.add(LatLng(11.589996, 104.922949));
-////////////////////10
-    polygonLatLongs.add(LatLng(11.591587, 104.922552));
-    polygonLatLongs.add(LatLng(11.593920, 104.922408));
-    polygonLatLongs.add(LatLng(11.598480, 104.922877));
-    polygonLatLongs.add(LatLng(11.602298, 104.923274));
-    polygonLatLongs.add(LatLng(11.604490, 104.923274));
-    polygonLatLongs.add(LatLng(11.606823, 104.923057));
-
-    polygonLatLongs.add(LatLng(11.609403, 104.922985));
-    polygonLatLongs.add(LatLng(11.611242, 104.922733));
-    polygonLatLongs.add(LatLng(11.613822, 104.921975));
-    polygonLatLongs.add(LatLng(11.616261, 104.921000));
-    polygonLatLongs.add(LatLng(11.623401, 104.916237));
-    polygonLatLongs.add(LatLng(11.626123, 104.914432));
-
-    polygonLatLongs.add(LatLng(11.629905, 104.911040));
-    polygonLatLongs.add(LatLng(11.633016, 104.908370));
-    polygonLatLongs.add(LatLng(11.637292, 104.902415));
-    polygonLatLongs.add(LatLng(11.638848, 104.899059));
-    polygonLatLongs.add(LatLng(11.641357, 104.891553));
-    polygonLatLongs.add(LatLng(11.643725, 104.885923));
-
-    polygonLatLongs.add(LatLng(11.645634, 104.882206));
-    polygonLatLongs.add(LatLng(11.648850, 104.877840));
-    polygonLatLongs.add(LatLng(11.651254, 104.875386));
-    polygonLatLongs.add(LatLng(11.656272, 104.871561));
-    polygonLatLongs.add(LatLng(11.664330, 104.866869));
-    polygonLatLongs.add(LatLng(11.667299, 104.864848));
+    List<LatLng> CHROUY_CHANGVA = <LatLng>[];
+    CHROUY_CHANGVA.add(LatLng(11.671157, 104.861930));
+    CHROUY_CHANGVA.add(LatLng(11.672557, 104.862785));
+    CHROUY_CHANGVA.add(LatLng(11.672619, 104.878829));
+    CHROUY_CHANGVA.add(LatLng(11.672294, 104.885055));
+    CHROUY_CHANGVA.add(LatLng(11.672594, 104.899549));
+    CHROUY_CHANGVA.add(LatLng(11.682990, 104.899855));
+    CHROUY_CHANGVA.add(LatLng(11.683839, 104.899817));
+    CHROUY_CHANGVA.add(LatLng(11.684727, 104.898465));
+    CHROUY_CHANGVA.add(LatLng(11.685226, 104.897903));
+    CHROUY_CHANGVA.add(LatLng(11.686938, 104.898656));
+    CHROUY_CHANGVA.add(LatLng(11.688412, 104.899957));
+    CHROUY_CHANGVA.add(LatLng(11.691411, 104.900480));
+    CHROUY_CHANGVA.add(LatLng(11.695784, 104.905737));
+    CHROUY_CHANGVA.add(LatLng(11.700348, 104.909264));
+    CHROUY_CHANGVA.add(LatLng(11.704960, 104.910058));
+    CHROUY_CHANGVA.add(LatLng(11.707875, 104.910798));
+    CHROUY_CHANGVA.add(LatLng(11.712504, 104.912530));
+    CHROUY_CHANGVA.add(LatLng(11.715401, 104.915345));
+    CHROUY_CHANGVA.add(LatLng(11.717840, 104.916752));
+    CHROUY_CHANGVA.add(LatLng(11.725295, 104.917690));
+    CHROUY_CHANGVA.add(LatLng(11.732645, 104.917618));
+    CHROUY_CHANGVA.add(LatLng(11.736355, 104.917474));
+    CHROUY_CHANGVA.add(LatLng(11.736496, 104.920794));
+    CHROUY_CHANGVA.add(LatLng(11.736143, 104.923284));
+    CHROUY_CHANGVA.add(LatLng(11.735895, 104.940173));
+    CHROUY_CHANGVA.add(LatLng(11.735259, 104.943204));
+    CHROUY_CHANGVA.add(LatLng(11.734553, 104.945550));
+    CHROUY_CHANGVA.add(LatLng(11.732998, 104.947210));
+    CHROUY_CHANGVA.add(LatLng(11.726037, 104.949231));
+    CHROUY_CHANGVA.add(LatLng(11.721974, 104.952298));
+    CHROUY_CHANGVA.add(LatLng(11.716885, 104.957278));
+    CHROUY_CHANGVA.add(LatLng(11.715631, 104.958397));
+    CHROUY_CHANGVA.add(LatLng(11.711780, 104.960238));
+    CHROUY_CHANGVA.add(LatLng(11.711073, 104.963630));
+    CHROUY_CHANGVA.add(LatLng(11.710896, 104.967599));
+    CHROUY_CHANGVA.add(LatLng(11.697009, 104.963666));
+    CHROUY_CHANGVA.add(LatLng(11.690082, 104.962367));
+    CHROUY_CHANGVA.add(LatLng(11.678951, 104.958108));
+    CHROUY_CHANGVA.add(LatLng(11.675169, 104.954536));
+    CHROUY_CHANGVA.add(LatLng(11.669291, 104.951973));
+    CHROUY_CHANGVA.add(LatLng(11.655145, 104.946814));
+    CHROUY_CHANGVA.add(LatLng(11.651994, 104.943840));
+    CHROUY_CHANGVA.add(LatLng(11.648071, 104.941898));
+    CHROUY_CHANGVA.add(LatLng(11.642454, 104.937801));
+    CHROUY_CHANGVA.add(LatLng(11.639125, 104.936284));
+    CHROUY_CHANGVA.add(LatLng(11.631249, 104.933917));
+    CHROUY_CHANGVA.add(LatLng(11.623759, 104.932263));
+    CHROUY_CHANGVA.add(LatLng(11.611141, 104.935465));
+    CHROUY_CHANGVA.add(LatLng(11.605671, 104.939167));
+    CHROUY_CHANGVA.add(LatLng(11.600707, 104.939258));
+    CHROUY_CHANGVA.add(LatLng(11.592606, 104.942567));
+    CHROUY_CHANGVA.add(LatLng(11.588970, 104.943426));
+    CHROUY_CHANGVA.add(LatLng(11.577500, 104.945031));
+    CHROUY_CHANGVA.add(LatLng(11.563186, 104.945948));
+    CHROUY_CHANGVA.add(LatLng(11.562260, 104.942317));
+    CHROUY_CHANGVA.add(LatLng(11.563085, 104.939280));
+    CHROUY_CHANGVA.add(LatLng(11.563660, 104.938055));
+    CHROUY_CHANGVA.add(LatLng(11.587451, 104.922480));
+    CHROUY_CHANGVA.add(LatLng(11.588617, 104.923599));
+    CHROUY_CHANGVA.add(LatLng(11.589996, 104.922949));
+    CHROUY_CHANGVA.add(LatLng(11.591587, 104.922552));
+    CHROUY_CHANGVA.add(LatLng(11.593920, 104.922408));
+    CHROUY_CHANGVA.add(LatLng(11.598480, 104.922877));
+    CHROUY_CHANGVA.add(LatLng(11.602298, 104.923274));
+    CHROUY_CHANGVA.add(LatLng(11.604490, 104.923274));
+    CHROUY_CHANGVA.add(LatLng(11.606823, 104.923057));
+    CHROUY_CHANGVA.add(LatLng(11.609403, 104.922985));
+    CHROUY_CHANGVA.add(LatLng(11.611242, 104.922733));
+    CHROUY_CHANGVA.add(LatLng(11.613822, 104.921975));
+    CHROUY_CHANGVA.add(LatLng(11.616261, 104.921000));
+    CHROUY_CHANGVA.add(LatLng(11.623401, 104.916237));
+    CHROUY_CHANGVA.add(LatLng(11.626123, 104.914432));
+    CHROUY_CHANGVA.add(LatLng(11.629905, 104.911040));
+    CHROUY_CHANGVA.add(LatLng(11.633016, 104.908370));
+    CHROUY_CHANGVA.add(LatLng(11.637292, 104.902415));
+    CHROUY_CHANGVA.add(LatLng(11.638848, 104.899059));
+    CHROUY_CHANGVA.add(LatLng(11.641357, 104.891553));
+    CHROUY_CHANGVA.add(LatLng(11.643725, 104.885923));
+    CHROUY_CHANGVA.add(LatLng(11.645634, 104.882206));
+    CHROUY_CHANGVA.add(LatLng(11.648850, 104.877840));
+    CHROUY_CHANGVA.add(LatLng(11.651254, 104.875386));
+    CHROUY_CHANGVA.add(LatLng(11.656272, 104.871561));
+    CHROUY_CHANGVA.add(LatLng(11.664330, 104.866869));
+    CHROUY_CHANGVA.add(LatLng(11.667299, 104.864848));
 // ខ័ណ្ឌព្រែកព្នៅ
-
     List<LatLng> Khan_Preaek_Pnov = <LatLng>[];
-//1
     Khan_Preaek_Pnov.add(LatLng(11.657514, 104.866861));
     Khan_Preaek_Pnov.add(LatLng(11.665511, 104.861553));
     Khan_Preaek_Pnov.add(LatLng(11.675207, 104.853490));
     Khan_Preaek_Pnov.add(LatLng(11.682077, 104.849790));
     Khan_Preaek_Pnov.add(LatLng(11.688296, 104.846657));
     Khan_Preaek_Pnov.add(LatLng(11.699685, 104.841508));
-//2
-
     Khan_Preaek_Pnov.add(LatLng(11.705106, 104.839533));
     Khan_Preaek_Pnov.add(LatLng(11.713721, 104.837946));
     Khan_Preaek_Pnov.add(LatLng(11.714267, 104.837688));
     Khan_Preaek_Pnov.add(LatLng(11.715402, 104.837388));
     Khan_Preaek_Pnov.add(LatLng(11.715570, 104.836744));
     Khan_Preaek_Pnov.add(LatLng(11.715696, 104.827131));
-
-//3
     Khan_Preaek_Pnov.add(LatLng(11.715360, 104.823140));
     Khan_Preaek_Pnov.add(LatLng(11.715065, 104.822668));
     Khan_Preaek_Pnov.add(LatLng(11.713595, 104.821380));
     Khan_Preaek_Pnov.add(LatLng(11.713027, 104.822367));
     Khan_Preaek_Pnov.add(LatLng(11.711851, 104.823322));
     Khan_Preaek_Pnov.add(LatLng(11.710275, 104.824030));
-//4sssssssssssssss
-
     Khan_Preaek_Pnov.add(LatLng(11.707985, 104.823151));
     Khan_Preaek_Pnov.add(LatLng(11.708699, 104.819331));
     Khan_Preaek_Pnov.add(LatLng(11.708405, 104.818344));
     Khan_Preaek_Pnov.add(LatLng(11.706934, 104.817743));
     Khan_Preaek_Pnov.add(LatLng(11.705673, 104.816370));
-
-//5
     Khan_Preaek_Pnov.add(LatLng(11.703845, 104.815361));
     Khan_Preaek_Pnov.add(LatLng(11.699559, 104.815984));
     Khan_Preaek_Pnov.add(LatLng(11.697563, 104.815211));
     Khan_Preaek_Pnov.add(LatLng(11.696344, 104.815297));
     Khan_Preaek_Pnov.add(LatLng(11.694264, 104.814932));
     Khan_Preaek_Pnov.add(LatLng(11.691343, 104.814675));
-
-//6
     Khan_Preaek_Pnov.add(LatLng(11.689263, 104.817142));
     Khan_Preaek_Pnov.add(LatLng(11.688339, 104.817057));
     Khan_Preaek_Pnov.add(LatLng(11.686363, 104.815576));
     Khan_Preaek_Pnov.add(LatLng(11.683842, 104.813108));
     Khan_Preaek_Pnov.add(LatLng(11.681299, 104.811306));
     Khan_Preaek_Pnov.add(LatLng(11.678462, 104.810083));
-
-//7
     Khan_Preaek_Pnov.add(LatLng(11.677096, 104.810276));
     Khan_Preaek_Pnov.add(LatLng(11.675604, 104.811306));
     Khan_Preaek_Pnov.add(LatLng(11.674449, 104.812894));
     Khan_Preaek_Pnov.add(LatLng(11.673944, 104.813731));
     Khan_Preaek_Pnov.add(LatLng(11.673125, 104.812143));
     Khan_Preaek_Pnov.add(LatLng(11.672915, 104.810040));
-//8
-
     Khan_Preaek_Pnov.add(LatLng(11.673062, 104.806156));
     Khan_Preaek_Pnov.add(LatLng(11.672739, 104.802303));
     Khan_Preaek_Pnov.add(LatLng(11.672633, 104.800679));
     Khan_Preaek_Pnov.add(LatLng(11.671802, 104.799182));
     Khan_Preaek_Pnov.add(LatLng(11.671449, 104.797143));
     Khan_Preaek_Pnov.add(LatLng(11.672315, 104.794400));
-//9
-
     Khan_Preaek_Pnov.add(LatLng(11.671378, 104.784783));
     Khan_Preaek_Pnov.add(LatLng(11.671378, 104.781030));
     Khan_Preaek_Pnov.add(LatLng(11.669964, 104.779803));
     Khan_Preaek_Pnov.add(LatLng(11.669434, 104.776230));
     Khan_Preaek_Pnov.add(LatLng(11.667968, 104.769807));
     Khan_Preaek_Pnov.add(LatLng(11.666554, 104.766938));
-
-//10
     Khan_Preaek_Pnov.add(LatLng(11.666095, 104.753351));
     Khan_Preaek_Pnov.add(LatLng(11.665653, 104.751492));
     Khan_Preaek_Pnov.add(LatLng(11.664928, 104.749886));
     Khan_Preaek_Pnov.add(LatLng(11.663939, 104.748605));
     Khan_Preaek_Pnov.add(LatLng(11.659795, 104.747411));
     Khan_Preaek_Pnov.add(LatLng(11.656737, 104.748241));
-//11
-
     Khan_Preaek_Pnov.add(LatLng(11.653233, 104.747068));
     Khan_Preaek_Pnov.add(LatLng(11.653163, 104.746328));
     Khan_Preaek_Pnov.add(LatLng(11.647985, 104.742593));
     Khan_Preaek_Pnov.add(LatLng(11.641835, 104.743820));
     Khan_Preaek_Pnov.add(LatLng(11.639343, 104.744001));
     Khan_Preaek_Pnov.add(LatLng(11.635667, 104.743045));
-//12
-
     Khan_Preaek_Pnov.add(LatLng(11.629340, 104.742034));
     Khan_Preaek_Pnov.add(LatLng(11.625682, 104.740933));
     Khan_Preaek_Pnov.add(LatLng(11.621263, 104.740266));
     Khan_Preaek_Pnov.add(LatLng(11.615908, 104.738389));
     Khan_Preaek_Pnov.add(LatLng(11.613540, 104.737234));
     Khan_Preaek_Pnov.add(LatLng(11.608043, 104.734907));
-
-//13
     Khan_Preaek_Pnov.add(LatLng(11.606859, 104.734492));
     Khan_Preaek_Pnov.add(LatLng(11.604579, 104.734582));
     Khan_Preaek_Pnov.add(LatLng(11.600796, 104.736134));
     Khan_Preaek_Pnov.add(LatLng(11.599312, 104.736116));
     Khan_Preaek_Pnov.add(LatLng(11.596696, 104.734907));
     Khan_Preaek_Pnov.add(LatLng(11.594451, 104.733391));
-//14
-
     Khan_Preaek_Pnov.add(LatLng(11.593408, 104.732453));
     Khan_Preaek_Pnov.add(LatLng(11.591853, 104.731677));
     Khan_Preaek_Pnov.add(LatLng(11.590288, 104.731686));
     Khan_Preaek_Pnov.add(LatLng(11.586382, 104.732841));
     Khan_Preaek_Pnov.add(LatLng(11.584420, 104.734104));
     Khan_Preaek_Pnov.add(LatLng(11.583289, 104.734447));
-//15
-
     Khan_Preaek_Pnov.add(LatLng(11.581839, 104.735529));
     Khan_Preaek_Pnov.add(LatLng(11.583006, 104.736377));
     Khan_Preaek_Pnov.add(LatLng(11.583359, 104.737785));
     Khan_Preaek_Pnov.add(LatLng(11.583076, 104.739228));
     Khan_Preaek_Pnov.add(LatLng(11.583324, 104.740022));
-//16
-
     Khan_Preaek_Pnov.add(LatLng(11.588839, 104.741754));
     Khan_Preaek_Pnov.add(LatLng(11.589475, 104.742332));
     Khan_Preaek_Pnov.add(LatLng(11.589528, 104.744443));
     Khan_Preaek_Pnov.add(LatLng(11.589652, 104.745363));
     Khan_Preaek_Pnov.add(LatLng(11.590624, 104.746157));
     Khan_Preaek_Pnov.add(LatLng(11.590394, 104.747186));
-
-//17
     Khan_Preaek_Pnov.add(LatLng(11.590571, 104.748593));
     Khan_Preaek_Pnov.add(LatLng(11.591278, 104.750650));
     Khan_Preaek_Pnov.add(LatLng(11.590324, 104.751877));
     Khan_Preaek_Pnov.add(LatLng(11.591119, 104.752617));
     Khan_Preaek_Pnov.add(LatLng(11.591437, 104.753266));
     Khan_Preaek_Pnov.add(LatLng(11.590995, 104.754241));
-
-//`18
     Khan_Preaek_Pnov.add(LatLng(11.591879, 104.754872));
     Khan_Preaek_Pnov.add(LatLng(11.591561, 104.755432));
     Khan_Preaek_Pnov.add(LatLng(11.590925, 104.755792));
     Khan_Preaek_Pnov.add(LatLng(11.590642, 104.757055));
     Khan_Preaek_Pnov.add(LatLng(11.590606, 104.757669));
     Khan_Preaek_Pnov.add(LatLng(11.590854, 104.759203));
-
-//19
     Khan_Preaek_Pnov.add(LatLng(11.592009, 104.761172));
     Khan_Preaek_Pnov.add(LatLng(11.591925, 104.762760));
     Khan_Preaek_Pnov.add(LatLng(11.592619, 104.765421));
     Khan_Preaek_Pnov.add(LatLng(11.592892, 104.768403));
     Khan_Preaek_Pnov.add(LatLng(11.593355, 104.770485));
     Khan_Preaek_Pnov.add(LatLng(11.593880, 104.771922));
-//20
     Khan_Preaek_Pnov.add(LatLng(11.594973, 104.772781));
     Khan_Preaek_Pnov.add(LatLng(11.595667, 104.773768));
     Khan_Preaek_Pnov.add(LatLng(11.597075, 104.774712));
     Khan_Preaek_Pnov.add(LatLng(11.598484, 104.775999));
     Khan_Preaek_Pnov.add(LatLng(11.598420, 104.777630));
     Khan_Preaek_Pnov.add(LatLng(11.599261, 104.778381));
-//21
     Khan_Preaek_Pnov.add(LatLng(11.602603, 104.778295));
     Khan_Preaek_Pnov.add(LatLng(11.605126, 104.779733));
     Khan_Preaek_Pnov.add(LatLng(11.605357, 104.780377));
     Khan_Preaek_Pnov.add(LatLng(11.605273, 104.781707));
     Khan_Preaek_Pnov.add(LatLng(11.605966, 104.782394));
     Khan_Preaek_Pnov.add(LatLng(11.607354, 104.782995));
-//22
     Khan_Preaek_Pnov.add(LatLng(11.608804, 104.784261));
     Khan_Preaek_Pnov.add(LatLng(11.609960, 104.784454));
     Khan_Preaek_Pnov.add(LatLng(11.610317, 104.786213));
     Khan_Preaek_Pnov.add(LatLng(11.609708, 104.786986));
     Khan_Preaek_Pnov.add(LatLng(11.608363, 104.789861));
     Khan_Preaek_Pnov.add(LatLng(11.603886, 104.797114));
-//23
     Khan_Preaek_Pnov.add(LatLng(11.595166, 104.799492));
     Khan_Preaek_Pnov.add(LatLng(11.591319, 104.799899));
     Khan_Preaek_Pnov.add(LatLng(11.586632, 104.801015));
     Khan_Preaek_Pnov.add(LatLng(11.585475, 104.802195));
     Khan_Preaek_Pnov.add(LatLng(11.584487, 104.804084));
     Khan_Preaek_Pnov.add(LatLng(11.583205, 104.804835));
-//24
     Khan_Preaek_Pnov.add(LatLng(11.581776, 104.807238));
     Khan_Preaek_Pnov.add(LatLng(11.580662, 104.808204));
     Khan_Preaek_Pnov.add(LatLng(11.579968, 104.809233));
     Khan_Preaek_Pnov.add(LatLng(11.579590, 104.810864));
     Khan_Preaek_Pnov.add(LatLng(11.579383, 104.823513));
     Khan_Preaek_Pnov.add(LatLng(11.580045, 104.824419));
-//25
     Khan_Preaek_Pnov.add(LatLng(11.581970, 104.826078));
     Khan_Preaek_Pnov.add(LatLng(11.586095, 104.830033));
     Khan_Preaek_Pnov.add(LatLng(11.588545, 104.831564));
     Khan_Preaek_Pnov.add(LatLng(11.593007, 104.832636));
     Khan_Preaek_Pnov.add(LatLng(11.595844, 104.833044));
     Khan_Preaek_Pnov.add(LatLng(11.599981, 104.832534));
-//26
     Khan_Preaek_Pnov.add(LatLng(11.602293, 104.832521));
     Khan_Preaek_Pnov.add(LatLng(11.605630, 104.832993));
     Khan_Preaek_Pnov.add(LatLng(11.609529, 104.832751));
     Khan_Preaek_Pnov.add(LatLng(11.612079, 104.832904));
     Khan_Preaek_Pnov.add(LatLng(11.614303, 104.833963));
     Khan_Preaek_Pnov.add(LatLng(11.617365, 104.835098));
-//27
     Khan_Preaek_Pnov.add(LatLng(11.618709, 104.835851));
     Khan_Preaek_Pnov.add(LatLng(11.619421, 104.837714));
     Khan_Preaek_Pnov.add(LatLng(11.620321, 104.838620));
     Khan_Preaek_Pnov.add(LatLng(11.634705, 104.836272));
-
 //Khan_Russey_Keo
     List<LatLng> Khan_Russey_Keo = <LatLng>[];
     Khan_Russey_Keo.add(LatLng(11.657242, 104.866782));
@@ -906,104 +1142,80 @@ class _Check_mapState extends State<Check_map> {
     Khan_Russey_Keo.add(LatLng(11.649069, 104.872472));
     Khan_Russey_Keo.add(LatLng(11.655037, 104.868084));
     Khan_Russey_Keo.add(LatLng(11.657286, 104.866872));
-
 //Khan_Sen_Sok
     List<LatLng> Khan_Sen_Sok = <LatLng>[];
-
     Khan_Sen_Sok.add(LatLng(11.634704, 104.836300));
     Khan_Sen_Sok.add(LatLng(11.649625, 104.856213));
     Khan_Sen_Sok.add(LatLng(11.648743, 104.857028));
     Khan_Sen_Sok.add(LatLng(11.648406, 104.857929));
     Khan_Sen_Sok.add(LatLng(11.648490, 104.861062));
     Khan_Sen_Sok.add(LatLng(11.644960, 104.862864));
-//////////////1
-
     Khan_Sen_Sok.add(LatLng(11.643531, 104.863294));
     Khan_Sen_Sok.add(LatLng(11.643110, 104.865504));
     Khan_Sen_Sok.add(LatLng(11.643215, 104.867639));
     Khan_Sen_Sok.add(LatLng(11.642564, 104.869377));
     Khan_Sen_Sok.add(LatLng(11.642333, 104.869956));
     Khan_Sen_Sok.add(LatLng(11.641587, 104.870739));
-
-/////////////////2
-
     Khan_Sen_Sok.add(LatLng(11.640284, 104.871973));
     Khan_Sen_Sok.add(LatLng(11.638844, 104.872864));
     Khan_Sen_Sok.add(LatLng(11.636564, 104.873883));
     Khan_Sen_Sok.add(LatLng(11.634819, 104.874409));
     Khan_Sen_Sok.add(LatLng(11.632697, 104.873980));
     Khan_Sen_Sok.add(LatLng(11.629691, 104.871920));
-
-////////////////////3
-
     Khan_Sen_Sok.add(LatLng(11.627474, 104.871651));
     Khan_Sen_Sok.add(LatLng(11.624321, 104.872123));
     Khan_Sen_Sok.add(LatLng(11.623649, 104.873025));
     Khan_Sen_Sok.add(LatLng(11.624531, 104.875095));
     Khan_Sen_Sok.add(LatLng(11.624447, 104.877327));
     Khan_Sen_Sok.add(LatLng(11.622871, 104.877906));
-
-////////////4
-
     Khan_Sen_Sok.add(LatLng(11.620990, 104.878217));
     Khan_Sen_Sok.add(LatLng(11.620401, 104.878979));
     Khan_Sen_Sok.add(LatLng(11.619655, 104.879204));
     Khan_Sen_Sok.add(LatLng(11.616986, 104.881222));
     Khan_Sen_Sok.add(LatLng(11.615483, 104.882101));
     Khan_Sen_Sok.add(LatLng(11.614779, 104.882294));
-
-/////////////////5
-
     Khan_Sen_Sok.add(LatLng(11.614085, 104.883571));
     Khan_Sen_Sok.add(LatLng(11.612677, 104.884955));
     Khan_Sen_Sok.add(LatLng(11.611122, 104.885631));
     Khan_Sen_Sok.add(LatLng(11.609009, 104.885771));
     Khan_Sen_Sok.add(LatLng(11.607444, 104.885653));
     Khan_Sen_Sok.add(LatLng(11.590344, 104.896167));
-////////////////////6
     Khan_Sen_Sok.add(LatLng(11.588358, 104.893271));
     Khan_Sen_Sok.add(LatLng(11.586718, 104.891415));
     Khan_Sen_Sok.add(LatLng(11.584879, 104.888400));
     Khan_Sen_Sok.add(LatLng(11.583523, 104.887499));
     Khan_Sen_Sok.add(LatLng(11.565623, 104.888675));
     Khan_Sen_Sok.add(LatLng(11.564351, 104.889243));
-////////////7
     Khan_Sen_Sok.add(LatLng(11.562943, 104.889758));
     Khan_Sen_Sok.add(LatLng(11.561524, 104.890574));
     Khan_Sen_Sok.add(LatLng(11.559800, 104.888718));
     Khan_Sen_Sok.add(LatLng(11.558276, 104.887494));
     Khan_Sen_Sok.add(LatLng(11.556352, 104.886829));
     Khan_Sen_Sok.add(LatLng(11.555028, 104.886904));
-////////////////8
     Khan_Sen_Sok.add(LatLng(11.553356, 104.887258));
     Khan_Sen_Sok.add(LatLng(11.551864, 104.887934));
     Khan_Sen_Sok.add(LatLng(11.550729, 104.889039));
     Khan_Sen_Sok.add(LatLng(11.550361, 104.889479));
     Khan_Sen_Sok.add(LatLng(11.549719, 104.890681));
     Khan_Sen_Sok.add(LatLng(11.548563, 104.887012));
-/////////9
     Khan_Sen_Sok.add(LatLng(11.547838, 104.881207));
     Khan_Sen_Sok.add(LatLng(11.547596, 104.877678));
     Khan_Sen_Sok.add(LatLng(11.547281, 104.873772));
     Khan_Sen_Sok.add(LatLng(11.547223, 104.872300));
     Khan_Sen_Sok.add(LatLng(11.545155, 104.861767));
     Khan_Sen_Sok.add(LatLng(11.550632, 104.862293));
-///////10
     Khan_Sen_Sok.add(LatLng(11.554763, 104.862851));
     Khan_Sen_Sok.add(LatLng(11.560744, 104.863012));
     Khan_Sen_Sok.add(LatLng(11.567587, 104.864417));
     Khan_Sen_Sok.add(LatLng(11.567177, 104.858635));
     Khan_Sen_Sok.add(LatLng(11.566588, 104.856210));
     Khan_Sen_Sok.add(LatLng(11.566252, 104.850438));
-
-    ///////////11
     Khan_Sen_Sok.add(LatLng(11.566492, 104.842057));
     Khan_Sen_Sok.add(LatLng(11.566660, 104.834869));
     Khan_Sen_Sok.add(LatLng(11.572925, 104.834912));
     Khan_Sen_Sok.add(LatLng(11.575658, 104.844439));
     Khan_Sen_Sok.add(LatLng(11.585306, 104.842830));
-
-    //Khan_Pou_Senchey
+    //Khan_Pou_Senchey​​​
     List<LatLng> Khan_Pou_Senchey = <LatLng>[];
     Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
     Khan_Pou_Senchey.add(LatLng(11.562447, 104.863424));
@@ -1282,23 +1494,20 @@ class _Check_mapState extends State<Check_map> {
     Khan_Pou_Senchey.add(LatLng(11.567375, 104.859719));
     Khan_Pou_Senchey.add(LatLng(11.567796, 104.864418));
     Khan_Pou_Senchey.add(LatLng(11.562910, 104.863488));
-
+//ដូនពេញ
     List<LatLng> Daun_Penh = <LatLng>[];
-
     //  Daun_Penh.add(LatLng(11.560808, 104.937000));
     //  Daun_Penh.add(LatLng(11.560808, 104.937000));
     Daun_Penh.add(LatLng(11.588611, 104.918210));
     Daun_Penh.add(LatLng(11.588730, 104.919682));
     Daun_Penh.add(LatLng(11.586590, 104.920350));
     Daun_Penh.add(LatLng(11.585103, 104.920957));
-
     Daun_Penh.add(LatLng(11.582740, 104.922353));
     Daun_Penh.add(LatLng(11.579663, 104.924173));
     Daun_Penh.add(LatLng(11.577211, 104.926131));
     Daun_Penh.add(LatLng(11.574877, 104.927936));
     Daun_Penh.add(LatLng(11.573762, 104.928953));
     Daun_Penh.add(LatLng(11.572707, 104.929742));
-
     Daun_Penh.add(LatLng(11.572045, 104.929947));
     Daun_Penh.add(LatLng(11.571547, 104.930242));
     Daun_Penh.add(LatLng(11.571131, 104.930409));
@@ -1306,47 +1515,38 @@ class _Check_mapState extends State<Check_map> {
     Daun_Penh.add(LatLng(11.566315, 104.932469));
     Daun_Penh.add(LatLng(11.565672, 104.933065));
     Daun_Penh.add(LatLng(11.565170, 104.933470));
-
     Daun_Penh.add(LatLng(11.564207, 104.934099));
     Daun_Penh.add(LatLng(11.563720, 104.934501));
     Daun_Penh.add(LatLng(11.563248, 104.935042));
     Daun_Penh.add(LatLng(11.563093, 104.935155));
     Daun_Penh.add(LatLng(11.562646, 104.935719));
     Daun_Penh.add(LatLng(11.561683, 104.936202));
-
     Daun_Penh.add(LatLng(11.560808, 104.937000));
     Daun_Penh.add(LatLng(11.560684, 104.937027));
     Daun_Penh.add(LatLng(11.560331, 104.937483));
     Daun_Penh.add(LatLng(11.559836, 104.937731));
     Daun_Penh.add(LatLng(11.559447, 104.938019));
     Daun_Penh.add(LatLng(11.558899, 104.938367));
-
     Daun_Penh.add(LatLng(11.558855, 104.938556));
     Daun_Penh.add(LatLng(11.558333, 104.939228));
     Daun_Penh.add(LatLng(11.557957, 104.939576));
     Daun_Penh.add(LatLng(11.558249, 104.940424));
     Daun_Penh.add(LatLng(11.558161, 104.942278));
     Daun_Penh.add(LatLng(11.557630, 104.943126));
-
     Daun_Penh.add(LatLng(11.557132, 104.936986));
     Daun_Penh.add(LatLng(11.557161, 104.932630));
     Daun_Penh.add(LatLng(11.556596, 104.929158));
     Daun_Penh.add(LatLng(11.556310, 104.924772));
     Daun_Penh.add(LatLng(11.556179, 104.922916));
-
     Daun_Penh.add(LatLng(11.555896, 104.920561));
     Daun_Penh.add(LatLng(11.571730, 104.918201));
     Daun_Penh.add(LatLng(11.570207, 104.905057));
     Daun_Penh.add(LatLng(11.574572, 104.903581));
     Daun_Penh.add(LatLng(11.574587, 104.904119));
-
     Daun_Penh.add(LatLng(11.577845, 104.904895));
     Daun_Penh.add(LatLng(11.583414, 104.907474));
     Daun_Penh.add(LatLng(11.585131, 104.914097));
     Daun_Penh.add(LatLng(11.587912, 104.914582));
-    // Daun_Penh.add(LatLng(11.589535, 104.921090));
-    // Daun_Penh.add(LatLng(11.587316, 104.922129));
-
 // Daun Penh
     List<LatLng> K7_Makara = <LatLng>[];
     K7_Makara.add(LatLng(11.570400, 104.906354));
@@ -1384,7 +1584,6 @@ class _Check_mapState extends State<Check_map> {
     Khan_Tuol_Kouk.add(LatLng(11.574611, 104.903662));
     Khan_Tuol_Kouk.add(LatLng(11.570294, 104.904799));
     Khan_Tuol_Kouk.add(LatLng(11.570474, 104.906428));
-
 //Chbar Ampov
     List<LatLng> Chbar_Ampov = <LatLng>[];
     Chbar_Ampov.add(LatLng(11.518354, 105.027058));
@@ -1506,184 +1705,138 @@ class _Check_mapState extends State<Check_map> {
     Chbar_Ampov.add(LatLng(11.518354, 105.027058));
     ////////Khan_Dangkor
     List<LatLng> Khan_Dangkor = <LatLng>[];
-
     Khan_Dangkor.add(LatLng(11.482224, 104.913889));
     Khan_Dangkor.add(LatLng(11.484495, 104.921527));
     Khan_Dangkor.add(LatLng(11.466537, 104.918266));
     Khan_Dangkor.add(LatLng(11.451627, 104.922922));
     Khan_Dangkor.add(LatLng(11.446979, 104.923094));
     Khan_Dangkor.add(LatLng(11.443551, 104.922751));
-////////////1
     Khan_Dangkor.add(LatLng(11.428787, 104.922729));
     Khan_Dangkor.add(LatLng(11.430154, 104.914296));
     Khan_Dangkor.add(LatLng(11.430175, 104.913695));
     Khan_Dangkor.add(LatLng(11.431163, 104.912665));
     Khan_Dangkor.add(LatLng(11.432341, 104.913116));
     Khan_Dangkor.add(LatLng(11.435306, 104.907859));
-////////////2
     Khan_Dangkor.add(LatLng(11.435517, 104.905885));
     Khan_Dangkor.add(LatLng(11.435412, 104.903675));
     Khan_Dangkor.add(LatLng(11.434823, 104.901422));
     Khan_Dangkor.add(LatLng(11.434865, 104.899984));
     Khan_Dangkor.add(LatLng(11.435285, 104.898503));
     Khan_Dangkor.add(LatLng(11.435349, 104.896615));
-///////////3
-
     Khan_Dangkor.add(LatLng(11.430196, 104.888783));
     Khan_Dangkor.add(LatLng(11.430364, 104.887388));
     Khan_Dangkor.add(LatLng(11.432614, 104.886358));
     Khan_Dangkor.add(LatLng(11.434297, 104.885049));
     Khan_Dangkor.add(LatLng(11.435895, 104.882689));
     Khan_Dangkor.add(LatLng(11.436064, 104.880779));
-//////////////////////4
-
     Khan_Dangkor.add(LatLng(11.422550, 104.873473));
     Khan_Dangkor.add(LatLng(11.426328, 104.864675));
     Khan_Dangkor.add(LatLng(11.425992, 104.863881));
     Khan_Dangkor.add(LatLng(11.424436, 104.862330));
     Khan_Dangkor.add(LatLng(11.423516, 104.857837));
     Khan_Dangkor.add(LatLng(11.424100, 104.856321));
-
-////////////////////5
-
     Khan_Dangkor.add(LatLng(11.425019, 104.855654));
     Khan_Dangkor.add(LatLng(11.428150, 104.854751));
     Khan_Dangkor.add(LatLng(11.428539, 104.853127));
     Khan_Dangkor.add(LatLng(11.430308, 104.852261));
     Khan_Dangkor.add(LatLng(11.430679, 104.830970));
     Khan_Dangkor.add(LatLng(11.435702, 104.827668));
-////////////////////6
-
     Khan_Dangkor.add(LatLng(11.437240, 104.826946));
     Khan_Dangkor.add(LatLng(11.439009, 104.826874));
     Khan_Dangkor.add(LatLng(11.439628, 104.825683));
     Khan_Dangkor.add(LatLng(11.442670, 104.823644));
     Khan_Dangkor.add(LatLng(11.444031, 104.822327));
     Khan_Dangkor.add(LatLng(11.443536, 104.820577));
-
-///////////////////////////7
     Khan_Dangkor.add(LatLng(11.440547, 104.818123));
     Khan_Dangkor.add(LatLng(11.439699, 104.816517));
     Khan_Dangkor.add(LatLng(11.439433, 104.815651));
     Khan_Dangkor.add(LatLng(11.438797, 104.815272));
     Khan_Dangkor.add(LatLng(11.437948, 104.815705));
     Khan_Dangkor.add(LatLng(11.437311, 104.818844));
-
-//////////////////////8
     Khan_Dangkor.add(LatLng(11.436674, 104.819404));
     Khan_Dangkor.add(LatLng(11.435737, 104.819422));
     Khan_Dangkor.add(LatLng(11.432359, 104.818105));
     Khan_Dangkor.add(LatLng(11.430827, 104.816225));
     Khan_Dangkor.add(LatLng(11.430585, 104.813735));
     Khan_Dangkor.add(LatLng(11.429923, 104.810731));
-//////////////////////9
-
     Khan_Dangkor.add(LatLng(11.430417, 104.809229));
     Khan_Dangkor.add(LatLng(11.430669, 104.808629));
     Khan_Dangkor.add(LatLng(11.431500, 104.804949));
     Khan_Dangkor.add(LatLng(11.432310, 104.803994));
     Khan_Dangkor.add(LatLng(11.433887, 104.801558));
     Khan_Dangkor.add(LatLng(11.436117, 104.801086));
-
-//////////////////10
     Khan_Dangkor.add(LatLng(11.439082, 104.798973));
     Khan_Dangkor.add(LatLng(11.440218, 104.797674));
     Khan_Dangkor.add(LatLng(11.440975, 104.797503));
     Khan_Dangkor.add(LatLng(11.441921, 104.797792));
     Khan_Dangkor.add(LatLng(11.442931, 104.799209));
     Khan_Dangkor.add(LatLng(11.444708, 104.799455));
-
-//////////////4///11
     Khan_Dangkor.add(LatLng(11.445013, 104.798576));
     Khan_Dangkor.add(LatLng(11.444887, 104.797267));
     Khan_Dangkor.add(LatLng(11.444445, 104.796473));
     Khan_Dangkor.add(LatLng(11.443772, 104.795647));
     Khan_Dangkor.add(LatLng(11.443351, 104.794842));
     Khan_Dangkor.add(LatLng(11.443393, 104.793265));
-////////12
-
     Khan_Dangkor.add(LatLng(11.444329, 104.793093));
     Khan_Dangkor.add(LatLng(11.446243, 104.793823));
     Khan_Dangkor.add(LatLng(11.447053, 104.793436));
     Khan_Dangkor.add(LatLng(11.447147, 104.791548));
     Khan_Dangkor.add(LatLng(11.445297, 104.789488));
     Khan_Dangkor.add(LatLng(11.445244, 104.788619));
-
-///////////////13
-
     Khan_Dangkor.add(LatLng(11.446033, 104.787396));
     Khan_Dangkor.add(LatLng(11.446380, 104.786634));
     Khan_Dangkor.add(LatLng(11.446800, 104.785862));
     Khan_Dangkor.add(LatLng(11.447400, 104.783630));
     Khan_Dangkor.add(LatLng(11.449114, 104.782397));
     Khan_Dangkor.add(LatLng(11.450092, 104.782246));
-
-/////////////////////14
-
     Khan_Dangkor.add(LatLng(11.452847, 104.784692));
     Khan_Dangkor.add(LatLng(11.454287, 104.785261));
     Khan_Dangkor.add(LatLng(11.455370, 104.784714));
     Khan_Dangkor.add(LatLng(11.456043, 104.783598));
     Khan_Dangkor.add(LatLng(11.455854, 104.781098));
     Khan_Dangkor.add(LatLng(11.476105, 104.786396));
-//////////////////////////15
-
     Khan_Dangkor.add(LatLng(11.476684, 104.790988));
     Khan_Dangkor.add(LatLng(11.478745, 104.799228));
     Khan_Dangkor.add(LatLng(11.480742, 104.803337));
     Khan_Dangkor.add(LatLng(11.481247, 104.808873));
     Khan_Dangkor.add(LatLng(11.481378, 104.815230));
     Khan_Dangkor.add(LatLng(11.488170, 104.817059));
-
-//////////////16
     Khan_Dangkor.add(LatLng(11.488703, 104.817164));
     Khan_Dangkor.add(LatLng(11.489982, 104.817726));
     Khan_Dangkor.add(LatLng(11.491045, 104.820138));
     Khan_Dangkor.add(LatLng(11.492398, 104.820085));
     Khan_Dangkor.add(LatLng(11.494219, 104.818431));
     Khan_Dangkor.add(LatLng(11.495401, 104.817711));
-
-//////////////////17
     Khan_Dangkor.add(LatLng(11.500813, 104.818644));
     Khan_Dangkor.add(LatLng(11.500129, 104.819638));
     Khan_Dangkor.add(LatLng(11.500077, 104.821527));
     Khan_Dangkor.add(LatLng(11.500494, 104.829159));
     Khan_Dangkor.add(LatLng(11.500248, 104.836601));
     Khan_Dangkor.add(LatLng(11.499921, 104.837792));
-
-//////////////////18
     Khan_Dangkor.add(LatLng(11.499542, 104.838573));
     Khan_Dangkor.add(LatLng(11.501296, 104.838573));
     Khan_Dangkor.add(LatLng(11.502620, 104.837944));
     Khan_Dangkor.add(LatLng(11.503675, 104.837966));
     Khan_Dangkor.add(LatLng(11.505028, 104.838687));
     Khan_Dangkor.add(LatLng(11.505950, 104.840235));
-
-/////////19
     Khan_Dangkor.add(LatLng(11.506322, 104.845318));
     Khan_Dangkor.add(LatLng(11.505623, 104.853329));
     Khan_Dangkor.add(LatLng(11.505608, 104.857183));
     Khan_Dangkor.add(LatLng(11.506604, 104.860931));
     Khan_Dangkor.add(LatLng(11.510039, 104.865695));
     Khan_Dangkor.add(LatLng(11.511466, 104.872735));
-
-///////////////////20
     Khan_Dangkor.add(LatLng(11.514529, 104.877257));
     Khan_Dangkor.add(LatLng(11.516179, 104.878304));
     Khan_Dangkor.add(LatLng(11.517919, 104.878182));
     Khan_Dangkor.add(LatLng(11.520431, 104.876771));
     Khan_Dangkor.add(LatLng(11.521812, 104.875641));
     Khan_Dangkor.add(LatLng(11.521972, 104.883841));
-
-////////////////////21
     Khan_Dangkor.add(LatLng(11.522184, 104.887252));
     Khan_Dangkor.add(LatLng(11.522557, 104.888650));
     Khan_Dangkor.add(LatLng(11.521679, 104.894059));
     Khan_Dangkor.add(LatLng(11.522951, 104.896805));
     Khan_Dangkor.add(LatLng(11.522594, 104.898004));
     Khan_Dangkor.add(LatLng(11.521479, 104.902252));
-////////////////////22
-
     Khan_Dangkor.add(LatLng(11.520051, 104.907623));
     Khan_Dangkor.add(LatLng(11.518867, 104.913378));
 ///////////meanchen
@@ -1696,88 +1849,60 @@ class _Check_mapState extends State<Check_map> {
     meanchen.add(LatLng(11.528300, 104.862594));
     meanchen.add(LatLng(11.521941, 104.863028));
     meanchen.add(LatLng(11.521916, 104.863666));
-
-//////////1
     meanchen.add(LatLng(11.522182, 104.868666));
     meanchen.add(LatLng(11.522161, 104.872314));
     meanchen.add(LatLng(11.521441, 104.876633));
     meanchen.add(LatLng(11.522203, 104.882507));
     meanchen.add(LatLng(11.522549, 104.889148));
     meanchen.add(LatLng(11.521971, 104.893911));
-///////////////2
-
     meanchen.add(LatLng(11.522907, 104.897699));
     meanchen.add(LatLng(11.520153, 104.907891));
     meanchen.add(LatLng(11.519112, 104.912880));
     meanchen.add(LatLng(11.514802, 104.913717));
     meanchen.add(LatLng(11.505161, 104.913824));
     meanchen.add(LatLng(11.502292, 104.912504));
-///////////////3
-
     meanchen.add(LatLng(11.482315, 104.913813));
     meanchen.add(LatLng(11.484495, 104.921424));
-
     // meanchen.add(LatLng(11.493768, 104.947023));
     meanchen.add(LatLng(11.492927, 104.944820));
-
     meanchen.add(LatLng(11.495019, 104.944047));
     meanchen.add(LatLng(11.496428, 104.943554));
     meanchen.add(LatLng(11.497841, 104.942963));
     meanchen.add(LatLng(11.499019, 104.942598));
-/////////////4
-/////////
     meanchen.add(LatLng(11.501421, 104.941509));
     meanchen.add(LatLng(11.506031, 104.939830));
-
     meanchen.add(LatLng(11.523157, 104.934674));
-/////////////
     meanchen.add(LatLng(11.530752, 104.932603));
-///////////////////////////////////////////////////////////////
     meanchen.add(LatLng(11.530885, 104.930831));
     meanchen.add(LatLng(11.529797, 104.928335));
-//////////////////11.527527, 104.922949///5
-
     meanchen.add(LatLng(11.526913, 104.921674));
     meanchen.add(LatLng(11.526630, 104.918897));
     meanchen.add(LatLng(11.527151, 104.917228));
     meanchen.add(LatLng(11.528860, 104.915180));
     meanchen.add(LatLng(11.536175, 104.911371));
-
-    // meanchen.add(LatLng(11.548539, 104.897408));
     meanchen.add(LatLng(11.540233, 104.909095));
-    // meanchen.add(LatLng(11.546791, 104.898873));
-
-///////////////////6///11.549742, 104.895544//11.542966, 104.906914
-
     meanchen.add(LatLng(11.541946, 104.908150));
-
     meanchen.add(LatLng(11.543102, 104.906734));
     meanchen.add(LatLng(11.543528, 104.904859));
     meanchen.add(LatLng(11.543851, 104.902697));
     meanchen.add(LatLng(11.544703, 104.900691));
     meanchen.add(LatLng(11.545764, 104.899425));
-
     meanchen.add(LatLng(11.546900, 104.898845));
-
-///////////////2222
     meanchen.add(LatLng(11.547877, 104.898641));
     meanchen.add(LatLng(11.548445, 104.898588));
     meanchen.add(LatLng(11.548576, 104.898234));
     meanchen.add(LatLng(11.548681, 104.897729));
     meanchen.add(LatLng(11.548545, 104.897086));
-
     meanchen.add(LatLng(11.548650, 104.896699));
     meanchen.add(LatLng(11.549302, 104.896028));
     meanchen.add(LatLng(11.549700, 104.895755));
     meanchen.add(LatLng(11.549733, 104.895458));
     meanchen.add(LatLng(11.549677, 104.891173));
     meanchen.add(LatLng(11.549901, 104.890661));
-
     meanchen.add(LatLng(11.548451, 104.886899));
     meanchen.add(LatLng(11.547462, 104.875377));
     meanchen.add(LatLng(11.547303, 104.872292));
-
-////////Khan_Chamkar_Mon
+    //Khan_Chamkar_Mon
     List<LatLng> Khan_Chamkar_Mon = <LatLng>[];
     Khan_Chamkar_Mon.add(LatLng(11.555881, 104.920626));
     Khan_Chamkar_Mon.add(LatLng(11.555987, 104.924704));
@@ -1848,7 +1973,7 @@ class _Check_mapState extends State<Check_map> {
       Khan_Tuol_Kouk,
       meanchen,
       Chbar_Ampov,
-      polygonLatLongs,
+      CHROUY_CHANGVA,
       Khan_Sen_Sok,
       Khan_Russey_Keo,
       Khan_Dangkor,
@@ -1861,19 +1986,50 @@ class _Check_mapState extends State<Check_map> {
     mapController = controller;
   }
 
+  List<Color> FillColors = [
+    Color.fromARGB(24, 252, 189, 0),
+    Color.fromARGB(22, 155, 252, 0),
+    Color.fromARGB(20, 0, 252, 42),
+    Color.fromARGB(31, 0, 252, 218),
+    Color.fromARGB(22, 181, 0, 252),
+    Color.fromARGB(28, 252, 0, 55),
+    Color.fromARGB(14, 160, 0, 252),
+    Color.fromARGB(17, 21, 252, 0),
+    Color.fromARGB(14, 252, 143, 0),
+    Color.fromARGB(19, 252, 189, 0),
+    Color.fromARGB(20, 0, 17, 252),
+    Color.fromARGB(20, 252, 0, 0),
+  ];
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      _Find_polygons.add(
-        Polygon(
-          polygonId: PolygonId("7"),
-          points: _pg.elementAt(widget.index_pg),
-          fillColor: Color.fromARGB(132, 158, 108, 34),
-          strokeWidth: 2,
-          strokeColor: Color.fromARGB(151, 190, 30, 30),
-        ),
-      );
-    });
+    // if (widget.index_pg < 12) {
+    //   setState(() {
+    //     _Find_polygons.add(
+    //       Polygon(
+    //         polygonId: PolygonId("7"),
+    //         points: _pg.elementAt(widget.index_pg),
+    //         fillColor: Color.fromARGB(38, 72, 67, 143),
+    //         strokeWidth: 2,
+    //         strokeColor: Color.fromARGB(160, 190, 30, 30),
+    //       ),
+    //     );
+    //   });
+    // } else {
+    //   setState(() {
+    //     for (int i = 0; i < widget.index_pg; i++) {
+    //       _Find_polygons.add(
+    //         Polygon(
+    //           polygonId: PolygonId("$i"),
+    //           points: _pg.elementAt(i),
+    //           fillColor: FillColors.elementAt(i),
+    //           strokeWidth: 2,
+    //           strokeColor: Color.fromARGB(160, 190, 30, 30),
+    //         ),
+    //       );
+    //     }
+    //   });
+    // }
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -1926,6 +2082,8 @@ class _Check_mapState extends State<Check_map> {
                             BitmapDescriptor.hueRed),
                       );
                       setState(() {
+                        widget.lat(argument.latitude);
+                        widget.log(argument.longitude);
                         num = num + 1;
                         markers[markerId] = marker;
                         // requestModel.lat = argument.latitude.toString();
@@ -1978,73 +2136,74 @@ class _Check_mapState extends State<Check_map> {
   }
 }
 
-class Menu_map extends StatefulWidget {
-  const Menu_map({super.key});
+// class Menu_map extends StatefulWidget {
+//   const Menu_map({super.key});
 
-  @override
-  State<Menu_map> createState() => _Menu_mapState();
-}
+//   @override
+//   State<Menu_map> createState() => _Menu_mapState();
+// }
 
-class _Menu_mapState extends State<Menu_map> {
-  List<String> Title = [
-    "CHAMKAMORN",
-    "DAUN PENH",
-    "7 MAKARA",
-    "TUOL KORK ",
-    "MEANCHEY",
-    "CHBAR AMPOV",
-    "CHROUY CHANGVA",
-    "SEN SOK ",
-    "RUSSEY KEO",
-    "DANGKOR",
-    "POSENCHEY",
-    "PRAEK PNOV"
-  ];
-  TextStyle textStyle = TextStyle(
-    fontSize: 16.0,
-    fontFamily: 'Courgette',
-    fontWeight: FontWeight.bold,
-  );
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          toolbarHeight: 50,
-          title: const Text(
-            "LAND__MARKET__PRICE \nIN__PHNOM_PENH_CITY",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
-          ),
-        ),
-        body: ListView.builder(
-            itemCount: Title.length,
-            itemBuilder: (context, index) {
-              return GFButton(
-                shape: GFButtonShape.pills,
-                type: GFButtonType.solid,
-                color: Color.fromRGBO(24, 255, 255, 1),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Check_map(
-                            index_pg: index,
-                          )));
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(blurRadius: 5, color: Colors.black)
-                      ]),
-                  child: Text(
-                    Title.elementAt(index),
-                    style: textStyle,
-                  ),
-                ),
-              );
-            }));
-  }
-}
+// class _Menu_mapState extends State<Menu_map> {
+//   List<String> Title = [
+//     "CHAMKAMORN",
+//     "DAUN PENH",
+//     "7 MAKARA",
+//     "TUOL KORK ",
+//     "MEANCHEY",
+//     "CHBAR AMPOV",
+//     "CHROUY CHANGVA",
+//     "SEN SOK ",
+//     "RUSSEY KEO",
+//     "DANGKOR",
+//     "POSENCHEY",
+//     "PRAEK PNOV",
+//     "====> Show All <===="
+//   ];
+//   TextStyle textStyle = TextStyle(
+//     fontSize: 16.0,
+//     fontFamily: 'Courgette',
+//     fontWeight: FontWeight.bold,
+//   );
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           centerTitle: true,
+//           toolbarHeight: 50,
+//           title: const Text(
+//             "LAND__MARKET__PRICE \nIN__PHNOM_PENH_CITY",
+//             style: TextStyle(
+//                 fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+//           ),
+//         ),
+//         body: ListView.builder(
+//             itemCount: Title.length,
+//             itemBuilder: (context, index) {
+//               return GFButton(
+//                 shape: GFButtonShape.pills,
+//                 type: GFButtonType.solid,
+//                 color: Color.fromRGBO(24, 255, 255, 1),
+//                 onPressed: () {
+//                   Navigator.of(context).push(MaterialPageRoute(
+//                       builder: (context) => Check_map(
+//                             index_pg: index,
+//                           )));
+//                 },
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(20),
+//                       boxShadow: const [
+//                         BoxShadow(blurRadius: 5, color: Colors.black)
+//                       ]),
+//                   child: Text(
+//                     Title.elementAt(index),
+//                     style: textStyle,
+//                   ),
+//                 ),
+//               );
+//             }));
+//   }
+// }
 //  body: ListView.builder(
 //             itemCount: Title.length,
 //             itemBuilder: (context, index) {
