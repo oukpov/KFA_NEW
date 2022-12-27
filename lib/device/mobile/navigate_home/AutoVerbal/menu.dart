@@ -38,12 +38,11 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: Alignment.topCenter,
-            image: ExactAssetImage('assets/images/New_KFA_Logo.png'),
-            fit: BoxFit.fitWidth,
-          ),
+              image: ExactAssetImage('assets/images/New_KFA_Logo.png'),
+              fit: BoxFit.contain,
+              alignment: Alignment.topCenter),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

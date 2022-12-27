@@ -8,8 +8,10 @@ import 'contants.dart';
 typedef OnChangeCallback = void Function(dynamic value);
 
 class RoadDropdown extends StatefulWidget {
-  final OnChangeCallback onChanged;
-  const RoadDropdown({Key? key, required this.onChanged}) : super(key: key);
+  final OnChangeCallback id_road;
+  final OnChangeCallback Name_road;
+  const RoadDropdown({Key? key, required this.id_road, required this.Name_road})
+      : super(key: key);
 
   @override
   State<RoadDropdown> createState() => _RoadDropdownState();
@@ -17,7 +19,7 @@ class RoadDropdown extends StatefulWidget {
 
 class _RoadDropdownState extends State<RoadDropdown> {
   late String roadValue;
-
+  late String roadValue1;
   var _list = [];
 
   @override
@@ -33,17 +35,16 @@ class _RoadDropdownState extends State<RoadDropdown> {
     return Column(
       children: [
         Container(
-          height: 55,
-          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          height: 60,
+          margin: EdgeInsets.all(10),
           child: DropdownButtonFormField<String>(
             //value: genderValue,
             isExpanded: true,
             onChanged: (newValue) {
               setState(() {
-                widget.onChanged(newValue);
+                widget.id_road(newValue);
                 roadValue = newValue as String;
                 // ignore: avoid_print
-                print(newValue);
               });
             },
             items: _list
@@ -51,6 +52,11 @@ class _RoadDropdownState extends State<RoadDropdown> {
                   (value) => DropdownMenuItem<String>(
                     value: value["road_id"].toString(),
                     child: Text(value["road_name"]),
+                    onTap: () {
+                      setState(() {
+                        widget.Name_road(value["road_name"]);
+                      });
+                    },
                   ),
                 )
                 .toList(),
@@ -59,7 +65,6 @@ class _RoadDropdownState extends State<RoadDropdown> {
               Icons.arrow_drop_down,
               color: kImageColor,
             ),
-
             decoration: InputDecoration(
               fillColor: kwhite,
               filled: true,
