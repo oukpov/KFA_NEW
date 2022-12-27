@@ -162,15 +162,6 @@ class _HomePageState extends State<HomePage>
           child: Column(
             children: [
               appbar(context),
-              Container(
-                height: 20,
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20))),
-              ),
             ],
           ),
         ),
@@ -294,6 +285,12 @@ class _HomePageState extends State<HomePage>
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         AppBar(
+          toolbarHeight: 70,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
           elevation: 0,
           centerTitle: true,
           leading: IconButton(

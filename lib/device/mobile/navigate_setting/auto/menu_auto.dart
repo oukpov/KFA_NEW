@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:admin/device/mobile/navigate_setting/auto/auto_list.dart';
+import 'package:admin/device/mobile/navigate_setting/auto/check_District.dart';
 import 'package:flutter/material.dart';
 
 import 'new_auto.dart';
@@ -16,12 +17,17 @@ List<Text> optionText = const [
   Text(
     "New Auto",
     style: TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
   ),
   Text(
     "Auto List",
     style: TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20),
+        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+  ),
+  Text(
+    "Auto in Phnom Penh",
+    style: TextStyle(
+        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
   )
 ];
 List<Image> optionIcon = [
@@ -32,6 +38,11 @@ List<Image> optionIcon = [
   ),
   Image(
     image: AssetImage('assets/S_List.png'),
+  ),
+  Image(
+    image: AssetImage(
+      'assets/S_plan.png',
+    ),
   ),
 ];
 
@@ -67,6 +78,10 @@ class _MenuAutoState extends State<MenuAuto> {
                   if (i == 1) {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => AutoList()));
+                  }
+                  if (i == 2) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => District()));
                   }
                 });
               },

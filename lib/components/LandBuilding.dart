@@ -268,7 +268,7 @@ class _LandBuildingState extends State<LandBuilding> {
         Container(
           padding: EdgeInsets.only(left: 22, right: 22),
           width: double.infinity,
-          height: 280,
+          height: 300,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,

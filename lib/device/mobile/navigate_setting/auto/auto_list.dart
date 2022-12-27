@@ -25,6 +25,9 @@ class _AutoListState extends State<AutoList>
   static int index = 0;
   @override
   void initState() {
+    View_Data(
+      srt: index,
+    );
     controller = TabController(
         initialIndex: _AutoListState.index, length: Title.length, vsync: this);
 
@@ -52,51 +55,57 @@ class _AutoListState extends State<AutoList>
       length: Title.length,
       child: Scaffold(
         appBar: AppBar(
-            title: const Text("TabBarView1"),
+            title: const Text("List of Auto"),
             bottom: TabBar(
               controller: controller,
               isScrollable: true,
+              onTap: (value) {
+                setState(() {
+                  index = value;
+                });
+              },
               tabs: [
                 for (int i = 0; i < Title.length; i++)
                   Tab(child: Text(Title.elementAt(i))),
               ],
             )),
+        // ignore: prefer_const_literals_to_create_immutables
         body: TabBarView(controller: controller, children: [
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 0,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 1,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 2,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 3,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 4,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 5,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 6,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 7,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 8,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 9,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 10,
           ),
           View_Data(
-            srt: Title.elementAt(index),
+            srt: 11,
           ),
         ]),
       ),
@@ -106,7 +115,7 @@ class _AutoListState extends State<AutoList>
 
 class View_Data extends StatefulWidget {
   const View_Data({super.key, required this.srt});
-  final String srt;
+  final int srt;
 
   @override
   State<View_Data> createState() => _View_DataState();
@@ -117,7 +126,6 @@ class _View_DataState extends State<View_Data> {
   TextStyle title = TextStyle(
     decoration: TextDecoration.underline,
     fontSize: 15,
-    fontFamily: 'Anton',
     fontWeight: FontWeight.bold,
   );
   List<String> Title = [
@@ -136,175 +144,202 @@ class _View_DataState extends State<View_Data> {
   ];
   @override
   void initState() {
+    Title;
     Load();
     _list = [];
-    print(widget.srt); // TODO: implement initState
+    print(widget.srt);
+    print(Title.elementAt(widget.srt));
+    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ((_list.length > 0)
-        ? ListView.builder(
-            itemCount: _list.length,
-            itemBuilder: (context, i) {
-              return Card(
-                // height: 300,
-                elevation: 10,
-                color: Colors.blue[100],
-                margin: const EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text("Commune : ", style: title),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              _list[i]['commune_name'],
-                              textAlign: TextAlign.right,
-                            ),
-                          )
-                        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: GFAvatar(
+            size: 20,
+            child: Text("${_list.length}"),
+          )),
+      body: ((_list.length > 0)
+          ? ListView.builder(
+              itemCount: _list.length,
+              itemBuilder: (context, i) {
+                return Card(
+                  // height: 300,
+                  elevation: 10,
+                  color: Colors.blue[100],
+                  margin: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        alignment: Alignment.centerRight,
+                        child: GFAvatar(
+                          size: 20,
+                          child: Text(_list[i]['cid']),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text("District : ", style: title),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              _list[i]['district'],
-                              textAlign: TextAlign.right,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text("Commune : ", style: title),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                _list[i]['commune_name'],
+                                textAlign: TextAlign.right,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text("Province : ", style: title),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              _list[i]['province'],
-                              textAlign: TextAlign.right,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text("District : ", style: title),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                _list[i]['district'],
+                                textAlign: TextAlign.right,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.amber[50],
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text("Max value : ", style: title),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    "${double.parse(_list[i]['max_value']).toStringAsFixed(2)} \$",
-                                    textAlign: TextAlign.right,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text("Province : ", style: title),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                _list[i]['province'],
+                                textAlign: TextAlign.right,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.amber[50],
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text("Max value : ", style: title),
                                   ),
-                                )
-                              ],
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      "${double.parse(_list[i]['max_value']).toStringAsFixed(2)} \$",
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text("Min value : ", style: title),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Text(
-                                    "${double.parse(_list[i]['min_value']).toStringAsFixed(2)} \$",
-                                    textAlign: TextAlign.right,
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text("Min value : ", style: title),
                                   ),
-                                )
-                              ],
+                                  Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      "${double.parse(_list[i]['min_value']).toStringAsFixed(2)} \$",
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 10, right: 10, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Text("Name's Road is : ", style: title),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              _list[i]['road_name'],
-                              textAlign: TextAlign.right,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 10, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text("Name's Road is : ", style: title),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                _list[i]['road_name'],
+                                textAlign: TextAlign.right,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                  ],
-                ),
-              );
-            })
-        : Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(50.0),
-            child: CircularProgressIndicator(),
-          ));
+                      SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  ),
+                );
+              })
+          : (_list.length <= 0)
+              ? Center(
+                  child:
+                      Text("${Title.elementAt(widget.srt)} hasn't Data Now?"),
+                )
+              : Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(50.0),
+                  child: CircularProgressIndicator(),
+                )),
+    );
   }
 
   void Load() async {
     var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/apirc_list?district=${widget.srt}'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list?district=${Title.elementAt(widget.srt)}'));
     var jsonData = jsonDecode(rs.body);
     if (rs.statusCode == 200) {
       setState(() {
         _list = jsonData;
+        print("Length =  ${_list.length}");
       });
     }
   }

@@ -290,11 +290,11 @@ class _AddState extends State<Add> {
                 SizedBox(
                   height: 10.0,
                 ),
-                DateComponents(
-                  date: (value) {
-                    requestModelAuto.date = value;
-                  },
-                ),
+                // DateComponents(
+                //   date: (value) {
+                //     requestModelAuto.date = value;
+                //   },
+                // ),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -407,13 +407,13 @@ class _AddState extends State<Add> {
                 SizedBox(
                   height: 3,
                 ),
-                FileOpen(),
+                // FileOpen(),
                 SizedBox(
                   height: 10,
                 ),
                 ImageOpen(),
                 SizedBox(
-                  height: 330,
+                  height: 400,
                   child: LandBuilding(
                     asking_price: asking_price,
                     opt: opt,

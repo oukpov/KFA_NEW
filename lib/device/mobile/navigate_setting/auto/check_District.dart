@@ -1,642 +1,121 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
-
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:math';
-import 'package:admin/contants%20copy.dart';
-import 'package:http/http.dart' as http;
-import 'package:admin/components/road.dart';
-import 'package:admin/model/models/M_commune.dart';
-import 'package:admin/model/models/M_roadAndcommune.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_geocoder/location_geocoder.dart';
-import 'package:search_map_location/search_map_location.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
+import 'package:search_map_location/widget/search_widget.dart';
 
-import '../../../../server/api_service.dart';
-
-class NewAuto extends StatefulWidget {
-  const NewAuto({super.key});
+class District extends StatefulWidget {
+  const District({super.key});
 
   @override
-  State<NewAuto> createState() => _NewAutoState();
+  State<District> createState() => _DistrictState();
 }
 
-class _NewAutoState extends State<NewAuto> {
+class _DistrictState extends State<District> {
   late List _list;
-  String? district;
-  String? province;
-  String? commune;
-  double? lat, log;
-  TextStyle colorizeTextStyle = TextStyle(
-    fontSize: 20.0,
-    fontFamily: 'Horizon',
+  int num_index = 0;
+  List<String> Title = [
+    "Khan Chamkar Mon",
+    "Khan Doun Penh",
+    "Khan 7 Makara",
+    "Khan Tuol Kouk",
+    "Khan Mean Chey",
+    "Khan Chbar Ampov",
+    "Khan Chroy Changvar",
+    "Khan Sensok",
+    "Khan Russey Keo",
+    "Khan Dangkor",
+    "Khan Pou Senchey",
+    "Khan Preaek Pnov",
+    "======> Show All <======",
+  ];
+  TextStyle title = const TextStyle(
+    fontSize: 16,
+    color: Colors.white,
     fontWeight: FontWeight.bold,
   );
-  late M_Commune Commune;
-  List<roadAndcommune>? rac;
-  String? S_M_V;
-  String? S_N_V;
-  String? M_1_M_V;
-  String? M_1_N_V;
-  String? M_2_M_V;
-  String? M_2_N_V;
-  var M_1_idr;
-  var M_2_idr;
   @override
   void initState() {
-    rac = [];
-    M_1_idr;
-    M_2_idr;
-    Load();
-    S_M_V;
-    S_N_V;
+    _list = [];
+
     // TODO: implement initState
-    Commune = M_Commune(
-        communename: "Null",
-        district: "Null",
-        province: "Null",
-        longitude: 0.0,
-        latitude: 0.0);
-    onClick1 = false;
-    onClick2 = false;
-    // rac.add(roadAndcommune(rid: 0, cid: 0, maxvalue: 0, minvalue: 0));
-    // rac.add(roadAndcommune(rid: 0, cid: 0, maxvalue: 0, minvalue: 0));
     super.initState();
   }
 
-  bool click_r = false;
-  int groupValue = 0;
-  var S_name_r;
-  var S_id_r;
-  var M_name_r1;
-  var M_name_r2;
-  bool onClick = false;
-  bool? onClick1;
-  bool? onClick2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "New Auto",
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
-        ),
-        actions: [
-          if (groupValue != 0)
-            GFButton(
-              onPressed: () {
-                setState(() {
-                  if (groupValue == 1) {
-                    rac!.add(roadAndcommune(
-                        rid: int.parse(
-                          S_id_r,
-                        ),
-                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
-                        maxvalue: double.parse(S_M_V!),
-                        minvalue: double.parse(S_N_V!)));
-                    APIservice setdata = APIservice();
-                    setdata.RoadAndCommune(rac!.elementAt(0));
-                  } else if (groupValue == 2) {
-                    APIservice setdata = APIservice();
-                    rac!.add(roadAndcommune(
-                        rid: int.parse(M_1_idr),
-                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
-                        maxvalue: double.parse(M_1_M_V!),
-                        minvalue: double.parse(M_1_N_V!)));
-                    rac!.add(roadAndcommune(
-                        rid: int.parse(M_2_idr),
-                        cid: int.parse(_list.elementAt(0)['cid']) + 1,
-                        maxvalue: double.parse(M_2_M_V!),
-                        minvalue: double.parse(M_2_N_V!)));
-                    setdata.RoadAndCommune(rac!.elementAt(0));
-                    setdata.RoadAndCommune(rac!.elementAt(1));
-                  }
-                  Navigator.of(context).pop();
-                });
-              },
-              icon: Icon(Icons.save_alt_outlined),
-              color: Color.fromRGBO(13, 71, 161, 1),
-              text: 'Submit',
-            ),
-        ],
+        title: const Text("District in Phnom Penh"),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                  BoxShadow(
-                      blurRadius: 6, color: Color.fromARGB(197, 63, 62, 62))
-                ]),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Check_map(
-                          lat: (value) {
-                            setState(() {
-                              lat = value;
-                            });
-                          },
-                          log: (value) {
-                            setState(() {
-                              log = value;
-                            });
-                          },
-                          commune: (value) {
-                            setState(() {
-                              commune = value;
-                            });
-                          },
-                          district: (value) {
-                            setState(() {
-                              district = value;
-                            });
-                          },
-                          province: (value) {
-                            setState(() {
-                              province = value;
-                            });
-                          },
-                        )));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                          blurRadius: 6, color: Color.fromARGB(197, 63, 62, 62))
-                    ]),
-                child: Column(children: [
-                  AnimatedTextKit(
-                    animatedTexts: [
-                      ColorizeAnimatedText(
-                        'Please select on the map',
-                        textStyle: colorizeTextStyle,
-                        colors: [
-                          Colors.purple,
-                          Colors.blue,
-                          Colors.yellow,
-                          Colors.red,
-                        ],
-                        speed: const Duration(milliseconds: 70),
-                      ),
-                      ColorizeAnimatedText(
-                        'Click Now',
-                        textStyle: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'Horizon',
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                        ),
-                        colors: [
-                          Colors.purple,
-                          Colors.blue,
-                          Colors.yellow,
-                          Colors.red,
-                        ],
-                      ),
-                    ],
-                    isRepeatingAnimation: true,
-                    repeatForever: true,
-                    onTap: () {
-                      print("Tap Event");
-                    },
+      body: ListView.builder(
+          itemCount: Title.length,
+          itemBuilder: (context, index) {
+            return Container(
+              margin: const EdgeInsets.all(10),
+              height: 50,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.green, Colors.blue],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
                   ),
-                  Image.asset('assets/images/Google_Maps_city.jpg',
-                      fit: BoxFit.fill, scale: 0.5)
-                ]),
-              ),
-            ),
-          ),
-          if (lat != null)
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.travel_explore,
-                          color: Colors.cyan[600],
-                          size: 30,
-                        ),
-                        hintText: 'Do you want to edit commune?',
-                        labelText: ((commune == null) ? 'Commune' : '$commune'),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.travel_explore,
-                        color: Colors.cyan[600],
-                        size: 30,
-                      ),
-                      hintText: 'Do you want to edit District?',
-                      labelText:
-                          ((district == null) ? 'District' : '$district'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.travel_explore,
-                        color: Colors.cyan[600],
-                        size: 30,
-                      ),
-                      hintText: 'Do you want to edit province?',
-                      labelText:
-                          ((province == null) ? 'province' : '$province'),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                    ),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
-                    },
-                  ),
-                ),
-              ],
-            ),
-          if (lat != null)
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  click_r = true;
-                  Commune = M_Commune(
-                      communename: commune,
-                      district: district,
-                      province: province,
-                      longitude: log,
-                      latitude: lat);
-                  APIservice setData = APIservice();
-                  setData.SaveCommune(Commune);
-                });
-              },
-              child: GFListTile(
-                  color: Colors.blue[400],
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                  titleText: 'Please select road',
-                  icon: Icon(
-                    Icons.call_split,
-                    color: Colors.black,
-                  )),
-            ),
-          SizedBox(
-            height: 10,
-          ),
-          ((click_r == false)
-              ? Text('')
-              : GFCard(
-                  height: 90,
-                  elevation: 8,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Single road",
-                        style: TextStyle(
-                            color: ((groupValue == 1)
-                                ? Colors.red[900]
-                                : Colors.black)),
-                      ),
-                      GFRadio(
-                        size: 20,
-                        value: 1,
-                        groupValue: groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            groupValue = value;
-                          });
-                        },
-                        inactiveIcon: null,
-                        activeBorderColor: Color.fromARGB(255, 0, 4, 255),
-                        radioColor: Color.fromRGBO(183, 28, 28, 1),
-                      ),
-                      Text(
-                        "Multi road",
-                        style: TextStyle(
-                            color: ((groupValue == 2)
-                                ? Colors.green
-                                : Colors.black)),
-                      ),
-                      GFRadio(
-                        size: 20,
-                        value: 2,
-                        groupValue: groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            groupValue = value;
-                          });
-                        },
-                        inactiveIcon: null,
-                        activeBorderColor: Color.fromARGB(255, 0, 4, 255),
-                        radioColor: Color.fromRGBO(183, 28, 28, 1),
-                      )
-                    ],
-                  ))),
-          ((groupValue == 1)
-              ? Column(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        color: Color.fromARGB(157, 103, 94, 91),
+                        blurStyle: BlurStyle.outer)
+                  ]),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Check_map(
+                              get_cid: num_index,
+                            )));
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RoadDropdown(
-                      id_road: (value) {
-                        S_id_r = value;
-                        setState(() {
-                          onClick = true;
-                        });
-                      },
-                      Name_road: (value) {
-                        S_name_r = value;
-                      },
+                    const Image(
+                      image: AssetImage(
+                        'assets/S_place.png',
+                      ),
                     ),
-                    ((onClick == true)
-                        ? Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(
-                                      Icons.edit_road,
-                                      color: Colors.red,
-                                      size: 30,
-                                    ),
-                                    hintStyle: TextStyle(color: Colors.red),
-                                    labelStyle: TextStyle(color: Colors.red),
-                                    hintText: 'Please Enter Value',
-                                    labelText: '${S_name_r} Max Value',
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.red),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.red),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      S_M_V = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.blue[50],
-                                    prefixIcon: Icon(
-                                      Icons.edit_road,
-                                      color: Colors.red,
-                                      size: 30,
-                                    ),
-                                    hintStyle: TextStyle(color: Colors.red),
-                                    labelStyle: TextStyle(color: Colors.red),
-                                    hintText: 'Please Enter Value',
-                                    labelText: '${S_name_r} Min Value',
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.red),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 2, color: Colors.red),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                  onChanged: (value) {
-                                    S_N_V = value;
-                                  },
-                                ),
-                              )
-                            ],
-                          )
-                        : Text("")),
-                    SizedBox(
-                      height: 50,
+                    Text(
+                      Title.elementAt(index),
+                      style: title,
+                    ),
+                    const Image(
+                      image: AssetImage(
+                        'assets/poin.png',
+                      ),
                     ),
                   ],
-                )
-              : Text("")),
-          if (groupValue == 2)
-            Column(
-              children: [
-                RoadDropdown(
-                  id_road: (value) {
-                    M_1_idr = value;
-                  },
-                  Name_road: (value) {
-                    M_name_r1 = value;
-                    setState(() {
-                      onClick1 = true;
-                    });
-                  },
                 ),
-                if (onClick1 == true)
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.edit_road,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            hintStyle: TextStyle(color: Colors.red),
-                            labelStyle: TextStyle(color: Colors.red),
-                            hintText: 'Please Enter Value',
-                            labelText: '${M_name_r1} Max Value',
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              M_1_M_V = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            fillColor: Colors.blue[50],
-                            prefixIcon: Icon(
-                              Icons.edit_road,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            hintStyle: TextStyle(color: Colors.red),
-                            labelStyle: TextStyle(color: Colors.red),
-                            hintText: 'Please Enter Value',
-                            labelText: '${M_name_r1} Min Value',
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onChanged: (value) {
-                            M_1_N_V = value;
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                RoadDropdown(
-                  id_road: (value) {
-                    M_2_idr = value;
-                  },
-                  Name_road: (value) {
-                    M_name_r2 = value;
-                    setState(() {
-                      onClick2 = true;
-                    });
-                  },
-                ),
-                if (onClick2 == true)
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.edit_road,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            hintStyle: TextStyle(color: Colors.red),
-                            labelStyle: TextStyle(color: Colors.red),
-                            hintText: 'Please Enter Value',
-                            labelText: '${M_name_r2} Max Value',
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              M_2_M_V = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            fillColor: Colors.blue[50],
-                            prefixIcon: Icon(
-                              Icons.edit_road,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            hintStyle: TextStyle(color: Colors.red),
-                            labelStyle: TextStyle(color: Colors.red),
-                            hintText: 'Please Enter Value',
-                            labelText: '${M_name_r2} Min Value',
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: Colors.red),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          onChanged: (value) {
-                            M_2_N_V = value;
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                SizedBox(
-                  height: 50,
-                ),
-              ],
-            ),
-        ],
-      ),
+              ),
+            );
+          }),
     );
-  }
-
-  void Load() async {
-    setState(() {});
-    var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/commune_list'));
-    if (rs.statusCode == 200) {
-      var jsonData = jsonDecode(rs.body);
-      setState(() {
-        _list = jsonData;
-      });
-    }
   }
 }
 
-typedef OnChangeCallback = void Function(dynamic value);
-
 class Check_map extends StatefulWidget {
-  const Check_map(
-      {super.key,
-      required this.province,
-      required this.district,
-      required this.commune,
-      required this.log,
-      required this.lat});
-  final OnChangeCallback province;
-  final OnChangeCallback district;
-  final OnChangeCallback commune;
-  final OnChangeCallback log;
-  final OnChangeCallback lat;
+  const Check_map({super.key, required this.get_cid});
+  final int get_cid;
   @override
   State<Check_map> createState() => _Check_mapState();
 }
@@ -653,16 +132,55 @@ class _Check_mapState extends State<Check_map> {
   LatLng latLng = const LatLng(11.5489, 104.9214);
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  List list = [];
+  List list_at = [];
   double adding_price = 0.0;
   String sendAddrress = '';
   List data = [];
-
+  int data_index = 0;
   bool isApiCallProcess = false;
   // static const apiKey = "AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY";
   late LocatitonGeocoder geocoder = LocatitonGeocoder(googleApikey);
   String? _currentAddress;
   Position? _currentPosition;
+  List<String> Title = [
+    "Khan Chamkar Mon",
+    "Khan Doun Penh",
+    "Khan 7 Makara",
+    "Khan Tuol Kouk",
+    "Khan Mean Chey",
+    "Khan Chbar Ampov",
+    "Khan Chroy Changvar",
+    "Khan Sensok",
+    "Khan Russey Keo",
+    "Khan Dangkor",
+    "Khan Pou Senchey",
+    "Khan Preaek Pnov",
+  ];
+
+  void Load() async {
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list?district=${Title.elementAt(data_index)}'));
+    var jsonData = jsonDecode(rs.body);
+    if (rs.statusCode == 200) {
+      setState(() {
+        list_at = jsonData;
+        print("data =================================== ${list_at.length}");
+      });
+    }
+  }
+
+  void Load1() async {
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list'));
+    var jsonData = jsonDecode(rs.body);
+    if (rs.statusCode == 200) {
+      setState(() {
+        list_at = jsonData;
+        // print(list_at);
+      });
+    }
+  }
+
 // use for check user access to the location
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
@@ -716,11 +234,6 @@ class _Check_mapState extends State<Check_map> {
             '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
         lat = _currentPosition!.latitude;
         log = _currentPosition!.longitude;
-        widget.lat(lat);
-        widget.log(log);
-        widget.commune(place.name);
-        widget.district(place.subLocality);
-        widget.province(place.administrativeArea);
       });
     }).catchError((e) {
       debugPrint(e);
@@ -733,7 +246,7 @@ class _Check_mapState extends State<Check_map> {
       marker.add(Marker(
         //add second marker
         markerId: MarkerId("showLocation.toString()"),
-        position: ((num < 0) ? LatLng(lat, log) : latLng), //position of marker
+        position: LatLng(lat, log), //position of marker
         infoWindow: InfoWindow(
           //popup info
           title: 'Thanks for using us',
@@ -769,11 +282,6 @@ class _Check_mapState extends State<Check_map> {
     try {
       final address = await geocoder.findAddressesFromCoordinates(coordinates);
       // final address_of_latLng = await geocoder.findAddressesFromQuery();
-      setState(() {
-        widget.commune(address.first.addressLine);
-        widget.district(address.first.subLocality);
-        widget.province(address.first.adminArea);
-      });
 
       // subAdminArea=ខ័ណ្ឌ
       // adminArea = ខេត្ត
@@ -806,6 +314,16 @@ class _Check_mapState extends State<Check_map> {
 
   @override
   void initState() {
+    data_index;
+    list_at = [];
+    if (widget.get_cid < 12) {
+      data_index = widget.get_cid;
+      Load();
+    } else {
+      data_index = 12;
+      Load1();
+    }
+
     _getCurrentPosition();
     // getAddress(latLng);
     _setPolygons();
@@ -2002,6 +1520,45 @@ class _Check_mapState extends State<Check_map> {
   ];
   @override
   Widget build(BuildContext context) {
+    // setState(() {
+    //   _Find_polygons.add(
+    //     Polygon(
+    //       polygonId: PolygonId("7"),
+    //       points: _pg.elementAt(widget.get_cid),
+    //       fillColor: Color.fromARGB(38, 72, 67, 143),
+    //       strokeWidth: 2,
+    //       strokeColor: Color.fromARGB(160, 190, 30, 30),
+    //     ),
+    //   );
+    // });
+    if (data_index < 12) {
+      setState(() {
+        _Find_polygons.add(
+          Polygon(
+            polygonId: PolygonId("7"),
+            points: _pg.elementAt(data_index),
+            fillColor: Color.fromARGB(38, 72, 67, 143),
+            strokeWidth: 2,
+            strokeColor: Color.fromARGB(160, 190, 30, 30),
+          ),
+        );
+      });
+    } else {
+      setState(() {
+        for (int i = 0; i < data_index; i++) {
+          _Find_polygons.add(
+            Polygon(
+              polygonId: PolygonId("$i"),
+              points: _pg.elementAt(i),
+              fillColor: FillColors.elementAt(i),
+              strokeWidth: 2,
+              strokeColor: Color.fromARGB(160, 190, 30, 30),
+            ),
+          );
+        }
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -2067,8 +1624,6 @@ class _Check_mapState extends State<Check_map> {
                             BitmapDescriptor.hueRed),
                       );
                       setState(() {
-                        widget.lat(argument.latitude);
-                        widget.log(argument.longitude);
                         num = num + 1;
                         markers[markerId] = marker;
                         // requestModel.lat = argument.latitude.toString();
@@ -2144,11 +1699,6 @@ class _Check_mapState extends State<Check_map> {
       latitude = address.first.coordinates.latitude!;
       longitude = address.first.coordinates.longitude!;
       latLng = LatLng(latitude, longitude);
-      setState(() {
-        widget.commune(address.first.addressLine);
-        widget.district(address.first.subLocality);
-        widget.province(address.first.adminArea);
-      });
       mapController?.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(target: LatLng(latitude, longitude), zoom: 13)));
       ScaffoldMessenger.of(context).showSnackBar(
@@ -2166,96 +1716,3 @@ class _Check_mapState extends State<Check_map> {
     }
   }
 }
-
-// class Menu_map extends StatefulWidget {
-//   const Menu_map({super.key});
-
-//   @override
-//   State<Menu_map> createState() => _Menu_mapState();
-// }
-
-// class _Menu_mapState extends State<Menu_map> {
-//   List<String> Title = [
-//     "CHAMKAMORN",
-//     "DAUN PENH",
-//     "7 MAKARA",
-//     "TUOL KORK ",
-//     "MEANCHEY",
-//     "CHBAR AMPOV",
-//     "CHROUY CHANGVA",
-//     "SEN SOK ",
-//     "RUSSEY KEO",
-//     "DANGKOR",
-//     "POSENCHEY",
-//     "PRAEK PNOV",
-//     "====> Show All <===="
-//   ];
-//   TextStyle textStyle = TextStyle(
-//     fontSize: 16.0,
-//     fontFamily: 'Courgette',
-//     fontWeight: FontWeight.bold,
-//   );
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           centerTitle: true,
-//           toolbarHeight: 50,
-//           title: const Text(
-//             "LAND__MARKET__PRICE \nIN__PHNOM_PENH_CITY",
-//             style: TextStyle(
-//                 fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
-//           ),
-//         ),
-//         body: ListView.builder(
-//             itemCount: Title.length,
-//             itemBuilder: (context, index) {
-//               return GFButton(
-//                 shape: GFButtonShape.pills,
-//                 type: GFButtonType.solid,
-//                 color: Color.fromRGBO(24, 255, 255, 1),
-//                 onPressed: () {
-//                   Navigator.of(context).push(MaterialPageRoute(
-//                       builder: (context) => Check_map(
-//                             index_pg: index,
-//                           )));
-//                 },
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(20),
-//                       boxShadow: const [
-//                         BoxShadow(blurRadius: 5, color: Colors.black)
-//                       ]),
-//                   child: Text(
-//                     Title.elementAt(index),
-//                     style: textStyle,
-//                   ),
-//                 ),
-//               );
-//             }));
-//   }
-// }
-//  body: ListView.builder(
-//             itemCount: Title.length,
-//             itemBuilder: (context, index) {
-//               return GFButton(
-//                 shape: GFButtonShape.pills,
-//                 type: GFButtonType.solid,
-//                 color: Color.fromRGBO(24, 255, 255, 1),
-//                 onPressed: () {
-//                   Navigator.of(context).push(MaterialPageRoute(
-//                       builder: (context) => on_map(context, index)));
-//                 },
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(20),
-//                       boxShadow: const [
-//                         BoxShadow(blurRadius: 5, color: Colors.black)
-//                       ]),
-//                   child: Text(
-//                     Title.elementAt(index),
-//                     style: textStyle,
-//                   ),
-//                 ),
-//               );
-//             })

@@ -266,7 +266,7 @@ class _HomePageState extends State<HomePage> {
         //add second marker
         markerId: MarkerId("showLocation.toString()"),
         // position: LatLng(lat, log),
-        position: ((num > 0) ? LatLng(lat, log) : latLng), //position of marker
+        position: ((num < 0) ? LatLng(lat, log) : latLng), //position of marker
         infoWindow: InfoWindow(
           //popup info
           title: 'Thanks for using us',
