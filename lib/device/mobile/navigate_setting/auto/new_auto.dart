@@ -62,7 +62,9 @@ class _NewAutoState extends State<NewAuto> {
         district: "Null",
         province: "Null",
         longitude: 0.0,
-        latitude: 0.0);
+        latitude: 0.0,
+        option: "Null");
+    options;
     onClick1 = false;
     onClick2 = false;
     // rac.add(roadAndcommune(rid: 0, cid: 0, maxvalue: 0, minvalue: 0));
@@ -79,6 +81,8 @@ class _NewAutoState extends State<NewAuto> {
   bool onClick = false;
   bool? onClick1;
   bool? onClick2;
+  var dropdown;
+  String? options;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,9 +239,10 @@ class _NewAutoState extends State<NewAuto> {
                         labelText: ((commune == null) ? 'Commune' : '$commune'),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20))),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
+                    onChanged: (String? value) {
+                      setState(() {
+                        commune = value;
+                      });
                     },
                   ),
                 ),
@@ -256,9 +261,10 @@ class _NewAutoState extends State<NewAuto> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20)),
                     ),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
+                    onChanged: (String? value) {
+                      setState(() {
+                        district = value;
+                      });
                     },
                   ),
                 ),
@@ -277,10 +283,42 @@ class _NewAutoState extends State<NewAuto> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20)),
                     ),
-                    onSaved: (String? value) {
-                      // This optional block of code can be used to run
-                      // code when the user saves the form.
+                    onChanged: (String? value) {
+                      setState(() {
+                        province = value;
+                      });
                     },
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.all(20),
+                  child: DropdownButtonHideUnderline(
+                    child: GFDropdown(
+                      padding: const EdgeInsets.all(10),
+                      borderRadius: BorderRadius.circular(5),
+                      border: const BorderSide(color: Colors.black12, width: 1),
+                      dropdownButtonColor: Colors.white,
+                      value: dropdown,
+                      hint: Text('Option'),
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdown = newValue;
+                          options = newValue as String;
+                        });
+                      },
+                      items: [
+                        'Residencial',
+                        'Commercial',
+                        'Agricultural',
+                      ]
+                          .map((value) => DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ),
               ],
@@ -295,7 +333,8 @@ class _NewAutoState extends State<NewAuto> {
                       district: district,
                       province: province,
                       longitude: log,
-                      latitude: lat);
+                      latitude: lat,
+                      option: options);
                   APIservice setData = APIservice();
                   setData.SaveCommune(Commune);
                 });

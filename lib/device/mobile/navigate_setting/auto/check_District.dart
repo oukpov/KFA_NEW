@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -83,7 +84,7 @@ class _DistrictState extends State<District> {
                   setState(() {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => Check_map(
-                              get_cid: num_index,
+                              get_cid: index,
                             )));
                   });
                 },
@@ -133,6 +134,7 @@ class _Check_mapState extends State<Check_map> {
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List list_at = [];
+  List list_at1 = [];
   double adding_price = 0.0;
   String sendAddrress = '';
   List data = [];
@@ -159,7 +161,7 @@ class _Check_mapState extends State<Check_map> {
 
   void Load() async {
     var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list?district=${Title.elementAt(data_index)}'));
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/rc_list?district=${Title.elementAt(widget.get_cid)}'));
     var jsonData = jsonDecode(rs.body);
     if (rs.statusCode == 200) {
       setState(() {
@@ -175,7 +177,7 @@ class _Check_mapState extends State<Check_map> {
     var jsonData = jsonDecode(rs.body);
     if (rs.statusCode == 200) {
       setState(() {
-        list_at = jsonData;
+        list_at1 = jsonData;
         // print(list_at);
       });
     }
@@ -240,19 +242,476 @@ class _Check_mapState extends State<Check_map> {
     });
   }
 
+  TextStyle title = TextStyle(
+    decoration: TextDecoration.underline,
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+  );
   Set<Marker> getmarkers() {
     //markers to place on map
     setState(() {
-      marker.add(Marker(
-        //add second marker
-        markerId: MarkerId("showLocation.toString()"),
-        position: LatLng(lat, log), //position of marker
-        infoWindow: InfoWindow(
-          //popup info
-          title: 'Thanks for using us',
-        ),
-        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-      ));
+      if (widget.get_cid < 12) {
+        Load();
+        for (int i = 0; i < list_at.length; i++) {
+          marker.add(Marker(
+            //add second marker
+            markerId: MarkerId(i.toString()),
+            position: LatLng(double.parse(list_at[i]["latitude"]),
+                double.parse(list_at[i]["longitude"])), //position of marker
+            infoWindow: InfoWindow(
+              //popup info
+              title: 'Click for more',
+              snippet:
+                  'Max: ${double.parse(list_at[i]["max_value"]).toStringAsFixed(2)}\$ / Min ${double.parse(list_at[i]["min_value"]).toStringAsFixed(2)} \$',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      duration: const Duration(seconds: 5),
+                      backgroundColor: Color.fromARGB(255, 1, 35, 59),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25)),
+                      ),
+                      content: SingleChildScrollView(
+                        child: Card(
+                          // height: 300,
+                          elevation: 20,
+                          color: const Color.fromARGB(255, 39, 101, 151),
+                          margin: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Option: ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        (list_at[i]['option'] != null)
+                                            ? list_at[i]['option']
+                                            : "Null",
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 70,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Commune : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at[i]['commune_name'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("District : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at[i]['district'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Province : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at[i]['province'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 60,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text("Max value : ",
+                                                style: title),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "${double.parse(list_at[i]['max_value']).toStringAsFixed(2)} \$",
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text("Min value : ",
+                                                style: title),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "${double.parse(list_at[i]['min_value']).toStringAsFixed(2)} \$",
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text("Name's Road is : ",
+                                          style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at[i]['road_name'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                );
+              },
+            ),
+            icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+          ));
+        }
+      } else {
+        Load1();
+        for (int i = 0; i < list_at1.length; i++) {
+          marker.add(Marker(
+            //add second marker
+            markerId: MarkerId(i.toString()),
+            position: LatLng(double.parse(list_at1[i]["latitude"]),
+                double.parse(list_at1[i]["longitude"])), //position of marker
+            infoWindow: InfoWindow(
+              //popup info
+              title: 'Click for more',
+              snippet:
+                  'Max: ${double.parse(list_at1[i]["max_value"]).toStringAsFixed(2)} / Min ${double.parse(list_at1[i]["min_value"]).toStringAsFixed(2)}',
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      duration: const Duration(seconds: 5),
+                      backgroundColor: Color.fromARGB(230, 68, 123, 168),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25)),
+                      ),
+                      content: SingleChildScrollView(
+                        child: Card(
+                          // height: 300,
+                          elevation: 20,
+                          color: const Color.fromARGB(255, 39, 101, 151),
+                          margin: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Option: ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at1[i]['option'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Commune : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at1[i]['commune_name'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("District : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at1[i]['district'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text("Province : ", style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at1[i]['province'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 60,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text("Max value : ",
+                                                style: title),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "${double.parse(list_at1[i]['max_value']).toStringAsFixed(2)} \$",
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10, top: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text("Min value : ",
+                                                style: title),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "${double.parse(list_at1[i]['min_value']).toStringAsFixed(2)} \$",
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber[50],
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text("Name's Road is : ",
+                                          style: title),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                        list_at1[i]['road_name'],
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                );
+              },
+            ),
+            icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+          ));
+        }
+      }
+
       // requestModel.lat = lat.toString();
       // requestModel.lng = log.toString();
       //add more markers here
@@ -316,15 +775,9 @@ class _Check_mapState extends State<Check_map> {
   void initState() {
     data_index;
     list_at = [];
-    if (widget.get_cid < 12) {
-      data_index = widget.get_cid;
-      Load();
-    } else {
-      data_index = 12;
-      Load1();
-    }
-
-    _getCurrentPosition();
+    list_at1 = [];
+    _Find_polygons;
+    // _getCurrentPosition();
     // getAddress(latLng);
     _setPolygons();
     super.initState();
@@ -1520,43 +1973,30 @@ class _Check_mapState extends State<Check_map> {
   ];
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   _Find_polygons.add(
-    //     Polygon(
-    //       polygonId: PolygonId("7"),
-    //       points: _pg.elementAt(widget.get_cid),
-    //       fillColor: Color.fromARGB(38, 72, 67, 143),
-    //       strokeWidth: 2,
-    //       strokeColor: Color.fromARGB(160, 190, 30, 30),
-    //     ),
-    //   );
-    // });
-    if (data_index < 12) {
-      setState(() {
+    if (widget.get_cid < 12) {
+      Load();
+      _Find_polygons.add(
+        Polygon(
+          polygonId: PolygonId("0"),
+          points: _pg.elementAt(widget.get_cid),
+          fillColor: Color.fromARGB(38, 72, 67, 143),
+          strokeWidth: 2,
+          strokeColor: Color.fromARGB(160, 190, 30, 30),
+        ),
+      );
+    } else {
+      Load1();
+      for (int i = 0; i < widget.get_cid; i++) {
         _Find_polygons.add(
           Polygon(
-            polygonId: PolygonId("7"),
-            points: _pg.elementAt(data_index),
-            fillColor: Color.fromARGB(38, 72, 67, 143),
+            polygonId: PolygonId("${i}"),
+            points: _pg.elementAt(i),
+            fillColor: FillColors.elementAt(i),
             strokeWidth: 2,
             strokeColor: Color.fromARGB(160, 190, 30, 30),
           ),
         );
-      });
-    } else {
-      setState(() {
-        for (int i = 0; i < data_index; i++) {
-          _Find_polygons.add(
-            Polygon(
-              polygonId: PolygonId("$i"),
-              points: _pg.elementAt(i),
-              fillColor: FillColors.elementAt(i),
-              strokeWidth: 2,
-              strokeColor: Color.fromARGB(160, 190, 30, 30),
-            ),
-          );
-        }
-      });
+      }
     }
 
     return Scaffold(
@@ -1592,7 +2032,7 @@ class _Check_mapState extends State<Check_map> {
         height: MediaQuery.of(context).size.height * 1,
         child: Stack(
           children: [
-            (lat != null)
+            (widget.get_cid != null)
                 ? GoogleMap(
                     // markers: getmarkers(),
                     markers: ((num > 0)
