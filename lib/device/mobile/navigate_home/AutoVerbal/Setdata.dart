@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/Customs/responsive.dart';
+import 'package:admin/components/ImageController.dart';
 import 'package:admin/components/code.dart';
 import 'package:admin/components/comment.dart';
 import 'package:admin/components/forceSale.dart';
@@ -411,7 +412,12 @@ class _AddState extends State<Add> {
                 SizedBox(
                   height: 10,
                 ),
-                ImageOpen(),
+                // ImageController(),
+                ImageOpen(
+                  set_Image: (value) {
+                    requestModelAuto.image = value;
+                  },
+                ),
                 SizedBox(
                   height: 400,
                   child: LandBuilding(

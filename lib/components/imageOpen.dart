@@ -1,12 +1,20 @@
 // ignore_for_file: prefer_const_constructors, import_of_legacy_library_into_null_safe, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:admin/Customs/Contants.dart';
+// import 'package:admin/components/ImageController.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:open_file/open_file.dart';
 import 'package:flutter/material.dart';
 
+typedef OnChangeCallback = void Function(dynamic value);
+
 class ImageOpen extends StatefulWidget {
+  const ImageOpen({
+    Key? key,
+    required this.set_Image,
+  }) : super(key: key);
+  final OnChangeCallback set_Image;
   @override
   State<ImageOpen> createState() => _ImageOpenState();
 }
@@ -35,6 +43,12 @@ class _ImageOpenState extends State<ImageOpen> {
 
   void _openFile(PlatformFile file) {
     OpenFile.open(file.path.toString());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
