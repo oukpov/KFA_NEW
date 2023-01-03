@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:admin/Customs/Contants.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Deteil.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Edit.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/Search_Screen.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -396,7 +397,12 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         backgroundColor: Colors.blue[700],
         elevation: 10,
         onPressed: () {
-          setState(() {});
+          // setState(() {});
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return QuickSearchScreen();
+            },
+          ));
         },
         child: const Icon(
           Icons.search_sharp,
