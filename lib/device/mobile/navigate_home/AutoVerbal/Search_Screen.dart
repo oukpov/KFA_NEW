@@ -20,14 +20,12 @@ class _QuickSearchScreenState extends State<QuickSearchScreen> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return Show_autoVerbals();
-                  },
-                ));
+                Navigator.pop(context);
               },
+              // ignore: prefer_const_constructors
               icon: Icon(
                 Icons.arrow_back,
+                size: 36,
                 color: Colors.black,
               )),
           elevation: 0.0,
