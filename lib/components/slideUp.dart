@@ -136,6 +136,9 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
+  String imageUrl = '';
   Future showLocation() async {}
   dynamic lat, log;
   final Set<Marker> marker = new Set();
@@ -165,7 +168,7 @@ class _HomePageState extends State<HomePage> {
       Completer<GoogleMapController>();
   void takeSnapShot() async {
     GoogleMapController controller = await _mapController.future;
-    Future<void>.delayed(const Duration(seconds: 15), () async {
+    Future<void>.delayed(const Duration(seconds: 13), () async {
       imageInUnit8List = await controller.takeSnapshot();
       setState(() {});
     });
@@ -241,9 +244,15 @@ class _HomePageState extends State<HomePage> {
                       //   });
                       // },
                       onMapCreated: (GoogleMapController controller) {
-                        _mapController.complete(controller);
-                        takeSnapShot();
+                        // _mapController.complete(controller);
+                        // takeSnapShot();
                         setState(() async {
+                          Future<void>.delayed(const Duration(seconds: 13),
+                              () async {
+                            imageInUnit8List = await controller.takeSnapshot();
+                            setState(() {});
+                          });
+                          // imageInUnit8List = await controller.takeSnapshot();
                           mapController = controller;
                         });
                       },
@@ -320,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                       content: Center(
                         child: CircularProgressIndicator(),
                       ),
-                      duration: Duration(seconds: 15),
+                      duration: Duration(seconds: 2),
                     ),
                   );
                   screenshotController.capture().then((image) {
@@ -348,7 +357,7 @@ class _HomePageState extends State<HomePage> {
                       DateTime.now().millisecondsSinceEpoch.toString();
                   Reference referenceRoot = FirebaseStorage.instance.ref();
                   Reference referenceDirImages =
-                      referenceRoot.child('images/kfa');
+                      referenceRoot.child('images_map_kfa');
                   Reference referenceImageToUpload =
                       referenceDirImages.child('name');
                   try {
@@ -407,9 +416,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  CollectionReference _reference =
-      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
-  String imageUrl = '';
   // Widget _uiSteup(BuildContext context) {
   //   // TextEditingController search = TextEditingController();
   //   _panelHeightOpen = MediaQuery.of(context).size.height * .80;

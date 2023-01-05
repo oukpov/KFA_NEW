@@ -267,7 +267,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
 
   Future<Uint8List> _generatePdf(
       PdfPageFormat format, int i, String fsv) async {
-    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final pdf = pw.Document(version: PdfVersion.pdf_1_4, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
     final ByteData bytes =
         await rootBundle.load('assets/images/New_KFA_Logo.png');
@@ -300,14 +300,6 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
             ),
             pw.Text("VERBAL CHECK",
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            pw.Container(
-              height: 50,
-              width: 70,
-              child: pw.BarcodeWidget(
-                  barcode: pw.Barcode.qrCode(),
-                  data:
-                      "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLog}&long=${data_pdf.elementAt(i).latlongLa}"),
-            ),
           ],
         ),
         pw.Container(
@@ -584,30 +576,42 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                 ),
               ),
               pw.SizedBox(height: 5),
-
+              pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
+                  textAlign: pw.TextAlign.center,
+                  style: const pw.TextStyle(fontSize: 12)),
               pw.Container(
-                child: pw.Column(
+                height: 110,
+                child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.center,
                   children: [
-                    pw.Text("ESTIMATED VALUE OF THE VERBAL CHECK PROPERTY",
-                        style: const pw.TextStyle(fontSize: 12)),
                     pw.Container(
-                      height: 110,
-                      width: 50,
+                      width: 200,
                       child: pw.Image(
                           pw.MemoryImage(
                             bytes1,
                           ),
-                          fit: pw.BoxFit.cover),
+                          fit: pw.BoxFit.fitWidth),
+                    ),
+                    pw.Container(
+                      height: 50,
+                      width: 79,
+                      child: pw.BarcodeWidget(
+                          barcode: pw.Barcode.qrCode(),
+                          data:
+                              "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLog}&long=${data_pdf.elementAt(i).latlongLa}"),
+                    ),
+                    pw.Container(
+                      width: 200,
+                      child: pw.Image(
+                          pw.MemoryImage(
+                            bytes2,
+                          ),
+                          fit: pw.BoxFit.fitWidth),
                     ),
                   ],
                 ),
               ),
-              // pw.Image(
-              //                           pw.MemoryImage(
-              //                             bytes2,
-              //                           ),
-              //                           fit: pw.BoxFit.fill),
-              //After Google Map
+              pw.SizedBox(height: 5),
               pw.Container(
                 child: pw.Column(children: [
                   pw.Container(

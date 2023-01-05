@@ -757,7 +757,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           pw.MemoryImage(
                             byteList_image,
                           ),
-                          fit: pw.BoxFit.fill),
+                          fit: pw.BoxFit.fitHeight),
                     ),
                   ],
                 ),
