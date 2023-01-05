@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:admin/Auth/login.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
+import 'package:admin/device/mobile/navigate_home/AutoVerbal/search/HomeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginPage(),
+      // home: Show_autoVerbals(),
       // home: AddItem(
       //   com_id: 15.toString(),
       // ),
