@@ -8,18 +8,29 @@ Copyright: © 2021, Akshath Jain. All rights reserved.
 Licensing: More information can be found here: https://github.com/akshathjain/sliding_up_panel/blob/master/LICENSE
 */
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:admin/Customs/ProgressHUD.dart';
 import 'package:admin/model/models/search_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:circular_menu/circular_menu.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:location_geocoder/location_geocoder.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:search_map_location/utils/google_search/place.dart';
 import 'package:search_map_location/widget/search_widget.dart';
 import 'dart:convert';
@@ -33,22 +44,16 @@ import 'numDisplay.dart';
 import 'road.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class SlidingUpPanelExample extends StatelessWidget {
-  const SlidingUpPanelExample({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return HomePage();
-  }
-}
-
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.c_id});
+  final String c_id;
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  ScreenshotController screenshotController = ScreenshotController();
+  Uint8List? _imageFile;
   double _panelHeightOpen = 0;
   final double _panelHeightClosed = 95.0;
   String googleApikey = "AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI";
@@ -135,7 +140,7 @@ class _HomePageState extends State<HomePage> {
   dynamic lat, log;
   final Set<Marker> marker = new Set();
   int num = 0;
-
+  Uint8List? imageInUnit8List;
   @override
   void initState() {
     // getmarkers();
@@ -156,35 +161,18 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ProgressHUD(
-      color: kPrimaryColor,
-      inAsyncCall: isApiCallProcess,
-      opacity: 0.3,
-      child: _uiSteup(context),
-    );
-  }
-
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    index = _selectedIndex;
-    setState(() {
-      if (_selectedIndex == 0) {
-        num = 0;
-      } else {
-        if (index < 1) {
-          index = index + 1;
-        } else {
-          index = 0;
-        }
-      }
+  final Completer<GoogleMapController> _mapController =
+      Completer<GoogleMapController>();
+  void takeSnapShot() async {
+    GoogleMapController controller = await _mapController.future;
+    Future<void>.delayed(const Duration(seconds: 15), () async {
+      imageInUnit8List = await controller.takeSnapshot();
+      setState(() {});
     });
   }
 
-  Widget _uiSteup(BuildContext context) {
-    // TextEditingController search = TextEditingController();
-    _panelHeightOpen = MediaQuery.of(context).size.height * .80;
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("GoogleMap")),
@@ -196,7 +184,7 @@ class _HomePageState extends State<HomePage> {
             color: kwhite,
             //style: IconButton.styleFrom(backgroundColor: kImageColor),
             //onPressed: () => Show(),S
-            onPressed: () {
+            onPressed: () async {
               // Navigator.pushReplacement(
               //   context,
               //   MaterialPageRoute(
@@ -205,7 +193,6 @@ class _HomePageState extends State<HomePage> {
               //     ),
               //   ),
               // );
-
               data = [
                 {
                   'adding_price': adding_price,
@@ -220,9 +207,93 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       backgroundColor: kPrimaryColor,
-      body: Container(
-        child: MapShow(),
-        height: MediaQuery.of(context).size.height * 1,
+      body: Screenshot(
+        controller: screenshotController,
+        child: Container(
+          child: Stack(
+            children: [
+              (lat != null)
+                  ? GoogleMap(
+                      // markers: getmarkers(),
+                      markers: ((num > 0)
+                          ? Set<Marker>.of(markers.values)
+                          : getmarkers()),
+                      //Map widget from google_maps_flutter package
+                      zoomGesturesEnabled: true, //enable Zoom in, out on map
+                      initialCameraPosition: CameraPosition(
+                        //innital position in map
+                        target: LatLng(latitude, longitude),
+                        // target: ((num < 0)
+                        //     ? LatLng(lat, log)
+                        //     : latLng), //initial position
+                        zoom: 16, //initial zoom level
+                      ),
+                      mapType: style_map[index], //map type
+                      // onMapCreated: (controller) async {
+                      //   imageInUnit8List = await controller.takeSnapshot();
+
+                      //   // For examle, we can convert this uin8list to base64 and send
+                      //   // to photohosting imgbb.com and get url on this image
+                      //   // final base64image = base64Encode(uin8list!);
+                      //   //method called when map is created
+                      //   setState(() async {
+                      //     mapController = controller;
+                      //   });
+                      // },
+                      onMapCreated: (GoogleMapController controller) {
+                        _mapController.complete(controller);
+                        takeSnapShot();
+                        setState(() async {
+                          mapController = controller;
+                        });
+                      },
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      onTap: (argument) {
+                        MarkerId markerId = MarkerId('mark');
+                        listMarkerIds.add(markerId);
+                        Marker marker = Marker(
+                          markerId: MarkerId('mark'),
+                          position: argument,
+                          icon: BitmapDescriptor.defaultMarkerWithHue(
+                              BitmapDescriptor.hueRed),
+                        );
+                        setState(() {
+                          num = num + 1;
+                          markers[markerId] = marker;
+                          requestModel.lat = argument.latitude.toString();
+                          requestModel.lng = argument.longitude.toString();
+                          getAddress(argument);
+                        });
+                      },
+                      onCameraMove: (CameraPosition cameraPositiona) {
+                        cameraPosition = cameraPositiona; //when map is dragging
+                      },
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+              Container(
+                margin: EdgeInsets.only(left: 5),
+                alignment: Alignment.topLeft,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: SearchLocation(
+                  apiKey:
+                      'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
+                  country: 'KH',
+                  onSelected: (Place place) {
+                    setState(() {
+                      address = place.description;
+                      print(place.description);
+                      getLatLang(address);
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          height: MediaQuery.of(context).size.height * 1,
+        ),
       ),
       bottomNavigationBar: Container(
         height: MediaQuery.of(context).size.height * 0.06,
@@ -236,6 +307,67 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 setState(() {
                   num = 0;
+                });
+              },
+            ),
+            IconButton(
+              icon:
+                  Icon(Icons.photo_camera_back, size: 40, color: Colors.black),
+              onPressed: () async {
+                setState(() async {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      duration: Duration(seconds: 15),
+                    ),
+                  );
+                  screenshotController.capture().then((image) {
+                    setState(() {
+                      _imageFile = image;
+                    });
+                  }).catchError((onError) {
+                    print(onError);
+                  });
+                  final result =
+                      await ImageGallerySaver.saveImage(imageInUnit8List!);
+                  // Uint8List imageInUnit8List = _imageFile!;
+
+                  final tempDir = await getTemporaryDirectory();
+                  File file = await File('${tempDir.path}/image.png').create();
+                  file.writeAsBytesSync(imageInUnit8List!);
+                  var compressed =
+                      await FlutterImageCompress.compressAndGetFile(
+                    file.absolute.path,
+                    file.path + 'compressed.jpg',
+                    quality: 10,
+                  );
+                  // XFile file = await imagePath.writeAsBytes(_imageFile);
+                  String uniqueFileName =
+                      DateTime.now().millisecondsSinceEpoch.toString();
+                  Reference referenceRoot = FirebaseStorage.instance.ref();
+                  Reference referenceDirImages =
+                      referenceRoot.child('images/kfa');
+                  Reference referenceImageToUpload =
+                      referenceDirImages.child('name');
+                  try {
+                    await referenceImageToUpload
+                        .putFile(File(compressed!.path));
+                    imageUrl = await referenceImageToUpload.getDownloadURL();
+                  } catch (error) {}
+                  if (imageUrl != null) {
+                    setState(() {
+                      print(
+                          'object==========================\n\n\n\n\n\n\n\n\n\n\n\n\n\n${widget.c_id}');
+                      Map<String, String> dataToSend = {
+                        'com_id': widget.c_id,
+                        'lat&lng': requestModel.lat + "/" + requestModel.lng,
+                        'image': imageUrl,
+                      };
+                      _reference.add(dataToSend);
+                    });
+                  }
                 });
               },
             ),
@@ -258,6 +390,132 @@ class _HomePageState extends State<HomePage> {
       // floatingActionButton: circularMenu,
     );
   }
+
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    index = _selectedIndex;
+    setState(() {
+      if (_selectedIndex == 0) {
+        num = 0;
+      } else {
+        if (index < 1) {
+          index = index + 1;
+        } else {
+          index = 0;
+        }
+      }
+    });
+  }
+
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
+  String imageUrl = '';
+  // Widget _uiSteup(BuildContext context) {
+  //   // TextEditingController search = TextEditingController();
+  //   _panelHeightOpen = MediaQuery.of(context).size.height * .80;
+  //   return Screenshot(
+  //     controller: screenshotController,
+  //     child: Scaffold(
+  //       appBar: AppBar(
+  //         title: Center(child: Text("GoogleMap")),
+  //         elevation: 0.0,
+  //         backgroundColor: kPrimaryColor,
+  //         actions: <Widget>[
+  //           IconButton(
+  //             icon: const Icon(Icons.save),
+  //             color: kwhite,
+  //             //style: IconButton.styleFrom(backgroundColor: kImageColor),
+  //             //onPressed: () => Show(),S
+  //             onPressed: () async {
+  //               // Navigator.pushReplacement(
+  //               //   context,
+  //               //   MaterialPageRoute(
+  //               //     builder: (context) => Add(
+  //               //       asking_price: adding_price,
+  //               //     ),
+  //               //   ),
+  //               // );
+  //               screenshotController.capture().then((image) {
+  //                 setState(() {
+  //                   _imageFile = image;
+  //                 });
+  //               }).catchError((onError) {
+  //                 print(onError);
+  //               });
+  //               XFile? file = Image.memory(_imageFile!) as XFile?;
+  //               String uniqueFileName =
+  //                   DateTime.now().millisecondsSinceEpoch.toString();
+  //               Reference referenceRoot = FirebaseStorage.instance.ref();
+  //               Reference referenceDirImages = referenceRoot.child('images');
+  //               Reference referenceImageToUpload =
+  //                   referenceDirImages.child('name');
+  //               try {
+  //                 await referenceImageToUpload.putFile(File(file!.path));
+  //                 imageUrl = await referenceImageToUpload.getDownloadURL();
+  //               } catch (error) {}
+  //               if (imageUrl != null) {
+  //                 setState(() {
+  //                   Map<String, String> dataToSend = {
+  //                     'com_id': widget.c_id,
+  //                     'lat&lng': requestModel.lat + "/" + requestModel.lng,
+  //                     'image': imageUrl,
+  //                   };
+  //                   _reference.add(dataToSend);
+  //                 });
+  //               }
+  //               data = [
+  //                 {
+  //                   'adding_price': adding_price,
+  //                   'address': sendAddrress,
+  //                   'lat': requestModel.lat,
+  //                   'lng': requestModel.lng
+  //                 }
+  //               ];
+  //               Navigator.pop(context, data);
+  //             },
+  //           ),
+  //         ],
+  //       ),
+  //       backgroundColor: kPrimaryColor,
+  //       body: Container(
+  //         child: MapShow(),
+  //         height: MediaQuery.of(context).size.height * 1,
+  //       ),
+  //       bottomNavigationBar: Container(
+  //         height: MediaQuery.of(context).size.height * 0.06,
+  //         color: Colors.blue[50],
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //           children: [
+  //             IconButton(
+  //               icon: Icon(Icons.person_pin_circle,
+  //                   size: 40, color: Colors.black),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   num = 0;
+  //                 });
+  //               },
+  //             ),
+  //             IconButton(
+  //               icon: Icon(Icons.business, size: 40, color: Colors.black),
+  //               onPressed: () {
+  //                 setState(() {
+  //                   if (index < 1) {
+  //                     index = index + 1;
+  //                   } else {
+  //                     index = 0;
+  //                   }
+  //                 });
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+  //       // floatingActionButton: circularMenu,
+  //     ),
+  //   );
+  // }
 
   Set<Marker> getmarkers() {
     //markers to place on map

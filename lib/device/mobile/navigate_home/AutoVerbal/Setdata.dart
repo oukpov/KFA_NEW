@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/Customs/responsive.dart';
+import 'package:admin/Customs/upload_Image.dart';
 import 'package:admin/components/ImageController.dart';
 import 'package:admin/components/code.dart';
 import 'package:admin/components/comment.dart';
@@ -239,7 +240,9 @@ class _AddState extends State<Add> {
               children: [
                 Code(
                   code: (value) {
-                    code = value;
+                    setState(() {
+                      code = value;
+                    });
                   },
                 ),
                 // ignore: sized_box_for_whitespace
@@ -405,18 +408,19 @@ class _AddState extends State<Add> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 3,
-                ),
+
                 // FileOpen(),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 // ImageController(),
-                ImageOpen(
-                  set_Image: (value) {
-                    requestModelAuto.image = value;
-                  },
+                // ImageOpen(
+                //   set_Image: (value) {
+                //     requestModelAuto.image = value;
+                //   },
+                // ),
+                AddItem(
+                  com_id: code.toString(),
                 ),
                 SizedBox(
                   height: 400,
@@ -439,9 +443,15 @@ class _AddState extends State<Add> {
   }
 
   Future<void> SlideUp(BuildContext context) async {
+    setState(() {
+      requestModelAuto.image = code.toString();
+    });
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SlidingUpPanelExample()),
+      MaterialPageRoute(
+          builder: (context) => HomePage(
+                c_id: code.toString(),
+              )),
     );
     if (!mounted) return;
     asking_price = result[0]['adding_price'];

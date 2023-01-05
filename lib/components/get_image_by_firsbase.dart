@@ -1,33 +1,39 @@
-// ignore_for_file: unnecessary_import, unused_import, camel_case_types, unnecessary_new, unnecessary_brace_in_string_interps, non_constant_identifier_names, unused_field, avoid_unnecessary_containers, prefer_const_constructors, avoid_print, unused_local_variable, unnecessary_string_interpolations, prefer_is_empty, prefer_typing_uninitialized_variables
-
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:admin/Customs/Contants.dart';
-import 'package:admin/components/get_image_by_firsbase.dart';
-import 'package:admin/device/mobile/navigate_home/AutoVerbal/Deteil.dart';
-import 'package:admin/device/mobile/navigate_home/AutoVerbal/Edit.dart';
-import 'package:admin/device/mobile/navigate_home/AutoVerbal/Search_Screen.dart';
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class Show_autoVerbals extends StatefulWidget {
-  const Show_autoVerbals({super.key});
+typedef OnChangeCallback = void Function(dynamic value);
 
+class Get_Image_By_Firbase extends StatefulWidget {
+  const Get_Image_By_Firbase({
+    super.key,
+    required this.fsv,
+    required this.i,
+    required this.com_id,
+  });
+  final int i;
+  final String com_id;
+  final String fsv;
+  // final String? By_map;
+  // final OnChangeCallback image_map;
+  // final OnChangeCallback image;
   @override
-  State<Show_autoVerbals> createState() => _Show_autoVerbalState();
+  State<Get_Image_By_Firbase> createState() => _Get_Image_By_FirbaseState();
 }
 
-class _Show_autoVerbalState extends State<Show_autoVerbals> {
+class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
   Future<List<AutoVerbal_List>> fetchData() async {
     final response = await http.get(Uri.parse(
         'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list'));
@@ -41,39 +47,31 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     }
   }
 
-//delete id
-  void deleteDataId({required String verbalIds}) async {
-    final response = await http.delete(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/delete/${verbalIds}'));
-    if (response.statusCode == 200) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('${verbalIds} deleted successfully')),
-      // );
-    } else {
-      throw Exception('Delete error occured!');
-    }
-  }
+  CollectionReference Get_Image_Map =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
+  CollectionReference Get_Image_Pho =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23');
+  late Stream<QuerySnapshot> _stream;
+  late Stream<QuerySnapshot> _stream1;
+  String? I_map;
+  var I_image;
 
   int i = 0;
   static int? total_MIN = 0;
   static int? total_MAX = 0;
-  List<AutoVerbal_List> data_pdf = [];
+  // List<AutoVerbal_List> data_pdf = [];
   List land = [];
+  List<AutoVerbal_List> data_pdf = [];
   late double fsvM, fsvN, fx, fn;
-  static String address = "";
-  String? image_map;
-  String? image;
+  late int k;
   @override
   void initState() {
-    land;
-    total_MIN = 0;
-    total_MAX = 0;
-    data_pdf;
-    fsvM = 0;
-    fsvN = 0;
-    fx = 0;
-    fn = 0;
-    image_map;
+    k = 0;
+    _stream = Get_Image_Map.snapshots();
+    _stream1 = Get_Image_Pho.snapshots();
+    // TODO: implement initState
+    // await get_Image(context);
+    // get_Map(context);
     super.initState();
   }
 
@@ -82,354 +80,187 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.lightBlue[900],
-        title: const Text(
-          "AutoVerbal List",
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-        ),
+        title: const Text("This Position for Printing"),
       ),
-      body: Container(
-        child: FutureBuilder<List<AutoVerbal_List>>(
-          future: fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final cdt = snapshot.data![index];
-                    data_pdf.add(snapshot.data![index]);
-                    data_pdf[index] = snapshot.data![index];
-                    return Container(
-                        height: MediaQuery.of(context).size.height * 0.47,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(20),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                bottomRight: Radius.circular(25)),
-                            boxShadow: [
-                              BoxShadow(color: Colors.black, blurRadius: 5)
-                            ]),
-                        child: Column(children: [
-                          Expanded(
-                              flex: 4,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Code :",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                        Text(cdt.verbalId.toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Property Type :",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                        Text(cdt.propertyTypeName.toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Address :",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                        Text(cdt.verbalAddress.toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    14)),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text("Bank :",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize:
-                                                      MediaQuery.of(context)
-                                                              .textScaleFactor *
-                                                          15)),
-                                        ),
-                                        Expanded(
-                                          flex: 3,
-                                          child: Text(cdt.bankName.toString(),
-                                              style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    12,
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Agency :",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                        Text(cdt.agenttypeName.toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    14)),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 4, bottom: 4),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Create date :",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    15)),
-                                        Text(cdt.verbalCreatedDate.toString(),
-                                            style: TextStyle(
-                                                fontSize: MediaQuery.of(context)
-                                                        .textScaleFactor *
-                                                    14)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          const Divider(
-                            color: Colors.black,
-                            thickness: 4,
-                            height: 2,
-                          ),
-                          Expanded(
-                            // ignore: sort_child_properties_last
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GFButton(
-                                  shape: GFButtonShape.pills,
-                                  color: const Color.fromRGBO(38, 166, 154, 1),
-                                  elevation: 5,
-                                  onPressed: () {
-                                    setState(() {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => Detail(
-                                                    id: index,
-                                                    code: data_pdf
-                                                        .elementAt(index)
-                                                        .verbalId
-                                                        .toString(),
-                                                  )));
-                                    });
-                                  },
-                                  text: 'Detail',
-                                  icon: const Icon(
-                                    Icons.import_contacts,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                GFButton(
-                                  shape: GFButtonShape.pills,
-                                  color: Color.fromRGBO(33, 57, 76, 30),
-                                  elevation: 5,
-                                  onPressed: () {
-                                    setState(() {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => Edit(
-                                                    id: data_pdf
-                                                        .elementAt(index)
-                                                        .verbalId
-                                                        .toString(),
-                                                    pro: data_pdf
-                                                        .elementAt(index)
-                                                        .propertyTypeName
-                                                        .toString(),
-                                                    bn: data_pdf
-                                                        .elementAt(index)
-                                                        .bankAcronym
-                                                        .toString(),
-                                                    id_bn: data_pdf
-                                                        .elementAt(index)
-                                                        .bankId
-                                                        .toString(),
-                                                  )));
-                                    });
-                                  },
-                                  text: 'Edit',
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                GFButton(
-                                  shape: GFButtonShape.pills,
-                                  color: Colors.red,
-                                  elevation: 5,
-                                  onPressed: () {
-                                    setState(() {
-                                      deleteDataId(
-                                          verbalIds: cdt.verbalId.toString());
-                                      Navigator.pop(context);
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Show_autoVerbals()));
-                                    });
-                                  },
-                                  text: 'Delete',
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            flex: 1,
-                          ),
-                          GFButton(
-                            shape: GFButtonShape.pills,
-                            color: Color.fromRGBO(33, 150, 243, 1),
-                            elevation: 10.0,
-                            fullWidthButton: true,
-                            onPressed: () {
-                              setState(() {
-                                // ScaffoldMessenger.of(context).showSnackBar(
-                                //   SnackBar(
-                                //     duration: Duration(seconds: 15),
-                                //     content: get_Map(context, index),
-                                //   ),
-                                // );
-                                // // get_Map(context, i);
-                                // print("Number of index =  ${index}");
-                                // // data_pdf.add(snapshot.data![index]);
+      body: Column(
+        children: [
+          Container(
+            height: 20,
+            child: FutureBuilder<List<AutoVerbal_List>>(
+              future: fetchData(),
+              builder: (context, snapshot) {
+                return ListView.builder(
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      data_pdf.add(snapshot.data![index]);
+                      return const Text('');
+                    });
+              },
+            ),
+          ),
+          Container(
+            height: 9,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _stream1,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //Check error
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Some error occurred ${snapshot.error}'));
+                }
 
-                                // for (int i = 0; i < index; i++) {
-                                //   print(
-                                //       "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
-                                // }
-                                // total_MAX = 0;
-                                // total_MIN = 0;
+                //Check if data arrived
+                if (snapshot.hasData) {
+                  //get the data
+                  QuerySnapshot querySnapshot = snapshot.data;
+                  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
-                                // address = "";
-                                // fsvM = 0;
-                                // fsvN = 0;
-                                // fx = 0;
-                                // fn = 0;
-                                // Navigator.of(context).push(
-                                //     MaterialPageRoute(
-                                //         builder: (context) => OnMap()));
+                  //Convert the documents to Maps
+                  List<Map> items =
+                      documents.map((e) => e.data() as Map).toList();
 
-                                // generatePdf(index,
-                                //     snapshot.data![index].verbalCon.toString());
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          Get_Image_By_Firbase(
-                                            com_id: snapshot
-                                                .data![index].verbalId
-                                                .toString(),
-                                            fsv: snapshot.data![index].verbalCon
-                                                .toString(),
-                                            i: index,
-                                          )));
-                            },
-                            text: 'Print',
-                            icon: const Icon(
-                              Icons.print,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ]));
-                  });
-            } else if (snapshot.hasError) {
-              return const Center(child: Text("Server is not responding"));
-            } else {
-              return Container(
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.height * 1,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    image: const DecorationImage(
-                      alignment: Alignment.center,
-                      image: ExactAssetImage('assets/images/New_KFA_Logo.png'),
-                      fit: BoxFit.fitWidth,
-                    ),
+                  //Display the list
+                  return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //Get the item at this index
+                        Map thisItem = items[index];
+                        //REturn the widget for the list items
+                        if (thisItem['com_id'] == widget.com_id) {
+                          I_map = thisItem['image'];
+                        }
+                        return Text('');
+                      });
+                }
+                //Show loader
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+          Container(
+            height: 9,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _stream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //Check error
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Some error occurred ${snapshot.error}'));
+                }
+
+                //Check if data arrived
+                if (snapshot.hasData) {
+                  //get the data
+                  QuerySnapshot querySnapshot = snapshot.data;
+                  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+                  //Convert the documents to Maps
+                  List<Map> items =
+                      documents.map((e) => e.data() as Map).toList();
+
+                  //Display the list
+                  return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //Get the item at this index
+                        Map thisItem = items[index];
+                        //REturn the widget for the list items
+                        if (items[index]['com_id'] == widget.com_id) {
+                          I_image = items[index]['image'];
+                        }
+
+                        return Text('');
+                      });
+                }
+
+                //Show loader
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+          (I_image != null)
+              ? Container(
+                  color: Colors.blue[50],
+                  padding: const EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Image.network(I_image),
+                )
+              : Text(""),
+          (I_map != null)
+              ? Container(
+                  color: Colors.blue[50],
+                  padding: const EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Image.network(I_map!),
+                )
+              : Text(""),
+          (I_map == null)
+              ? TextButton(
+                  onPressed: () {
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.scale,
+                      dialogType: DialogType.success,
+                      body: Column(
+                        children: [
+                          (I_image != null)
+                              ? Container(
+                                  color: Colors.blue[50],
+                                  padding: const EdgeInsets.all(10),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  child: Image.network(I_image),
+                                )
+                              : Text(""),
+                          (I_map != null)
+                              ? Container(
+                                  color: Colors.blue[50],
+                                  padding: const EdgeInsets.all(10),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  child: Image.network(I_map!),
+                                )
+                              : Text(""),
+                        ],
+                      ),
+                      title: 'This is Ignored',
+                      desc: 'This is also Ignored',
+                      btnOkOnPress: () {
+                        setState(() {
+                          k = k + 1;
+                        });
+                      },
+                    ).show();
+                  },
+                  child: const Text("Please Check Photo befor Printing"))
+              : const Text(''),
+          (I_image != null)
+              ? GFButton(
+                  shape: GFButtonShape.pills,
+                  color: Color.fromRGBO(33, 150, 243, 1),
+                  elevation: 10.0,
+                  fullWidthButton: true,
+                  onPressed: () {
+                    setState(() {
+                      total_MAX = 0;
+                      total_MIN = 0;
+                      fsvM = 0;
+                      fsvN = 0;
+                      fx = 0;
+                      fn = 0;
+                      I_image;
+                      I_map;
+                    });
+                    generatePdf(widget.i, widget.fsv);
+                  },
+                  text: "Print Now",
+                  icon: const Icon(
+                    Icons.print,
+                    color: Colors.white,
                   ),
-                  child: CircularProgressIndicator());
-            }
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[700],
-        elevation: 10,
-        onPressed: () {
-          // setState(() {});
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return QuickSearchScreen();
-            },
-          ));
-        },
-        child: const Icon(
-          Icons.search_sharp,
-        ),
+                )
+              : const Text(''),
+        ],
       ),
     );
   }
@@ -444,7 +275,14 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     final ByteData bytes_image =
         await rootBundle.load('assets/images/message-banner3.jpg');
     final Uint8List byteList_image = bytes_image.buffer.asUint8List();
-
+    Uint8List bytes1 =
+        (await NetworkAssetBundle(Uri.parse(I_map!)).load(I_map!))
+            .buffer
+            .asUint8List();
+    Uint8List bytes2 =
+        (await NetworkAssetBundle(Uri.parse(I_image!)).load(I_image!))
+            .buffer
+            .asUint8List();
     pdf.addPage(pw.Page(build: (context) {
       return pw.Column(children: [
         pw.Row(
@@ -456,6 +294,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
               child: pw.Image(
                   pw.MemoryImage(
                     byteList,
+                    // bytes1,
                   ),
                   fit: pw.BoxFit.fill),
             ),
@@ -753,16 +592,21 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                         style: const pw.TextStyle(fontSize: 12)),
                     pw.Container(
                       height: 110,
+                      width: 50,
                       child: pw.Image(
                           pw.MemoryImage(
-                            byteList_image,
+                            bytes1,
                           ),
-                          fit: pw.BoxFit.fill),
+                          fit: pw.BoxFit.cover),
                     ),
                   ],
                 ),
               ),
-
+              // pw.Image(
+              //                           pw.MemoryImage(
+              //                             bytes2,
+              //                           ),
+              //                           fit: pw.BoxFit.fill),
               //After Google Map
               pw.Container(
                 child: pw.Column(children: [
@@ -1228,7 +1072,6 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           onLayout: (format) => _generatePdf(format, i, fsv)),
     );
     setState(() {
-      print("========================/=================${image_map}");
       // land = [];
       // data_pdf = [];
     });
@@ -1266,96 +1109,5 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         print("Total mix ${total_MAX}");
       });
     }
-  }
-
-  CollectionReference Get_Image_Map =
-      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
-  CollectionReference Get_Image_Pho =
-      FirebaseFirestore.instance.collection('Image_KFA_2@23');
-  late Stream<QuerySnapshot> _stream;
-  late Stream<QuerySnapshot> _stream1;
-  Widget get_Map(BuildContext context, int index) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _stream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //Check error
-        if (snapshot.hasError) {
-          return Center(child: Text('Some error occurred ${snapshot.error}'));
-        }
-
-        //Check if data arrived
-        if (snapshot.hasData) {
-          //get the data
-          QuerySnapshot querySnapshot = snapshot.data;
-          List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-
-          //Convert the documents to Maps
-          List<Map> items = documents.map((e) => e.data() as Map).toList();
-
-          //Display the list
-          return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) {
-                //Get the item at this index
-                Map thisItem = items[index];
-                //REturn the widget for the list items
-                if (thisItem['com_id'] == index) {
-                  image_map = thisItem['image'];
-                }
-                return Text('');
-              });
-        }
-
-        //Show loader
-        return Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-  Widget get_Image(BuildContext context, int index) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _stream1,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //Check error
-        if (snapshot.hasError) {
-          return Center(child: Text('Some error occurred ${snapshot.error}'));
-        }
-
-        //Check if data arrived
-        if (snapshot.hasData) {
-          //get the data
-          QuerySnapshot querySnapshot = snapshot.data;
-          List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-
-          //Convert the documents to Maps
-          List<Map> items = documents.map((e) => e.data() as Map).toList();
-
-          //Display the list
-          return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (BuildContext context, int index) {
-                //Get the item at this index
-                Map thisItem = items[index];
-                //REturn the widget for the list items
-                if (thisItem['com_id'] == index) {
-                  image = thisItem['image'];
-                }
-                return ListTile(
-                  // title: Text('${thisItem['com_id']}'),
-                  subtitle: Container(
-                      height: 810,
-                      // width: 1080,
-                      child: Image.network(
-                        '${thisItem['image']}',
-                        fit: BoxFit.contain,
-                      )),
-                  onTap: () {},
-                );
-              });
-        }
-        //Show loader
-        return Center(child: CircularProgressIndicator());
-      },
-    );
   }
 }
