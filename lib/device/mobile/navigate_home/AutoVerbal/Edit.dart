@@ -436,7 +436,10 @@ class _EditState extends State<Edit> {
   Future<void> SlideUp(BuildContext context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SlidingUpPanelExample()),
+      MaterialPageRoute(
+          builder: (context) => HomePage(
+                c_id: code.toString(),
+              )),
     );
     if (!mounted) return;
     asking_price = result[0]['adding_price'];

@@ -3,12 +3,14 @@
 import 'dart:typed_data';
 
 import 'package:admin/Customs/Contants.dart';
+import 'package:admin/components/get_image_by_firsbase.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Deteil.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Edit.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/search/HomeScreen.dart';
 
 import 'package:admin/model/models/autoVerbal.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
@@ -60,6 +62,8 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
   List land = [];
   late double fsvM, fsvN, fx, fn;
   static String address = "";
+  String? image_map;
+  String? image;
   @override
   void initState() {
     land;
@@ -70,7 +74,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
     fsvN = 0;
     fx = 0;
     fn = 0;
-
+    image_map;
     super.initState();
   }
 
@@ -344,28 +348,47 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                             fullWidthButton: true,
                             onPressed: () {
                               setState(() {
-                                print("Number of index =  ${index}");
-                                // data_pdf.add(snapshot.data![index]);
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                //   SnackBar(
+                                //     duration: Duration(seconds: 15),
+                                //     content: get_Map(context, index),
+                                //   ),
+                                // );
+                                // // get_Map(context, i);
+                                // print("Number of index =  ${index}");
+                                // // data_pdf.add(snapshot.data![index]);
 
-                                for (int i = 0; i < index; i++) {
-                                  print(
-                                      "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
-                                }
-                                total_MAX = 0;
-                                total_MIN = 0;
+                                // for (int i = 0; i < index; i++) {
+                                //   print(
+                                //       "verbal ID =   ${data_pdf.elementAt(index).verbalId}\n");
+                                // }
+                                // total_MAX = 0;
+                                // total_MIN = 0;
 
-                                address = "";
-                                fsvM = 0;
-                                fsvN = 0;
-                                fx = 0;
-                                fn = 0;
+                                // address = "";
+                                // fsvM = 0;
+                                // fsvN = 0;
+                                // fx = 0;
+                                // fn = 0;
                                 // Navigator.of(context).push(
                                 //     MaterialPageRoute(
                                 //         builder: (context) => OnMap()));
 
-                                generatePdf(index,
-                                    snapshot.data![index].verbalCon.toString());
+                                // generatePdf(index,
+                                //     snapshot.data![index].verbalCon.toString());
                               });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          Get_Image_By_Firbase(
+                                            com_id: snapshot
+                                                .data![index].verbalId
+                                                .toString(),
+                                            fsv: snapshot.data![index].verbalCon
+                                                .toString(),
+                                            i: index,
+                                          )));
                             },
                             text: 'Print',
                             icon: const Icon(
@@ -735,7 +758,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
                           pw.MemoryImage(
                             byteList_image,
                           ),
-                          fit: pw.BoxFit.fill),
+                          fit: pw.BoxFit.fitHeight),
                     ),
                   ],
                 ),
@@ -1197,6 +1220,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
 
   void generatePdf(int i, String fsv) {
     const title = 'Flutter Demo';
+
     Land(data_pdf.elementAt(i).verbalId.toString(),
         data_pdf[i].verbalCon.toString());
     Future.delayed(
@@ -1205,6 +1229,7 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
           onLayout: (format) => _generatePdf(format, i, fsv)),
     );
     setState(() {
+      print("========================/=================${image_map}");
       // land = [];
       // data_pdf = [];
     });
@@ -1242,5 +1267,96 @@ class _Show_autoVerbalState extends State<Show_autoVerbals> {
         print("Total mix ${total_MAX}");
       });
     }
+  }
+
+  CollectionReference Get_Image_Map =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23_ON_MAP');
+  CollectionReference Get_Image_Pho =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23');
+  late Stream<QuerySnapshot> _stream;
+  late Stream<QuerySnapshot> _stream1;
+  Widget get_Map(BuildContext context, int index) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _stream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //Check error
+        if (snapshot.hasError) {
+          return Center(child: Text('Some error occurred ${snapshot.error}'));
+        }
+
+        //Check if data arrived
+        if (snapshot.hasData) {
+          //get the data
+          QuerySnapshot querySnapshot = snapshot.data;
+          List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+          //Convert the documents to Maps
+          List<Map> items = documents.map((e) => e.data() as Map).toList();
+
+          //Display the list
+          return ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                //Get the item at this index
+                Map thisItem = items[index];
+                //REturn the widget for the list items
+                if (thisItem['com_id'] == index) {
+                  image_map = thisItem['image'];
+                }
+                return Text('');
+              });
+        }
+
+        //Show loader
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget get_Image(BuildContext context, int index) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _stream1,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //Check error
+        if (snapshot.hasError) {
+          return Center(child: Text('Some error occurred ${snapshot.error}'));
+        }
+
+        //Check if data arrived
+        if (snapshot.hasData) {
+          //get the data
+          QuerySnapshot querySnapshot = snapshot.data;
+          List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+          //Convert the documents to Maps
+          List<Map> items = documents.map((e) => e.data() as Map).toList();
+
+          //Display the list
+          return ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                //Get the item at this index
+                Map thisItem = items[index];
+                //REturn the widget for the list items
+                if (thisItem['com_id'] == index) {
+                  image = thisItem['image'];
+                }
+                return ListTile(
+                  // title: Text('${thisItem['com_id']}'),
+                  subtitle: Container(
+                      height: 810,
+                      // width: 1080,
+                      child: Image.network(
+                        '${thisItem['image']}',
+                        fit: BoxFit.contain,
+                      )),
+                  onTap: () {},
+                );
+              });
+        }
+        //Show loader
+        return Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

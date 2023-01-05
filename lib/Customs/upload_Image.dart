@@ -14,8 +14,9 @@ class AddItem extends StatefulWidget {
 }
 
 class _AddItemState extends State<AddItem> {
+  // ignore: prefer_final_fields
   CollectionReference _reference =
-      FirebaseFirestore.instance.collection('shopping_list');
+      FirebaseFirestore.instance.collection('Image_KFA_2@23');
 
   String imageUrl = '';
 
@@ -24,9 +25,9 @@ class _AddItemState extends State<AddItem> {
     return Column(
       children: [
         Container(
-          height: 60,
+          height: 55,
+          margin: const EdgeInsets.only(left: 30, right: 30),
           decoration: BoxDecoration(
-            color: Colors.blue[50],
             border: Border.all(
               width: 1,
               color: kPrimaryColor,
@@ -66,14 +67,13 @@ class _AddItemState extends State<AddItem> {
               }
             },
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Icon(
                   Icons.file_present_sharp,
                   color: kImageColor,
                 ),
                 SizedBox(
-                  width: 30,
+                  width: 10,
                 ),
                 Text(
                   'Choose Image',
