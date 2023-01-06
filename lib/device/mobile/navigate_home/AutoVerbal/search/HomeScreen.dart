@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, override_on_non_overriding_member
 
 import 'dart:convert';
+import 'package:admin/components/get_image_by_firsbase.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Deteil.dart';
 import 'package:admin/device/mobile/navigate_home/AutoVerbal/Edit.dart';
@@ -378,8 +379,16 @@ class SearchUser extends SearchDelegate {
                             //     MaterialPageRoute(
                             //         builder: (context) => OnMap()));
 
-                            generatePdf(index,
-                                snapshot.data![index].verbalCon.toString());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Get_Image_By_Firbase(
+                                          com_id: snapshot.data![index].verbalId
+                                              .toString(),
+                                          fsv: snapshot.data![index].verbalCon
+                                              .toString(),
+                                          i: index,
+                                        )));
                           },
                           text: 'Print',
                           icon: const Icon(

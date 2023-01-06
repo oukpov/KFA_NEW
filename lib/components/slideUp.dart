@@ -324,14 +324,6 @@ class _HomePageState extends State<HomePage> {
                   Icon(Icons.photo_camera_back, size: 40, color: Colors.black),
               onPressed: () async {
                 setState(() async {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
                   screenshotController.capture().then((image) {
                     setState(() {
                       _imageFile = image;
@@ -367,8 +359,6 @@ class _HomePageState extends State<HomePage> {
                   } catch (error) {}
                   if (imageUrl != null) {
                     setState(() {
-                      print(
-                          'object==========================\n\n\n\n\n\n\n\n\n\n\n\n\n\n${widget.c_id}');
                       Map<String, String> dataToSend = {
                         'com_id': widget.c_id,
                         'lat&lng': requestModel.lat + "/" + requestModel.lng,
@@ -376,6 +366,16 @@ class _HomePageState extends State<HomePage> {
                       };
                       _reference.add(dataToSend);
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Color.fromARGB(147, 96, 127, 152),
+                          ),
+                        ),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
                 });
               },

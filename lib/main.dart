@@ -1,13 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:admin/Auth/login.dart';
-import 'package:admin/device/mobile/navigate_home/AutoVerbal/AutoVerbal.dart';
-import 'package:admin/device/mobile/navigate_home/AutoVerbal/search/HomeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'Customs/upload_Image.dart';
+import 'Auth/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
