@@ -370,8 +370,9 @@ class _HomePageState extends State<HomePage> {
                       SnackBar(
                         content: Center(
                           child: CircularProgressIndicator(
-                            backgroundColor: Color.fromARGB(147, 96, 127, 152),
-                          ),
+                              backgroundColor:
+                                  Color.fromARGB(123, 163, 199, 228),
+                              semanticsLabel: "Photo was successfully"),
                         ),
                         duration: Duration(seconds: 2),
                       ),

@@ -93,17 +93,17 @@ class _LoginState extends State<Login> {
   Widget _uiSteup(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Colors.blue[300],
         elevation: 0,
         centerTitle: true,
         title: Image.asset(
-          'assets/images/KFA-Logo.png',
+          'assets/images/New_KFA_Logo.png',
           height: 100,
-          width: 130,
+          width: 140,
         ),
         toolbarHeight: 100,
       ),
-      backgroundColor: kPrimaryColor,
+      backgroundColor: Colors.blue[300],
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
