@@ -66,7 +66,7 @@ class _NoBodyHomeState extends State<NoBodyHome> {
           // ),
           for (int i = 0; i < 8; i++)
             InkWell(
-              hoverColor: Colors.brown[100],
+              hoverColor: Color.fromARGB(161, 255, 249, 87),
               onTap: () {
                 if (i == 0) {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -114,47 +114,56 @@ class _NoBodyHomeState extends State<NoBodyHome> {
                 }
               },
               child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  margin: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.green, Colors.blue],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
-                      boxShadow: [
-                        BoxShadow(
-                            spreadRadius: 1.5,
-                            blurRadius: 2,
-                            color: Color.fromARGB(157, 103, 94, 91),
-                            blurStyle: BlurStyle.outer)
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: optionIconList.elementAt(i),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: option.elementAt(i),
-                          ),
-                        ],
-                      ),
-                      Image.asset(
-                        'assets/images/KFA-Logo.png',
-                        height: 40,
-                        width: 60,
-                      ),
-                    ],
-                  )),
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                margin: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.cyan,
+                        Colors.indigo,
+                      ],
+                    ),
+                    // gradient: LinearGradient(
+                    //   colors: [
+                    //     Color.fromARGB(255, 130, 68, 147),
+                    //     Color.fromARGB(255, 102, 139, 234),
+                    //     // Color.fromARGB(255, 193, 224, 80),
+                    //   ],
+                    //   end: Alignment.bottomLeft,
+                    //   begin: Alignment.topRight,
+                    //   // stops: [0.7, 0.2],
+                    //   tileMode: TileMode.decal,
+                    // ),
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        topRight: Radius.circular(45)),
+                    boxShadow: [
+                      BoxShadow(
+                          spreadRadius: 4,
+                          blurRadius: 2,
+                          color: Color.fromARGB(157, 0, 0, 0),
+                          blurStyle: BlurStyle.outer)
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      'assets/logo.png',
+                      height: 40,
+                      width: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: option.elementAt(i),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: optionIconList.elementAt(i),
+                    ),
+                  ],
+                ),
+              ),
             ),
         ],
       ),

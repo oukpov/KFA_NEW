@@ -103,6 +103,7 @@ class _On_propertyState extends State<On_property> {
         children: [
           for (int i = 0; i < optionIconList.length; i++)
             InkWell(
+              hoverColor: Color.fromARGB(161, 255, 249, 87),
               onTap: () {
                 setState(() {
                   if (i == 2) {
@@ -113,39 +114,45 @@ class _On_propertyState extends State<On_property> {
               },
               child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.07,
+                  height: 50,
                   margin: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.green, Colors.blue],
+                        colors: [
+                          Color.fromARGB(255, 88, 130, 236),
+                          Color.fromARGB(255, 142, 55, 110),
+
+                          // Color.fromARGB(255, 193, 224, 80),
+                        ],
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
+                        stops: [0.8, 0.2],
                       ),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
+                          topLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(25)),
                       boxShadow: [
                         BoxShadow(
-                            spreadRadius: 2,
+                            spreadRadius: 5,
                             blurRadius: 2,
-                            color: Color.fromARGB(157, 103, 94, 91),
+                            color: Color.fromARGB(164, 0, 0, 0),
                             blurStyle: BlurStyle.outer)
                       ]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: optionIconList.elementAt(i),
+                      Image.asset(
+                        'assets/logo.png',
+                        height: 40,
+                        width: 60,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: option.elementAt(i),
                       ),
-                      Image.asset(
-                        'assets/images/KFA-Logo.png',
-                        height: 40,
-                        width: 60,
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: optionIconList.elementAt(i),
                       ),
                     ],
                   )),

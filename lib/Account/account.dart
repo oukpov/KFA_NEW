@@ -111,170 +111,176 @@ class _AccountState extends State<Account> {
     //controller to update dataInfo
     final controller = TextEditingController(text: widget.username);
     //Get.lazyPut(() => ImageController());
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.black38,
-                    child: CircleAvatar(
-                        radius: 68,
-                        backgroundColor: Colors.blue,
-                        backgroundImage: AssetImage(
-                            "assets/images/Real Estate Award 2019.jpg"))),
-                kWidthSizedBox,
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      // controller: controller,
-                      widget.username,
+    return Container(
+      margin: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.cyan,
+            Colors.indigo,
+          ],
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CircleAvatar(
+                  radius: 70,
+                  backgroundColor: Colors.black38,
+                  child: CircleAvatar(
+                      radius: 68,
+                      backgroundColor: Colors.blue,
+                      backgroundImage: AssetImage(
+                          "assets/images/Real Estate Award 2019.jpg"))),
+              kWidthSizedBox,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    // controller: controller,
+                    widget.username,
 
-                      //widget.username,
-                      //style: Theme.of(context).textTheme.subtitle1,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
+                    //widget.username,
+                    //style: Theme.of(context).textTheme.subtitle1,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    widget.id.toString(),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
+            ],
+          ),
+          Column(
+            children: [
+              TwinBox(
+                labelText1: 'Firstname',
+                labelText2: 'Lastname',
+                fname: widget.first_name,
+                lname: widget.last_name,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              //
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Dropdown(
+                    gender: widget.gender,
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  SizedBox(
+                    height: 59,
+                    width: 140,
+                    child: DropdownButtonFormField<String>(
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          // ignore: avoid_print
+                          print(newValue);
+                        });
+                      },
+                      // validator: (String? value) {
+                      //   if (value?.isEmpty ?? true) {
+                      //     return 'Please select bank';
+                      //   }
+                      //   return null;
+                      // },
+                      value: widget.from,
+                      items: bank
+                          .map<DropdownMenuItem<String>>(
+                            (String value) => DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ),
+                          )
+                          .toList(),
+                      // add extra sugar..
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: kImageColor,
+                      ),
+
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Bank',
+                        hintText: 'Select',
+                      ),
                     ),
-                    Text(
-                      widget.id.toString(),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Container(
+                height: 60,
+                width: 280,
+                color: Color.fromARGB(255, 255, 255, 255),
+                child: TextFormField(
+                  initialValue: widget.tel,
+                  decoration: InputDecoration(
+                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    filled: true,
+                    labelText: 'Phone Number',
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Field_box(
+                name: 'email',
+                email: widget.email,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Field_box(
+                name: ' address',
+                email: widget.email,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+            ],
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(60.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  child: Text('Save Change'),
+                  onPressed: () {
+                    logOut();
+                  },
+                ),
+                SizedBox(width: 15),
+                ElevatedButton(
+                  child: Text('Log Out'),
+                  onPressed: () {
+                    logOut();
+                  },
                 )
               ],
             ),
-            Column(
-              children: [
-                TwinBox(
-                  labelText1: 'Firstname',
-                  labelText2: 'Lastname',
-                  fname: widget.first_name,
-                  lname: widget.last_name,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                //
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Dropdown(
-                      gender: widget.gender,
-                    ),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    SizedBox(
-                      height: 59,
-                      width: 140,
-                      child: DropdownButtonFormField<String>(
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            // ignore: avoid_print
-                            print(newValue);
-                          });
-                        },
-                        // validator: (String? value) {
-                        //   if (value?.isEmpty ?? true) {
-                        //     return 'Please select bank';
-                        //   }
-                        //   return null;
-                        // },
-                        value: widget.from,
-                        items: bank
-                            .map<DropdownMenuItem<String>>(
-                              (String value) => DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              ),
-                            )
-                            .toList(),
-                        // add extra sugar..
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: kImageColor,
-                        ),
-
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          labelText: 'Bank',
-                          hintText: 'Select',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Container(
-                  height: 60,
-                  width: 280,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  child: TextFormField(
-                    initialValue: widget.tel,
-                    decoration: InputDecoration(
-                      fillColor: Color.fromARGB(255, 255, 255, 255),
-                      filled: true,
-                      labelText: 'Phone Number',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Field_box(
-                  name: 'email',
-                  email: widget.email,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-                Field_box(
-                  name: ' address',
-                  email: widget.email,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-              ],
-            ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(60.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    child: Text('Save Change'),
-                    onPressed: () {
-                      logOut();
-                    },
-                  ),
-                  SizedBox(width: 15),
-                  ElevatedButton(
-                    child: Text('Log Out'),
-                    onPressed: () {
-                      logOut();
-                    },
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

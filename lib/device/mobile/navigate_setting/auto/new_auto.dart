@@ -87,6 +87,7 @@ class _NewAutoState extends State<NewAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(49, 27, 146, 1),
         centerTitle: true,
         title: const Text(
           "New Auto",

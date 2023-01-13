@@ -166,7 +166,6 @@ class _Check_mapState extends State<Check_map> {
     if (rs.statusCode == 200) {
       setState(() {
         list_at = jsonData;
-        print("data =================================== ${list_at.length}");
       });
     }
   }

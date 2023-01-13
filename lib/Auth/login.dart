@@ -162,8 +162,9 @@ class _LoginState extends State<Login> {
           children: [
             Text(
               'Welcome to KFA system',
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: MediaQuery.of(context).textScaleFactor * 20,
                 fontWeight: FontWeight.bold,
                 color: kPrimaryColor,
               ),

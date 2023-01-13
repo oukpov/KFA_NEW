@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
+import 'package:admin/Customs/Contants.dart';
+import 'package:admin/Customs/LandBuildingDetail.dart';
 import 'package:admin/model/models/autoVerbal.dart';
+import 'package:admin/respon.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdf/pdf.dart';
@@ -22,28 +21,33 @@ class Get_Image_By_Firbase extends StatefulWidget {
     required this.fsv,
     required this.i,
     required this.com_id,
+    // required this.image_map,
+    // required this.image_photo,
   });
   final int i;
   final String com_id;
   final String fsv;
-  // final String? By_map;
   // final OnChangeCallback image_map;
-  // final OnChangeCallback image;
+  // final OnChangeCallback image_photo;
   @override
   State<Get_Image_By_Firbase> createState() => _Get_Image_By_FirbaseState();
 }
 
 class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
-  Future<List<AutoVerbal_List>> fetchData() async {
-    final response = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list'));
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((data) => new AutoVerbal_List.fromJson(data))
-          .toList();
-    } else {
-      throw Exception('Unexpected error occured!');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var list = [];
+  void Load() async {
+    var code = widget.com_id;
+    print("hii" + code);
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list?verbal_id=$code'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+
+      setState(() {
+        list = jsonData;
+        print(list[0]["verbal_bank_officer"]);
+      });
     }
   }
 
@@ -61,12 +65,12 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
   static int? total_MAX = 0;
   // List<AutoVerbal_List> data_pdf = [];
   List land = [];
-  List<AutoVerbal_List> data_pdf = [];
+  // late AutoVerbal_list data_pdf;
   late double fsvM, fsvN, fx, fn;
   late int k;
   @override
   void initState() {
-    k = 0;
+    Load();
     _stream = Get_Image_Map.snapshots();
     _stream1 = Get_Image_Pho.snapshots();
     // TODO: implement initState
@@ -80,193 +84,386 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("This Position for Printing"),
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 20,
-            child: FutureBuilder<List<AutoVerbal_List>>(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                return ListView.builder(
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      data_pdf.add(snapshot.data![index]);
-                      return const Text('');
-                    });
+        title: const Text("Printing to PDF..."),
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  total_MAX = 0;
+                  total_MIN = 0;
+                  fsvM = 0;
+                  fsvN = 0;
+                  fx = 0;
+                  fn = 0;
+                  I_image;
+                  I_map;
+                });
+                generatePdf(widget.i, widget.fsv);
               },
-            ),
-          ),
-          Container(
-            height: 9,
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _stream1,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //Check error
-                if (snapshot.hasError) {
-                  return Center(
-                      child: Text('Some error occurred ${snapshot.error}'));
-                }
-
-                //Check if data arrived
-                if (snapshot.hasData) {
-                  //get the data
-                  QuerySnapshot querySnapshot = snapshot.data;
-                  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-
-                  //Convert the documents to Maps
-                  List<Map> items =
-                      documents.map((e) => e.data() as Map).toList();
-
-                  //Display the list
-                  return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //Get the item at this index
-                        Map thisItem = items[index];
-                        //REturn the widget for the list items
-                        if (thisItem['com_id'] == widget.com_id) {
-                          I_map = thisItem['image'];
-                        }
-                        return Text('');
-                      });
-                }
-                //Show loader
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
-          Container(
-            height: 9,
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _stream,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                //Check error
-                if (snapshot.hasError) {
-                  return Center(
-                      child: Text('Some error occurred ${snapshot.error}'));
-                }
-
-                //Check if data arrived
-                if (snapshot.hasData) {
-                  //get the data
-                  QuerySnapshot querySnapshot = snapshot.data;
-                  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-
-                  //Convert the documents to Maps
-                  List<Map> items =
-                      documents.map((e) => e.data() as Map).toList();
-
-                  //Display the list
-                  return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        //Get the item at this index
-                        Map thisItem = items[index];
-                        //REturn the widget for the list items
-                        if (items[index]['com_id'] == widget.com_id) {
-                          I_image = items[index]['image'];
-                        }
-
-                        return Text('');
-                      });
-                }
-
-                //Show loader
-                return Center(child: CircularProgressIndicator());
-              },
-            ),
-          ),
-          (I_image != null)
-              ? Container(
-                  color: Colors.blue[50],
-                  padding: const EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Image.network(I_image),
-                )
-              : Text(""),
-          (I_map != null)
-              ? Container(
-                  color: Colors.blue[50],
-                  padding: const EdgeInsets.all(10),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Image.network(I_map!),
-                )
-              : Text(""),
-          (I_map == null)
-              ? TextButton(
-                  onPressed: () {
-                    AwesomeDialog(
-                      context: context,
-                      animType: AnimType.scale,
-                      dialogType: DialogType.success,
-                      body: Column(
-                        children: [
-                          (I_image != null)
-                              ? Container(
-                                  color: Colors.blue[50],
-                                  padding: const EdgeInsets.all(10),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
-                                  child: Image.network(I_image),
-                                )
-                              : Text(""),
-                          (I_map != null)
-                              ? Container(
-                                  color: Colors.blue[50],
-                                  padding: const EdgeInsets.all(10),
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
-                                  child: Image.network(I_map!),
-                                )
-                              : Text(""),
-                        ],
-                      ),
-                      title: 'This is Ignored',
-                      desc: 'This is also Ignored',
-                      btnOkOnPress: () {
-                        setState(() {
-                          k = k + 1;
-                        });
-                      },
-                    ).show();
-                  },
-                  child: const Text("Please Check Photo befor Printing"))
-              : const Text(''),
-          (I_image != null)
-              ? GFButton(
-                  shape: GFButtonShape.pills,
-                  color: Color.fromRGBO(33, 150, 243, 1),
-                  elevation: 10.0,
-                  fullWidthButton: true,
-                  onPressed: () {
-                    setState(() {
-                      total_MAX = 0;
-                      total_MIN = 0;
-                      fsvM = 0;
-                      fsvN = 0;
-                      fx = 0;
-                      fn = 0;
-                      I_image;
-                      I_map;
-                    });
-                    generatePdf(widget.i, widget.fsv);
-                  },
-                  text: "Print Now",
-                  icon: const Icon(
-                    Icons.print,
-                    color: Colors.white,
-                  ),
-                )
-              : const Text(''),
+              icon: Icon(
+                Icons.print_outlined,
+                size: 30,
+              ))
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Responsive(
+          mobile: print_pdf(context),
+          tablet: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: print_pdf(context),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          desktop: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: print_pdf(context),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          phone: print_pdf(context),
+        ),
       ),
     );
   }
 
-  Future<Uint8List> _generatePdf(
-      PdfPageFormat format, int i, String fsv) async {
+  Column print_pdf(BuildContext context) {
+    return Column(
+      // ignore: prefer_const_literals_to_create_immutables, duplicate_ignore
+      children: [
+        list.length > 0
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 40),
+                          Icon(
+                            Icons.qr_code,
+                            color: kImageColor,
+                            size: 30,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            widget.com_id,
+                            style: TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor),
+                          ),
+                        ],
+                      ),
+
+                      // ignore: sized_box_for_whitespace
+                      //dropdown(),
+                      // PropertyDropdown(),
+
+                      Box(
+                        label: "Property",
+                        iconname: Icon(
+                          Icons.business_outlined,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["property_type_name"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Bank",
+                        iconname: Icon(
+                          Icons.home_work,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["bank_name"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Branch",
+                        iconname: Icon(
+                          Icons.account_tree_rounded,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["bank_name"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Owner",
+                        iconname: Icon(
+                          Icons.person,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_owner"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Contact",
+                        iconname: Icon(
+                          Icons.phone,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_contact"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Date",
+                        iconname: Icon(
+                          Icons.calendar_today,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_created_date"].split(" ")[0] ??
+                            "N/A",
+                      ),
+                      Box(
+                        label: "Bank Officer",
+                        iconname: Icon(
+                          Icons.work,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_bank_officer"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Contact",
+                        iconname: Icon(
+                          Icons.phone,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_bank_contact"] ?? "N/A",
+                      ),
+
+                      Box(
+                        label: "Comment",
+                        iconname: Icon(
+                          Icons.comment_sharp,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_comment"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Verify by",
+                        iconname: Icon(
+                          Icons.person_sharp,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["agenttype_name"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Approve by",
+                        iconname: Icon(
+                          Icons.person_outlined,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["approve_name"] ?? "N/A",
+                      ),
+                      Box(
+                        label: "Address",
+                        iconname: Icon(
+                          Icons.location_on_rounded,
+                          color: kImageColor,
+                        ),
+                        value: list[0]["verbal_address"] ?? "N/A",
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 370,
+                        child: LandBuildingDetail(
+                          id: widget.com_id,
+                        ),
+                      ),
+                      Container(
+                        height: 9,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: _stream1,
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            //Check error
+                            if (snapshot.hasError) {
+                              return Center(
+                                  child: Text(
+                                      'Some error occurred ${snapshot.error}'));
+                            }
+
+                            //Check if data arrived
+                            if (snapshot.hasData) {
+                              //get the data
+                              QuerySnapshot querySnapshot = snapshot.data;
+                              List<QueryDocumentSnapshot> documents =
+                                  querySnapshot.docs;
+
+                              //Convert the documents to Maps
+                              List<Map> items = documents
+                                  .map((e) => e.data() as Map)
+                                  .toList();
+
+                              //Display the list
+                              return ListView.builder(
+                                  itemCount: items.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    //Get the item at this index
+                                    Map thisItem = items[index];
+                                    //REturn the widget for the list items
+                                    if (thisItem['com_id'] == widget.com_id) {
+                                      I_map = thisItem['image'];
+                                    }
+                                    return Text('');
+                                  });
+                            }
+                            //Show loader
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 9,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: _stream,
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            //Check error
+                            if (snapshot.hasError) {
+                              return Center(
+                                  child: Text(
+                                      'Some error occurred ${snapshot.error}'));
+                            }
+
+                            //Check if data arrived
+                            if (snapshot.hasData) {
+                              //get the data
+                              QuerySnapshot querySnapshot = snapshot.data;
+                              List<QueryDocumentSnapshot> documents =
+                                  querySnapshot.docs;
+
+                              //Convert the documents to Maps
+                              List<Map> items = documents
+                                  .map((e) => e.data() as Map)
+                                  .toList();
+
+                              //Display the list
+                              return ListView.builder(
+                                  itemCount: items.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    //Get the item at this index
+                                    Map thisItem = items[index];
+                                    //REturn the widget for the list items
+                                    if (items[index]['com_id'] ==
+                                        widget.com_id) {
+                                      I_image = items[index]['image'];
+                                    }
+
+                                    return Text('');
+                                  });
+                            }
+
+                            //Show loader
+                            return Center(child: CircularProgressIndicator());
+                          },
+                        ),
+                      ),
+
+                      (I_image != null)
+                          ? Container(
+                              color: Colors.blue[50],
+                              padding: const EdgeInsets.all(10),
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: Image.network(I_image),
+                            )
+                          : SizedBox(),
+                      (I_map != null)
+                          ? Container(
+                              color: Colors.blue[50],
+                              padding: const EdgeInsets.all(10),
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: Image.network(I_map!),
+                            )
+                          : SizedBox(),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            total_MAX = 0;
+                            total_MIN = 0;
+                            fsvM = 0;
+                            fsvN = 0;
+                            fx = 0;
+                            fn = 0;
+                            I_image;
+                            I_map;
+                          });
+                          generatePdf(widget.i, widget.fsv);
+                        },
+                        child: Container(
+                            height: 50,
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.print,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                Text(
+                                  'Print Now...',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                      ),
+                      // GFButton(
+                      //   shape: GFButtonShape.pills,
+                      //   color: Color.fromRGBO(33, 150, 243, 1),
+                      //   elevation: 10.0,
+                      //   onPressed: () {
+
+                      //   },
+                      //   text: "Print Now",
+                      //   size: GFSize.MEDIUM,
+                      //   icon: const Icon(
+                      //     Icons.print,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 70,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(50.0),
+                child: CircularProgressIndicator(),
+              )
+      ],
+    );
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format, String fsv) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_4, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
     final ByteData bytes =
@@ -317,7 +514,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         //color: Colors.red,
                         child: pw.Text(
-                            "DATE: ${data_pdf.elementAt(i).verbalDate}",
+                            "DATE: ${list[0]['verbal_created_date']}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
                         height: 25,
@@ -331,7 +528,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
-                            "CODE: ${data_pdf.elementAt(i).verbalId.toString()}",
+                            "CODE: ${list[0]['verbal_id'].toString()}",
                             style: pw.TextStyle(
                                 fontSize: 12, fontWeight: pw.FontWeight.bold)),
                         height: 25,
@@ -351,7 +548,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
-                            "Requested Date :${data_pdf.elementAt(i).verbalCreatedDate.toString()} ",
+                            "Requested Date :${list[0]['verbal_created_date'].toString()} ",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -365,7 +562,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                 alignment: pw.Alignment.centerLeft,
                 decoration: pw.BoxDecoration(border: pw.Border.all()),
                 child: pw.Text(
-                    "Referring to your request letter for verbal check by ${data_pdf.elementAt(i).bankName.toString()}, we estimated the value of property as below.",
+                    "Referring to your request letter for verbal check by ${list[0]['bank_name']}, we estimated the value of property as below.",
                     overflow: pw.TextOverflow.clip),
                 height: 30,
                 //color: Colors.blue,
@@ -391,8 +588,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         padding: pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "${data_pdf.elementAt(i).verbalPropertyId.toString()}",
+                        child: pw.Text("${list[0]['property_type_name']}",
                             style: pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -422,7 +618,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("${data_pdf.elementAt(i).verbalAddress}",
+                        child: pw.Text("${list[0]['verbal_address']}",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -454,7 +650,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child:
                             // name rest with api
-                            pw.Text("${data_pdf.elementAt(i).verbalOwner}",
+                            pw.Text("${list[0]['verbal_owner']}",
                                 style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -468,7 +664,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         // name rest with api
                         child: pw.Text(
-                            "Contact No : ${data_pdf.elementAt(i).verbalContact.toString()} ",
+                            "Contact No : ${list[0]['verbal_contact'].toString()} ",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -498,7 +694,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("${data_pdf.elementAt(i).bankAcronym}",
+                        child: pw.Text("${list[0]['bankofficer']}",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -511,7 +707,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
                         child: pw.Text(
-                            "Contact No : ${data_pdf.elementAt(i).bankcontact.toString()}",
+                            "Contact No : ${list[0]['bankcontact'].toString()}",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 30,
                         //color: Colors.blue,
@@ -541,7 +737,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text("${data_pdf.elementAt(i).latlongLog}",
+                        child: pw.Text("${list[0]['latlong_log']}",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -565,8 +761,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         padding: const pw.EdgeInsets.all(2),
                         alignment: pw.Alignment.centerLeft,
                         decoration: pw.BoxDecoration(border: pw.Border.all()),
-                        child: pw.Text(
-                            "${data_pdf.elementAt(i).latlongLa.toString()} ",
+                        child: pw.Text("${list[0]['latlong_la'].toString()} ",
                             style: const pw.TextStyle(fontSize: 12)),
                         height: 25,
                         //color: Colors.blue,
@@ -598,7 +793,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                       child: pw.BarcodeWidget(
                           barcode: pw.Barcode.qrCode(),
                           data:
-                              "https://www.latlong.net/c/?lat=${data_pdf.elementAt(i).latlongLog}&long=${data_pdf.elementAt(i).latlongLa}"),
+                              "https://www.latlong.net/c/?lat=${list[0]['latlong_log']}&long=${list[0]['latlong_la']}"),
                     ),
                     pw.Container(
                       width: 200,
@@ -941,7 +1136,6 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("USD 0.00 ",style: pw.TextStyle(fontSize: 11)),
                           height: 25,
                           //color: Colors.blue,
                         ),
@@ -957,7 +1151,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
                           child: pw.Text(
-                              "COMMENT: ${data_pdf.elementAt(i).verbalComment}",
+                              "COMMENT: ${list[0]['verbal_comment']}",
                               style: pw.TextStyle(
                                   fontSize: 11,
                                   fontWeight: pw.FontWeight.bold)),
@@ -1010,10 +1204,10 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
             pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
               pw.Text('Verbal Check Replied By :',
                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-              pw.Text('${data_pdf.elementAt(i).agenttypeName}',
+              pw.Text('${list[0]['agenttype_name']}',
                   style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             ]),
-            pw.Text('${data_pdf.elementAt(i).agentTypePhone}',
+            pw.Text('${list[0]['agent_type_phone']}',
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
           ],
         ),
@@ -1068,12 +1262,10 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
   void generatePdf(int i, String fsv) {
     const title = 'Flutter Demo';
 
-    Land(data_pdf.elementAt(i).verbalId.toString(),
-        data_pdf[i].verbalCon.toString());
+    Land(list[0]['verbal_id'].toString(), list[0]['verbal_con'].toString());
     Future.delayed(
       const Duration(seconds: 2),
-      () => Printing.layoutPdf(
-          onLayout: (format) => _generatePdf(format, i, fsv)),
+      () => Printing.layoutPdf(onLayout: (format) => _generatePdf(format, fsv)),
     );
     setState(() {
       // land = [];
@@ -1113,5 +1305,48 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
         print("Total mix ${total_MAX}");
       });
     }
+  }
+}
+
+class Box extends StatelessWidget {
+  final String label;
+  final String value;
+  final Widget iconname;
+
+  const Box({
+    Key? key,
+    required this.label,
+    required this.iconname,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 0),
+      child: TextFormField(
+        // controller: controller,
+        initialValue: value,
+        readOnly: true,
+
+        decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          labelText: label,
+          prefixIcon: iconname,
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: kPrimaryColor, width: 2.0),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              width: 1,
+              color: kPrimaryColor,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -51,6 +51,7 @@ class _MenuAutoState extends State<MenuAuto> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(49, 27, 146, 1),
         centerTitle: true,
         title: Text(
           "Auto",

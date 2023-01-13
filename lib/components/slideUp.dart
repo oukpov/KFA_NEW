@@ -60,9 +60,9 @@ class _HomePageState extends State<HomePage> {
   GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
   List<MarkerId> listMarkerIds = List<MarkerId>.empty(growable: true);
-  double latitude = 11.5489; //latitude
-  double longitude = 104.9214;
-  LatLng latLng = LatLng(11.5489, 104.9214);
+  double latitude = 11.519037; //latitude
+  double longitude = 104.915120;
+  LatLng latLng = LatLng(11.519037, 104.915120);
   String address = "";
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List list = [];
@@ -130,6 +130,14 @@ class _HomePageState extends State<HomePage> {
             '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
         lat = _currentPosition!.latitude;
         log = _currentPosition!.longitude;
+        MarkerId markerId = MarkerId('mark');
+        listMarkerIds.add(markerId);
+        Marker marker = Marker(
+          markerId: MarkerId('mark'),
+          position: LatLng(lat, log),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        );
+        markers[markerId] = marker;
       });
     }).catchError((e) {
       debugPrint(e);
@@ -161,6 +169,7 @@ class _HomePageState extends State<HomePage> {
       fromDate: "$date",
       toDate: "$date1",
     );
+
     super.initState();
   }
 
@@ -176,17 +185,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text("GoogleMap")),
-        elevation: 0.0,
-        backgroundColor: kPrimaryColor,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.save),
+    return Screenshot(
+      controller: screenshotController,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("GoogleMap"),
+          elevation: 0.0,
+          backgroundColor: kPrimaryColor,
+          leading: IconButton(
+            icon: Icon(
+              Icons.file_download_done,
+              size: 40,
+              shadows: [
+                Shadow(color: Color.fromARGB(255, 178, 63, 254), blurRadius: 10)
+              ],
+            ),
             color: kwhite,
-            //style: IconButton.styleFrom(backgroundColor: kImageColor),
-            //onPressed: () => Show(),S
             onPressed: () async {
               // Navigator.pushReplacement(
               //   context,
@@ -196,36 +211,158 @@ class _HomePageState extends State<HomePage> {
               //     ),
               //   ),
               // );
-              data = [
-                {
-                  'adding_price': adding_price,
-                  'address': sendAddrress,
-                  'lat': requestModel.lat,
-                  'lng': requestModel.lng
-                }
-              ];
+              screenshotController.capture().then((image) {
+                setState(() {
+                  _imageFile = image;
+                });
+              }).catchError((onError) {
+                print(onError);
+              });
+              final result =
+                  await ImageGallerySaver.saveImage(imageInUnit8List!);
+              // Uint8List imageInUnit8List = _imageFile!;
+
+              final tempDir = await getTemporaryDirectory();
+              File file = await File('${tempDir.path}/image.png').create();
+              file.writeAsBytesSync(imageInUnit8List!);
+              var compressed = await FlutterImageCompress.compressAndGetFile(
+                file.absolute.path,
+                file.path + 'compressed.jpg',
+                quality: 10,
+              );
+              // XFile file = await imagePath.writeAsBytes(_imageFile);
+              String uniqueFileName =
+                  DateTime.now().millisecondsSinceEpoch.toString();
+              Reference referenceRoot = FirebaseStorage.instance.ref();
+              Reference referenceDirImages =
+                  referenceRoot.child('${widget.c_id}+m');
+              Reference referenceImageToUpload =
+                  referenceDirImages.child('name');
+              try {
+                await referenceImageToUpload.putFile(File(compressed!.path));
+                imageUrl = await referenceImageToUpload.getDownloadURL();
+              } catch (error) {}
+              if (imageUrl != null) {
+                setState(() {
+                  Map<String, String> dataToSend = {
+                    'com_id': widget.c_id,
+                    'lat&lng': requestModel.lat + "/" + requestModel.lng,
+                    'image': imageUrl,
+                  };
+                  _reference.add(dataToSend);
+                  data = [
+                    {
+                      'adding_price': adding_price,
+                      'address': sendAddrress,
+                      'lat': requestModel.lat,
+                      'lng': requestModel.lng
+                    }
+                  ];
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Color.fromARGB(255, 57, 112, 195),
+                    content: Center(
+                      child: Text("Photo was successfully"),
+                    ),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+
               Navigator.pop(context, data);
             },
           ),
-        ],
-      ),
-      backgroundColor: kPrimaryColor,
-      body: Screenshot(
-        controller: screenshotController,
-        child: Container(
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: const Icon(Icons.save),
+          //     color: kwhite,
+          //     onPressed: () async {
+          //       // Navigator.pushReplacement(
+          //       //   context,
+          //       //   MaterialPageRoute(
+          //       //     builder: (context) => Add(
+          //       //       asking_price: adding_price,
+          //       //     ),
+          //       //   ),
+          //       // );
+          //       screenshotController.capture().then((image) {
+          //         setState(() {
+          //           _imageFile = image;
+          //         });
+          //       }).catchError((onError) {
+          //         print(onError);
+          //       });
+          //       final result =
+          //           await ImageGallerySaver.saveImage(imageInUnit8List!);
+          //       // Uint8List imageInUnit8List = _imageFile!;
+
+          //       final tempDir = await getTemporaryDirectory();
+          //       File file = await File('${tempDir.path}/image.png').create();
+          //       file.writeAsBytesSync(imageInUnit8List!);
+          //       var compressed = await FlutterImageCompress.compressAndGetFile(
+          //         file.absolute.path,
+          //         file.path + 'compressed.jpg',
+          //         quality: 10,
+          //       );
+          //       // XFile file = await imagePath.writeAsBytes(_imageFile);
+          //       String uniqueFileName =
+          //           DateTime.now().millisecondsSinceEpoch.toString();
+          //       Reference referenceRoot = FirebaseStorage.instance.ref();
+          //       Reference referenceDirImages =
+          //           referenceRoot.child('${widget.c_id}+m');
+          //       Reference referenceImageToUpload =
+          //           referenceDirImages.child('name');
+          //       try {
+          //         await referenceImageToUpload.putFile(File(compressed!.path));
+          //         imageUrl = await referenceImageToUpload.getDownloadURL();
+          //       } catch (error) {}
+          //       if (imageUrl != null) {
+          //         setState(() {
+          //           Map<String, String> dataToSend = {
+          //             'com_id': widget.c_id,
+          //             'lat&lng': requestModel.lat + "/" + requestModel.lng,
+          //             'image': imageUrl,
+          //           };
+          //           _reference.add(dataToSend);
+          //           data = [
+          //             {
+          //               'adding_price': adding_price,
+          //               'address': sendAddrress,
+          //               'lat': requestModel.lat,
+          //               'lng': requestModel.lng
+          //             }
+          //           ];
+          //         });
+          //         ScaffoldMessenger.of(context).showSnackBar(
+          //           SnackBar(
+          //             backgroundColor: Color.fromARGB(255, 57, 112, 195),
+          //             content: Center(
+          //               child: Text("Photo was successfully"),
+          //             ),
+          //             duration: Duration(seconds: 2),
+          //           ),
+          //         );
+          //       }
+
+          //       Navigator.pop(context, data);
+          //     },
+          //   ),
+          // ],
+        ),
+        backgroundColor: kPrimaryColor,
+        body: Container(
           child: Stack(
             children: [
               (lat != null)
                   ? GoogleMap(
                       // markers: getmarkers(),
-                      markers: ((num > 0)
-                          ? Set<Marker>.of(markers.values)
-                          : getmarkers()),
+                      markers: Set<Marker>.of(markers.values),
                       //Map widget from google_maps_flutter package
                       zoomGesturesEnabled: true, //enable Zoom in, out on map
                       initialCameraPosition: CameraPosition(
                         //innital position in map
-                        target: LatLng(latitude, longitude),
+                        target: LatLng(lat, log),
                         // target: ((num < 0)
                         //     ? LatLng(lat, log)
                         //     : latLng), //initial position
@@ -233,7 +370,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       mapType: style_map[index], //map type
                       // onMapCreated: (controller) async {
-                      //   imageInUnit8List = await controller.takeSnapshot();
+                      //   // imageInUnit8List = await controller.takeSnapshot();
 
                       //   // For examle, we can convert this uin8list to base64 and send
                       //   // to photohosting imgbb.com and get url on this image
@@ -241,16 +378,17 @@ class _HomePageState extends State<HomePage> {
                       //   //method called when map is created
                       //   setState(() async {
                       //     mapController = controller;
+                      //     imageInUnit8List =
+                      //         await mapController!.takeSnapshot();
                       //   });
                       // },
                       onMapCreated: (GoogleMapController controller) {
                         // _mapController.complete(controller);
                         // takeSnapShot();
                         setState(() async {
-                          Future<void>.delayed(const Duration(seconds: 13),
+                          Future<void>.delayed(const Duration(seconds: 25),
                               () async {
                             imageInUnit8List = await controller.takeSnapshot();
-                            setState(() {});
                           });
                           // imageInUnit8List = await controller.takeSnapshot();
                           mapController = controller;
@@ -303,101 +441,99 @@ class _HomePageState extends State<HomePage> {
           ),
           height: MediaQuery.of(context).size.height * 1,
         ),
-      ),
-      bottomNavigationBar: Container(
-        height: MediaQuery.of(context).size.height * 0.06,
-        color: Colors.blue[50],
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon:
-                  Icon(Icons.person_pin_circle, size: 40, color: Colors.black),
-              onPressed: () {
-                setState(() {
-                  num = 0;
-                });
-              },
-            ),
-            IconButton(
-              icon:
-                  Icon(Icons.photo_camera_back, size: 40, color: Colors.black),
-              onPressed: () async {
-                setState(() async {
-                  screenshotController.capture().then((image) {
-                    setState(() {
-                      _imageFile = image;
-                    });
-                  }).catchError((onError) {
-                    print(onError);
+        bottomNavigationBar: Container(
+          height: MediaQuery.of(context).size.height * 0.06,
+          color: Colors.blue[50],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.person_pin_circle,
+                    size: 40, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    num = 0;
                   });
-                  final result =
-                      await ImageGallerySaver.saveImage(imageInUnit8List!);
-                  // Uint8List imageInUnit8List = _imageFile!;
+                },
+              ),
+              // IconButton(
+              //   icon: Icon(Icons.photo_camera_back,
+              //       size: 40, color: Colors.black),
+              //   onPressed: () async {
+              //     setState(() async {
+              //       screenshotController.capture().then((image) {
+              //         setState(() {
+              //           _imageFile = image;
+              //         });
+              //       }).catchError((onError) {
+              //         print(onError);
+              //       });
+              //       final result =
+              //           await ImageGallerySaver.saveImage(imageInUnit8List!);
+              //       // Uint8List imageInUnit8List = _imageFile!;
 
-                  final tempDir = await getTemporaryDirectory();
-                  File file = await File('${tempDir.path}/image.png').create();
-                  file.writeAsBytesSync(imageInUnit8List!);
-                  var compressed =
-                      await FlutterImageCompress.compressAndGetFile(
-                    file.absolute.path,
-                    file.path + 'compressed.jpg',
-                    quality: 10,
-                  );
-                  // XFile file = await imagePath.writeAsBytes(_imageFile);
-                  String uniqueFileName =
-                      DateTime.now().millisecondsSinceEpoch.toString();
-                  Reference referenceRoot = FirebaseStorage.instance.ref();
-                  Reference referenceDirImages =
-                      referenceRoot.child('images_map_kfa');
-                  Reference referenceImageToUpload =
-                      referenceDirImages.child('name');
-                  try {
-                    await referenceImageToUpload
-                        .putFile(File(compressed!.path));
-                    imageUrl = await referenceImageToUpload.getDownloadURL();
-                  } catch (error) {}
-                  if (imageUrl != null) {
-                    setState(() {
-                      Map<String, String> dataToSend = {
-                        'com_id': widget.c_id,
-                        'lat&lng': requestModel.lat + "/" + requestModel.lng,
-                        'image': imageUrl,
-                      };
-                      _reference.add(dataToSend);
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Center(
-                          child: CircularProgressIndicator(
-                              backgroundColor:
-                                  Color.fromARGB(123, 163, 199, 228),
-                              semanticsLabel: "Photo was successfully"),
-                        ),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.business, size: 40, color: Colors.black),
-              onPressed: () {
-                setState(() {
-                  if (index < 1) {
-                    index = index + 1;
-                  } else {
-                    index = 0;
-                  }
-                });
-              },
-            ),
-          ],
+              //       final tempDir = await getTemporaryDirectory();
+              //       File file =
+              //           await File('${tempDir.path}/image.png').create();
+              //       file.writeAsBytesSync(imageInUnit8List!);
+              //       var compressed =
+              //           await FlutterImageCompress.compressAndGetFile(
+              //         file.absolute.path,
+              //         file.path + 'compressed.jpg',
+              //         quality: 10,
+              //       );
+              //       // XFile file = await imagePath.writeAsBytes(_imageFile);
+              //       String uniqueFileName =
+              //           DateTime.now().millisecondsSinceEpoch.toString();
+              //       Reference referenceRoot = FirebaseStorage.instance.ref();
+              //       Reference referenceDirImages =
+              //           referenceRoot.child('${widget.c_id}+m');
+              //       Reference referenceImageToUpload =
+              //           referenceDirImages.child('name');
+              //       try {
+              //         await referenceImageToUpload
+              //             .putFile(File(compressed!.path));
+              //         imageUrl = await referenceImageToUpload.getDownloadURL();
+              //       } catch (error) {}
+              //       if (imageUrl != null) {
+              //         setState(() {
+              //           Map<String, String> dataToSend = {
+              //             'com_id': widget.c_id,
+              //             'lat&lng': requestModel.lat + "/" + requestModel.lng,
+              //             'image': imageUrl,
+              //           };
+              //           _reference.add(dataToSend);
+              //         });
+              //         ScaffoldMessenger.of(context).showSnackBar(
+              //           SnackBar(
+              //             content: Center(
+              //               child: Text("Photo was successfully"),
+              //             ),
+              //             duration: Duration(seconds: 1),
+              //           ),
+              //         );
+              //       }
+              //     });
+              //   },
+              // ),
+              IconButton(
+                icon: Icon(Icons.business, size: 40, color: Colors.black),
+                onPressed: () {
+                  setState(() {
+                    if (index < 1) {
+                      index = index + 1;
+                    } else {
+                      index = 0;
+                    }
+                  });
+                },
+              ),
+            ],
+          ),
         ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: circularMenu,
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: circularMenu,
     );
   }
 
@@ -523,7 +659,7 @@ class _HomePageState extends State<HomePage> {
   //     ),
   //   );
   // }
-
+// set defual lat and log
   Set<Marker> getmarkers() {
     //markers to place on map
     setState(() {

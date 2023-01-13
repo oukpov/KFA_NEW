@@ -48,7 +48,8 @@ class _AddItemState extends State<AddItem> {
               String uniqueFileName =
                   DateTime.now().millisecondsSinceEpoch.toString();
               Reference referenceRoot = FirebaseStorage.instance.ref();
-              Reference referenceDirImages = referenceRoot.child('images');
+              Reference referenceDirImages =
+                  referenceRoot.child('${widget.com_id}+i');
               Reference referenceImageToUpload =
                   referenceDirImages.child('name');
               try {

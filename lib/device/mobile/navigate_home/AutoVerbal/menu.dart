@@ -18,9 +18,11 @@ class MenuAutoVerbal extends StatefulWidget {
 class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
   List<Text> option = const [
     Text("New Auto Verbal",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)),
     Text(" Auto Verbal List",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
     Icon(Icons.data_saver_on),
@@ -30,7 +32,7 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightBlueAccent[800],
+        backgroundColor: Colors.deepPurple[900],
         title: const Text(
           " Auto Verbal",
           style: TextStyle(
@@ -38,6 +40,8 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
         ),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height * 1,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: ExactAssetImage('assets/images/New_KFA_Logo.png'),
@@ -67,12 +71,18 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                   height: MediaQuery.of(context).size.height * 0.07,
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.cyan,
+                          Colors.indigo,
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: const [
                         BoxShadow(
-                            spreadRadius: 1.5,
+                            spreadRadius: 3,
                             blurRadius: 2,
-                            color: Color.fromARGB(157, 103, 94, 91),
+                            color: Colors.black,
                             blurStyle: BlurStyle.outer)
                       ]),
                   child: Row(

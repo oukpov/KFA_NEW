@@ -11,10 +11,8 @@ typedef OnChangeCallback = void Function(dynamic value);
 
 class LandBuildingDetail extends StatefulWidget {
   final String id;
-  final String landId;
   const LandBuildingDetail({
     super.key,
-    required this.landId,
     required this.id,
   });
 

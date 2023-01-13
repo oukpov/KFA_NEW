@@ -3,8 +3,10 @@
 import 'package:admin/Account/account.dart';
 import 'package:admin/device/mobile/navigate_home/on_home_page.dart';
 import 'package:admin/respon.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 
 import '../device/mobile/navigate_setting/memu_propety.dart';
@@ -42,6 +44,11 @@ class _HomePageState extends State<HomePage>
   final _advancedDrawerController = AdvancedDrawerController();
   static int pageIndex = 0;
   List pages = [];
+  TextStyle colorizeTextStyle = TextStyle(
+    fontSize: 30,
+    fontFamily: 'Horizon',
+    fontWeight: FontWeight.bold,
+  );
   @override
   void initState() {
     pages = [
@@ -76,7 +83,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
-      backdropColor: Colors.blueGrey,
+      backdropColor: Color.fromARGB(255, 124, 148, 65),
       controller: _advancedDrawerController,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
@@ -105,12 +112,12 @@ class _HomePageState extends State<HomePage>
               children: [
                 const GFAvatar(
                   size: 140,
-                  backgroundImage: AssetImage("assets/images/profile1.webp"),
+                  backgroundImage: AssetImage("assets/images/r.jpg"),
                 ),
                 Container(
                   height: 100.0,
-                  // clipBehavior: Clip.antiAlias,
-                  child: Text(widget.user,
+                  // use name's widget.user
+                  child: Text('User Name',
                       style: TextStyle(
                         //color: Color.fromRGBO(169, 203, 56, 1),
                         color: Colors.white,
@@ -127,11 +134,6 @@ class _HomePageState extends State<HomePage>
                   onTap: () {},
                   leading: Icon(Icons.account_circle_rounded),
                   title: Text('Profile'),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: Icon(Icons.favorite),
-                  title: Text('Favourites '),
                 ),
                 ListTile(
                   onTap: () {},
@@ -157,13 +159,66 @@ class _HomePageState extends State<HomePage>
         ),
       ),
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: MediaQuery.of(context).size * 0.104,
-          child: Column(
+        appBar: AppBar(
+          backgroundColor: Colors.deepPurple[900],
+          toolbarHeight: 70,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
+          elevation: 0,
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: _handleMenuButtonPressed,
+            icon: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: _advancedDrawerController,
+              builder: (_, value, __) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: Icon(
+                    value.visible ? Icons.clear : Icons.menu,
+                    key: ValueKey<bool>(value.visible),
+                  ),
+                );
+              },
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              appbar(context),
+              DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    WavyAnimatedText('KFA\' ONE CLICK  1\$',
+                        textAlign: TextAlign.center,
+                        textStyle: TextStyle(color: Colors.white)),
+                  ],
+                  pause: const Duration(milliseconds: 300),
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                  onTap: () {},
+                ),
+              ),
             ],
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.auto_graph_outlined,
+                size: 40,
+              ),
+              onPressed: () {},
+            ),
+            const SizedBox(
+              width: 20,
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Responsive(
@@ -207,9 +262,10 @@ class _HomePageState extends State<HomePage>
 
   Container buildMyNavBar(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       height: 60,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Colors.deepPurple[800],
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -229,12 +285,12 @@ class _HomePageState extends State<HomePage>
                 ? const Icon(
                     Icons.home_filled,
                     color: Colors.white,
-                    size: 35,
+                    size: 40,
                   )
                 : const Icon(
                     Icons.home_outlined,
                     color: Colors.white,
-                    size: 35,
+                    size: 30,
                   ),
           ),
           IconButton(
@@ -248,12 +304,12 @@ class _HomePageState extends State<HomePage>
                 ? const Icon(
                     Icons.widgets_rounded,
                     color: Colors.white,
-                    size: 35,
+                    size: 40,
                   )
                 : const Icon(
                     Icons.widgets_outlined,
                     color: Colors.white,
-                    size: 35,
+                    size: 30,
                   ),
           ),
           IconButton(
@@ -267,12 +323,12 @@ class _HomePageState extends State<HomePage>
                 ? const Icon(
                     Icons.person,
                     color: Colors.white,
-                    size: 35,
+                    size: 40,
                   )
                 : const Icon(
                     Icons.person_outline,
                     color: Colors.white,
-                    size: 35,
+                    size: 30,
                   ),
           ),
         ],
@@ -285,6 +341,7 @@ class _HomePageState extends State<HomePage>
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         AppBar(
+          backgroundColor: Colors.deepPurple[900],
           toolbarHeight: 70,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -308,43 +365,23 @@ class _HomePageState extends State<HomePage>
               },
             ),
           ),
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    'assets/images/KFA-Logo.png',
-                    height: 60,
-                    width: 60,
-                  ),
-                  const Text(
-                    ' ONE CLICK  ',
-                    style: TextStyle(
-                      //color: Color.fromRGBO(169, 203, 56, 1),
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    '1\$',
-                    style: TextStyle(
-                      //color: Color.fromRGBO(169, 203, 56, 1),
-                      color: Colors.yellow,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          color: Colors.yellow,
-                          offset: Offset(1.5, 1.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              DefaultTextStyle(
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    WavyAnimatedText('KFA\' ONE CLICK  1\$'),
+                  ],
+                  pause: const Duration(milliseconds: 300),
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                  onTap: () {},
+                ),
               ),
             ],
           ),

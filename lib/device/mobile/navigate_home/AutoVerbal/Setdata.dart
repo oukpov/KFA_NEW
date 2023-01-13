@@ -1,24 +1,25 @@
 // ignore_for_file: file_names, prefer_const_constructors, non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/Customs/responsive.dart';
-import 'package:admin/Customs/upload_Image.dart';
-import 'package:admin/components/ImageController.dart';
+
 import 'package:admin/components/code.dart';
 import 'package:admin/components/comment.dart';
 import 'package:admin/components/forceSale.dart';
 import 'package:admin/server/api_service.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../components/ApprovebyAndVerifyby.dart';
-import '../../../../components/FileOpen.dart';
 import '../../../../components/LandBuilding.dart';
 import '../../../../components/bank.dart';
-import '../../../../components/date.dart';
-import '../../../../components/imageOpen.dart';
 import '../../../../components/property.dart';
 import '../../../../components/slideUp.dart';
 import '../../../../contants.dart';
@@ -99,11 +100,14 @@ class _AddState extends State<Add> {
             color: kwhite,
             // style: IconButton.styleFrom(backgroundColor: kImageColor),
             onPressed: () {
+              setState(() {
+                uploadt_image(_file);
+              });
               requestModelAuto.user = widget.id;
               if (validateAndSave()) {
                 APIservice apIservice = APIservice();
                 apIservice.saveAutoVerbal(requestModelAuto).then(
-                  (value) {
+                  (value) async {
                     print('Error');
                     print(json.encode(requestModelAuto.toJson()));
                     if (requestModelAuto.verbal.isEmpty) {
@@ -120,6 +124,30 @@ class _AddState extends State<Add> {
                       ).show();
                     } else {
                       if (value.message == "Save Successfully") {
+                        String uniqueFileName =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+                        Reference referenceRoot =
+                            FirebaseStorage.instance.ref();
+                        Reference referenceDirImages =
+                            referenceRoot.child('${code}+image');
+                        Reference referenceImageToUpload =
+                            referenceDirImages.child('name');
+                        try {
+                          await referenceImageToUpload
+                              .putFile(File(_file.path));
+                          imageUrl =
+                              await referenceImageToUpload.getDownloadURL();
+                        } catch (error) {}
+                        if (imageUrl != null) {
+                          setState(() {
+                            String itemName = code.toString();
+                            Map<String, String> dataToSend = {
+                              'com_id': itemName,
+                              'image': imageUrl,
+                            };
+                            _reference.add(dataToSend);
+                          });
+                        }
                         AwesomeDialog(
                             context: context,
                             animType: AnimType.leftSlide,
@@ -401,7 +429,9 @@ class _AddState extends State<Add> {
                                   color: kImageColor,
                                 ),
                                 SizedBox(width: 10),
-                                Text('Choose Location'),
+                                Text((asking_price == 1)
+                                    ? 'Choose Location'
+                                    : 'Choosed Location'),
                               ],
                             )),
                       ),
@@ -410,17 +440,61 @@ class _AddState extends State<Add> {
                 ),
 
                 // FileOpen(),
-                SizedBox(
-                  height: 5,
-                ),
+                // SizedBox(
+                //   height: 5,
+                // ),
+
                 // ImageController(),
                 // ImageOpen(
                 //   set_Image: (value) {
                 //     requestModelAuto.image = value;
                 //   },
                 // ),
-                AddItem(
-                  com_id: code.toString(),
+                SingleChildScrollView(
+                  child: Column(children: [
+                    imagepath != "" ? Image.file(File(imagepath)) : SizedBox(),
+                    TextButton(
+                      onPressed: () {
+                        openImage();
+                      },
+                      child: FractionallySizedBox(
+                        widthFactor: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 22, right: 22),
+                          child: Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: kPrimaryColor,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            // padding: EdgeInsets.only(left: 30, right: 30),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  children: [
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.map_sharp,
+                                      color: kImageColor,
+                                    ),
+                                    SizedBox(width: 10),
+                                    // ignore: unnecessary_null_comparison
+                                    Text((imagepath == "")
+                                        ? 'Choose Photo'
+                                        : 'choosed Photo'),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
                 SizedBox(
                   height: 400,
@@ -468,4 +542,67 @@ class _AddState extends State<Add> {
     }
     return false;
   }
+
+//===================== Upload Image to MySql Server
+  late File _image;
+  final picker = ImagePicker();
+  late String base64string;
+  late File _file;
+  final ImagePicker imgpicker = ImagePicker();
+  String imagepath = "";
+  openImage() async {
+    try {
+      var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+      //you can use ImageCourse.camera for Camera capture
+      if (pickedFile != null) {
+        imagepath = pickedFile.path;
+        print(imagepath);
+        //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
+        File imagefile = File(imagepath); //convert Path to File
+        // saveAutoVerbal(imagefile);
+        Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+        String base64string =
+            base64.encode(imagebytes); //convert bytes to base64 string
+        Uint8List decodedbytes = base64.decode(base64string);
+        //decode base64 stirng to bytes
+        setState(() {
+          _file = imagefile;
+        });
+      } else {
+        print("No image is selected.");
+      }
+    } catch (e) {
+      print("error while picking file.");
+    }
+  }
+
+  Future<dynamic> uploadt_image(File _image) async {
+    var request = await http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            "https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/set_image"));
+    Map<String, String> headers = {
+      "content-type": "application/json",
+      "Connection": "keep-alive",
+      "Accept-Encoding": " gzip"
+    };
+    request.headers.addAll(headers);
+    // request.files.add(picture);
+    request.fields['cid'] = code.toString();
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        "image",
+        _image.path,
+      ),
+    );
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var result = String.fromCharCodes(responseData);
+    print(result);
+  }
+
+  //================ firsbase =================
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('Image_KFA_2@23');
+  String imageUrl = '';
 }

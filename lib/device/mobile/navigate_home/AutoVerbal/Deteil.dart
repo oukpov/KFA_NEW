@@ -234,7 +234,6 @@ class _DetailState extends State<Detail> {
                       SizedBox(
                         height: 330,
                         child: LandBuildingDetail(
-                          landId: code.toString(),
                           id: widget.code,
                         ),
                       ),
