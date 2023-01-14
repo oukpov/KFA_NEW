@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
   Widget _uiSteup(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[300],
+        backgroundColor: Colors.blue[400],
         elevation: 0,
         centerTitle: true,
         title: Image.asset(
@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
         ),
         toolbarHeight: 100,
       ),
-      backgroundColor: Colors.blue[300],
+      backgroundColor: Colors.blue[400],
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(

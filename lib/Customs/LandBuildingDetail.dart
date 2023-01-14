@@ -22,7 +22,7 @@ class LandBuildingDetail extends StatefulWidget {
 
 class _LandBuildingDetailState extends State<LandBuildingDetail> {
   final _formKey = GlobalKey<FormState>();
-  List list = [];
+  List data_of_land = [];
 
   bool isApiCallProcess = false;
   // late int asking_price;
@@ -30,16 +30,19 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
   @override
   void initState() {
     super.initState();
-    Load();
+    Get_land();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHUD(
-      color: kPrimaryColor,
-      inAsyncCall: isApiCallProcess,
-      opacity: 0.3,
-      child: _uiSteup(context),
+    return Container(
+      height: 300,
+      child: ProgressHUD(
+        color: kPrimaryColor,
+        inAsyncCall: isApiCallProcess,
+        opacity: 0.3,
+        child: _uiSteup(context),
+      ),
     );
   }
 
@@ -61,9 +64,9 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
           padding: EdgeInsets.only(left: 22, right: 22),
           width: double.infinity,
           height: 270,
-          child: list.length > 0
+          child: data_of_land.length > 0
               ? ListView.builder(
-                  itemCount: list.length,
+                  itemCount: data_of_land.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext ctxt, int index) {
                     return Padding(
@@ -85,9 +88,12 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: list[index]["verbal_land_type"] != null
+                                  child: data_of_land[index]
+                                              ["verbal_land_type"] !=
+                                          null
                                       ? Text(
-                                          list[index]["verbal_land_type"],
+                                          data_of_land[index]
+                                              ["verbal_land_type"],
                                           style: NameProperty(),
                                         )
                                       : Text(
@@ -113,8 +119,9 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                       size: 14,
                                     )),
                                     TextSpan(
-                                        text: list[index]["address"] != null
-                                            ? list[index]["address"]
+                                        text: data_of_land[index]["address"] !=
+                                                null
+                                            ? data_of_land[index]["address"]
                                             : "N/A"),
                                   ],
                                 ),
@@ -137,9 +144,10 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                             Container(
                               padding: EdgeInsets.only(left: 10),
                               alignment: Alignment.centerLeft,
-                              child: list[index]["verbal_land_des"] != null
+                              child: data_of_land[index]["verbal_land_des"] !=
+                                      null
                                   ? Text(
-                                      list[index]["verbal_land_des"],
+                                      data_of_land[index]["verbal_land_des"],
                                     )
                                   : Text(
                                       "N/A",
@@ -194,10 +202,12 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(height: 4),
-                                    list[index]["verbal_land_dp"] != null
+                                    data_of_land[index]["verbal_land_dp"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                list[index]["verbal_land_dp"],
+                                                data_of_land[index]
+                                                    ["verbal_land_dp"],
                                             style: Name(),
                                           )
                                         : Text(
@@ -208,10 +218,12 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                                 color: kImageColor),
                                           ),
                                     SizedBox(height: 2),
-                                    list[index]["verbal_land_area"] != null
+                                    data_of_land[index]["verbal_land_area"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                list[index]["verbal_land_area"]
+                                                data_of_land[index]
+                                                        ["verbal_land_area"]
                                                     .toString() +
                                                 'm' +
                                                 '\u00B2',
@@ -226,10 +238,11 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                             ),
                                           ),
                                     SizedBox(height: 2),
-                                    list[index]["verbal_land_minsqm"] != null
+                                    data_of_land[index]["verbal_land_minsqm"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                (list[index]
+                                                (data_of_land[index]
                                                         ["verbal_land_minsqm"])
                                                     .toString() +
                                                 '\$',
@@ -243,10 +256,11 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                                 color: kImageColor),
                                           ),
                                     SizedBox(height: 2),
-                                    list[index]["verbal_land_maxsqm"] != null
+                                    data_of_land[index]["verbal_land_maxsqm"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                (list[index]
+                                                (data_of_land[index]
                                                         ["verbal_land_maxsqm"])
                                                     .toString() +
                                                 '\$',
@@ -260,10 +274,12 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                                 color: kImageColor),
                                           ),
                                     SizedBox(height: 2),
-                                    list[index]["verbal_land_minvalue"] != null
+                                    data_of_land[index]
+                                                ["verbal_land_minvalue"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                (list[index][
+                                                (data_of_land[index][
                                                         "verbal_land_minvalue"])
                                                     .toString() +
                                                 '\$',
@@ -277,10 +293,12 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
                                                 color: kPrimaryColor),
                                           ),
                                     SizedBox(height: 2),
-                                    list[index]["verbal_land_maxvalue"] != null
+                                    data_of_land[index]
+                                                ["verbal_land_maxvalue"] !=
+                                            null
                                         ? Text(
                                             ':   ' +
-                                                (list[index][
+                                                (data_of_land[index][
                                                             "verbal_land_maxvalue"]
                                                         .toString() +
                                                     '\$'),
@@ -311,7 +329,7 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
     );
   }
 
-  void Load() async {
+  void Get_land() async {
     setState(() {});
     var id = widget.id;
     //print(id);
@@ -321,9 +339,7 @@ class _LandBuildingDetailState extends State<LandBuildingDetail> {
       var jsonData = jsonDecode(rs.body);
 
       setState(() {
-        list = jsonData;
-
-        //print(list);
+        data_of_land = jsonData;
       });
     }
   }
