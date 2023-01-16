@@ -36,7 +36,7 @@ class Get_Image_By_Firbase extends StatefulWidget {
 class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var list = [];
-  List data_of_land = [];
+  // List data_of_land = [];
 
   bool isApiCallProcess = false;
   void Load() async {
@@ -60,8 +60,10 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
       FirebaseFirestore.instance.collection('Image_KFA_2@23');
   late Stream<QuerySnapshot> _stream;
   late Stream<QuerySnapshot> _stream1;
-  String? I_map;
-  var I_image;
+  var I_map =
+      'https://pusat.edu.np/wp-content/uploads/2022/09/default-image.jpg';
+  var I_image =
+      'https://pusat.edu.np/wp-content/uploads/2022/09/default-image.jpg';
 
   int i = 0;
   static int? total_MIN = 0;
@@ -73,10 +75,11 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
   late int k;
   @override
   void initState() {
-    Get_land();
-    Load();
     _stream = Get_Image_Map.snapshots();
     _stream1 = Get_Image_Pho.snapshots();
+    // Get_land();
+    Load();
+
     // TODO: implement initState
     // await get_Image(context);
     // get_Map(context);
@@ -284,357 +287,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        height: 500,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 30),
-                                  child: Text(
-                                    "Land/Building",
-                                    style: TextStyle(
-                                        color: kImageColor, fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 22, right: 22),
-                              width: double.infinity,
-                              height: 270,
-                              child: data_of_land.length > 0
-                                  ? ListView.builder(
-                                      itemCount: data_of_land.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder:
-                                          (BuildContext ctxt, int index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 10, 10, 10),
-                                          child: Container(
-                                            width: 260,
-                                            //height: 210,
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: kPrimaryColor),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(15)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: data_of_land[index]
-                                                                  [
-                                                                  "verbal_land_type"] !=
-                                                              null
-                                                          ? Text(
-                                                              data_of_land[
-                                                                      index][
-                                                                  "verbal_land_type"],
-                                                              style:
-                                                                  NameProperty(),
-                                                            )
-                                                          : Text(
-                                                              "N/A",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 14,
-                                                                  color:
-                                                                      kImageColor),
-                                                            ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10,
-                                                          right: 10,
-                                                          top: 10),
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: <InlineSpan>[
-                                                        WidgetSpan(
-                                                            child: Icon(
-                                                          Icons
-                                                              .location_on_sharp,
-                                                          color: kPrimaryColor,
-                                                          size: 14,
-                                                        )),
-                                                        TextSpan(
-                                                            text: data_of_land[
-                                                                            index]
-                                                                        [
-                                                                        "address"] !=
-                                                                    null
-                                                                ? data_of_land[
-                                                                        index]
-                                                                    ["address"]
-                                                                : "N/A"),
-                                                      ],
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: kPrimaryColor),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 3.0,
-                                                ),
-                                                Divider(
-                                                  height: 1,
-                                                  thickness: 1,
-                                                  color: kPrimaryColor,
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 10),
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: data_of_land[index][
-                                                              "verbal_land_des"] !=
-                                                          null
-                                                      ? Text(
-                                                          data_of_land[index][
-                                                              "verbal_land_des"],
-                                                        )
-                                                      : Text(
-                                                          "N/A",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 14,
-                                                            color: kImageColor,
-                                                          ),
-                                                        ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    SizedBox(width: 10),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "Depreciation",
-                                                          style: Label(),
-                                                        ),
-                                                        SizedBox(height: 3),
-                                                        Text(
-                                                          "Area",
-                                                          style: Label(),
-                                                        ),
-                                                        SizedBox(height: 3),
-                                                        Text(
-                                                          'Min Value/Sqm',
-                                                          style: Label(),
-                                                        ),
-                                                        SizedBox(height: 3),
-                                                        Text(
-                                                          'Max Value/Sqm',
-                                                          style: Label(),
-                                                        ),
-                                                        SizedBox(height: 3),
-                                                        Text(
-                                                          'Min Value',
-                                                          style: Label(),
-                                                        ),
-                                                        SizedBox(height: 3),
-                                                        Text(
-                                                          'Min Value',
-                                                          style: Label(),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(width: 15),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        SizedBox(height: 4),
-                                                        data_of_land[index][
-                                                                    "verbal_land_dp"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    data_of_land[
-                                                                            index]
-                                                                        [
-                                                                        "verbal_land_dp"],
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        kImageColor),
-                                                              ),
-                                                        SizedBox(height: 2),
-                                                        data_of_land[index][
-                                                                    "verbal_land_area"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    data_of_land[index]
-                                                                            [
-                                                                            "verbal_land_area"]
-                                                                        .toString() +
-                                                                    'm' +
-                                                                    '\u00B2',
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 14,
-                                                                  color:
-                                                                      kImageColor,
-                                                                ),
-                                                              ),
-                                                        SizedBox(height: 2),
-                                                        data_of_land[index][
-                                                                    "verbal_land_minsqm"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    (data_of_land[index]
-                                                                            [
-                                                                            "verbal_land_minsqm"])
-                                                                        .toString() +
-                                                                    '\$',
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        kImageColor),
-                                                              ),
-                                                        SizedBox(height: 2),
-                                                        data_of_land[index][
-                                                                    "verbal_land_maxsqm"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    (data_of_land[index]
-                                                                            [
-                                                                            "verbal_land_maxsqm"])
-                                                                        .toString() +
-                                                                    '\$',
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        kImageColor),
-                                                              ),
-                                                        SizedBox(height: 2),
-                                                        data_of_land[index][
-                                                                    "verbal_land_minvalue"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    (data_of_land[index]
-                                                                            [
-                                                                            "verbal_land_minvalue"])
-                                                                        .toString() +
-                                                                    '\$',
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        kPrimaryColor),
-                                                              ),
-                                                        SizedBox(height: 2),
-                                                        data_of_land[index][
-                                                                    "verbal_land_maxvalue"] !=
-                                                                null
-                                                            ? Text(
-                                                                ':   ' +
-                                                                    (data_of_land[index]["verbal_land_maxvalue"]
-                                                                            .toString() +
-                                                                        '\$'),
-                                                                style: Name(),
-                                                              )
-                                                            : Text(
-                                                                "N/A",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        kImageColor),
-                                                              ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      // separatorBuilder: (BuildContext context, int index) =>
-                                      //     const Divider(),
-                                    )
-                                  : const Center(child: Text('No items')),
-                            ),
-                          ],
-                        ),
-                      ),
+
                       // SizedBox(
                       //   height: 370,
                       //   child: LandBuildingDetail(
@@ -642,7 +295,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                       //   ),
                       // ),
                       Container(
-                        height: 9,
+                        height: 5,
                         child: StreamBuilder<QuerySnapshot>(
                           stream: _stream1,
                           builder:
@@ -675,7 +328,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                                     Map thisItem = items[index];
                                     //REturn the widget for the list items
                                     if (thisItem['com_id'] == widget.com_id) {
-                                      I_map = thisItem['image'];
+                                      I_image = thisItem['image'];
                                     }
                                     return Text('');
                                   });
@@ -687,7 +340,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                         ),
                       ),
                       Container(
-                        height: 9,
+                        height: 5,
                         child: StreamBuilder<QuerySnapshot>(
                           stream: _stream,
                           builder:
@@ -721,7 +374,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                                     //REturn the widget for the list items
                                     if (items[index]['com_id'] ==
                                         widget.com_id) {
-                                      I_image = items[index]['image'];
+                                      I_map = items[index]['image'];
                                     }
 
                                     return Text('');
@@ -736,7 +389,8 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
 
                       (I_image != null)
                           ? Container(
-                              color: Colors.blue[50],
+                              // color: Colors.blue[50],
+                              margin: EdgeInsets.all(10),
                               padding: const EdgeInsets.all(10),
                               height: MediaQuery.of(context).size.height * 0.3,
                               child: Image.network(I_image),
@@ -744,10 +398,10 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                           : SizedBox(),
                       (I_map != null)
                           ? Container(
-                              color: Colors.blue[50],
+                              margin: EdgeInsets.all(10),
                               padding: const EdgeInsets.all(10),
                               height: MediaQuery.of(context).size.height * 0.3,
-                              child: Image.network(I_map!),
+                              child: Image.network(I_map),
                             )
                           : SizedBox(),
                       InkWell(
@@ -827,12 +481,11 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
     final ByteData bytes_image =
         await rootBundle.load('assets/images/message-banner3.jpg');
     final Uint8List byteList_image = bytes_image.buffer.asUint8List();
-    Uint8List bytes1 =
-        (await NetworkAssetBundle(Uri.parse(I_map!)).load(I_map!))
-            .buffer
-            .asUint8List();
+    Uint8List bytes1 = (await NetworkAssetBundle(Uri.parse(I_map)).load(I_map))
+        .buffer
+        .asUint8List();
     Uint8List bytes2 =
-        (await NetworkAssetBundle(Uri.parse(I_image!)).load(I_image!))
+        (await NetworkAssetBundle(Uri.parse(I_image)).load(I_image))
             .buffer
             .asUint8List();
     pdf.addPage(pw.Page(build: (context) {
@@ -1130,7 +783,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                   textAlign: pw.TextAlign.center,
                   style: const pw.TextStyle(fontSize: 12)),
               pw.Container(
-                height: 110,
+                height: 90,
                 child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.center,
                   children: [
@@ -1437,7 +1090,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          child: pw.Text(fsvN.toString(),
+                          child: pw.Text(fsvM.toString(),
                               style: const pw.TextStyle(fontSize: 11)),
                           height: 25,
                           //color: Colors.blue,
@@ -1538,7 +1191,8 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
                           padding: pw.EdgeInsets.all(2),
                           alignment: pw.Alignment.centerLeft,
                           decoration: pw.BoxDecoration(border: pw.Border.all()),
-                          //child: pw.Text("0.00sqm: ",style: pw.TextStyle(fontSize: 11)),
+                          child: pw.Text("0.00sqm: ",
+                              style: pw.TextStyle(fontSize: 11)),
                           height: 25,
                           //color: Colors.blue,
                         ),
@@ -1553,19 +1207,14 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
         pw.SizedBox(height: 5),
         pw.Text(
             '*Note : The land building size based on the bank officer provided, in case the land and building size are wrong provided when we have the actual size inspect, we are not response on this case.'),
-        pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.end,
-          children: [
-            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
-              pw.Text('Verbal Check Replied By :',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-              pw.Text('${list[0]['agenttype_name']}',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-            ]),
-            pw.Text('${list[0]['agent_type_phone']}',
-                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-          ],
-        ),
+        pw.Text('Verbal Check Replied By:${list[0]['agenttype_name']}',
+            style: pw.TextStyle(
+              fontWeight: pw.FontWeight.bold,
+            ),
+            textAlign: pw.TextAlign.right),
+        pw.Text('${list[0]['agent_type_phone']}',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+            textAlign: pw.TextAlign.right),
         pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
           pw.Text('KHMER FOUNDATION APPRAISALS Co.,Ltd',
               style: pw.TextStyle(
@@ -1637,7 +1286,7 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
       jsonData = jsonDecode(rs.body);
       land = jsonData;
       setState(() {
-        print("Land === ${land.length}");
+        // print("Land === ${land.length}");
 
         for (int i = 0; i < land.length; i++) {
           total_MIN = total_MIN! + int.parse(land[i]["verbal_land_minvalue"]);
@@ -1662,20 +1311,20 @@ class _Get_Image_By_FirbaseState extends State<Get_Image_By_Firbase> {
     }
   }
 
-  void Get_land() async {
-    setState(() {});
-    var id = widget.com_id;
-    //print(id);
-    var rs = await http.get(Uri.parse(
-        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list_land?verbal_landid=$id'));
-    if (rs.statusCode == 200) {
-      var jsonData = jsonDecode(rs.body);
+  // void Get_land() async {
+  //   setState(() {});
+  //   var id = widget.com_id;
+  //   //print(id);
+  //   var rs = await http.get(Uri.parse(
+  //       'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/autoverbal/list_land?verbal_landid=$id'));
+  //   if (rs.statusCode == 200) {
+  //     var jsonData = jsonDecode(rs.body);
 
-      setState(() {
-        data_of_land = jsonData;
-      });
-    }
-  }
+  //     setState(() {
+  //       data_of_land = jsonData;
+  //     });
+  //   }
+  // }
 
   TextStyle Label() {
     return TextStyle(color: kPrimaryColor, fontSize: 13);

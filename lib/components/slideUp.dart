@@ -44,9 +44,12 @@ import 'numDisplay.dart';
 import 'road.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+typedef OnChangeCallback = void Function(dynamic value);
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.c_id});
+  const HomePage({super.key, required this.c_id, required this.district});
   final String c_id;
+  final OnChangeCallback district;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -138,6 +141,7 @@ class _HomePageState extends State<HomePage> {
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         );
         markers[markerId] = marker;
+        widget.district(place.subLocality);
       });
     }).catchError((e) {
       debugPrint(e);
@@ -177,7 +181,7 @@ class _HomePageState extends State<HomePage> {
       Completer<GoogleMapController>();
   void takeSnapShot() async {
     GoogleMapController controller = await _mapController.future;
-    Future<void>.delayed(const Duration(seconds: 13), () async {
+    Future<void>.delayed(const Duration(seconds: 2), () async {
       imageInUnit8List = await controller.takeSnapshot();
       setState(() {});
     });
@@ -218,17 +222,46 @@ class _HomePageState extends State<HomePage> {
               }).catchError((onError) {
                 print(onError);
               });
-              final result =
-                  await ImageGallerySaver.saveImage(imageInUnit8List!);
+              // final result =
+              //     await ImageGallerySaver.saveImage(imageInUnit8List!);
               // Uint8List imageInUnit8List = _imageFile!;
-
+              if (imageInUnit8List == null) {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.info,
+                  borderSide: const BorderSide(
+                    color: Colors.green,
+                    width: 2,
+                  ),
+                  width: 280,
+                  buttonsBorderRadius: const BorderRadius.all(
+                    Radius.circular(2),
+                  ),
+                  dismissOnTouchOutside: true,
+                  dismissOnBackKeyPress: false,
+                  // onDismissCallback: (type) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       content: Text('Error'),
+                  //     ),
+                  //   );
+                  // },
+                  headerAnimationLoop: false,
+                  animType: AnimType.bottomSlide,
+                  title: 'Can`t save',
+                  desc: 'Please Click again!',
+                  showCloseIcon: true,
+                  // btnCancelOnPress: () {},
+                  btnOkOnPress: () {},
+                ).show();
+              }
               final tempDir = await getTemporaryDirectory();
               File file = await File('${tempDir.path}/image.png').create();
               file.writeAsBytesSync(imageInUnit8List!);
               var compressed = await FlutterImageCompress.compressAndGetFile(
                 file.absolute.path,
                 file.path + 'compressed.jpg',
-                quality: 10,
+                quality: 50,
               );
               // XFile file = await imagePath.writeAsBytes(_imageFile);
               String uniqueFileName =
@@ -259,96 +292,96 @@ class _HomePageState extends State<HomePage> {
                     }
                   ];
                 });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Color.fromARGB(255, 57, 112, 195),
-                    content: Center(
-                      child: Text("Photo was successfully"),
-                    ),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     backgroundColor: Color.fromARGB(255, 57, 112, 195),
+                //     content: Center(
+                //       child: Text("Photo was successfully"),
+                //     ),
+                //     duration: Duration(seconds: 2),
+                //   ),
+                // );
               }
 
               Navigator.pop(context, data);
             },
           ),
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: const Icon(Icons.save),
-          //     color: kwhite,
-          //     onPressed: () async {
-          //       // Navigator.pushReplacement(
-          //       //   context,
-          //       //   MaterialPageRoute(
-          //       //     builder: (context) => Add(
-          //       //       asking_price: adding_price,
-          //       //     ),
-          //       //   ),
-          //       // );
-          //       screenshotController.capture().then((image) {
-          //         setState(() {
-          //           _imageFile = image;
-          //         });
-          //       }).catchError((onError) {
-          //         print(onError);
-          //       });
-          //       final result =
-          //           await ImageGallerySaver.saveImage(imageInUnit8List!);
-          //       // Uint8List imageInUnit8List = _imageFile!;
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.save),
+              color: kwhite,
+              onPressed: () async {
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => Add(
+                //       asking_price: adding_price,
+                //     ),
+                //   ),
+                // );
+                screenshotController.capture().then((image) {
+                  setState(() {
+                    _imageFile = image;
+                  });
+                }).catchError((onError) {
+                  print(onError);
+                });
+                final result =
+                    await ImageGallerySaver.saveImage(imageInUnit8List!);
+                // Uint8List imageInUnit8List = _imageFile!;
 
-          //       final tempDir = await getTemporaryDirectory();
-          //       File file = await File('${tempDir.path}/image.png').create();
-          //       file.writeAsBytesSync(imageInUnit8List!);
-          //       var compressed = await FlutterImageCompress.compressAndGetFile(
-          //         file.absolute.path,
-          //         file.path + 'compressed.jpg',
-          //         quality: 10,
-          //       );
-          //       // XFile file = await imagePath.writeAsBytes(_imageFile);
-          //       String uniqueFileName =
-          //           DateTime.now().millisecondsSinceEpoch.toString();
-          //       Reference referenceRoot = FirebaseStorage.instance.ref();
-          //       Reference referenceDirImages =
-          //           referenceRoot.child('${widget.c_id}+m');
-          //       Reference referenceImageToUpload =
-          //           referenceDirImages.child('name');
-          //       try {
-          //         await referenceImageToUpload.putFile(File(compressed!.path));
-          //         imageUrl = await referenceImageToUpload.getDownloadURL();
-          //       } catch (error) {}
-          //       if (imageUrl != null) {
-          //         setState(() {
-          //           Map<String, String> dataToSend = {
-          //             'com_id': widget.c_id,
-          //             'lat&lng': requestModel.lat + "/" + requestModel.lng,
-          //             'image': imageUrl,
-          //           };
-          //           _reference.add(dataToSend);
-          //           data = [
-          //             {
-          //               'adding_price': adding_price,
-          //               'address': sendAddrress,
-          //               'lat': requestModel.lat,
-          //               'lng': requestModel.lng
-          //             }
-          //           ];
-          //         });
-          //         ScaffoldMessenger.of(context).showSnackBar(
-          //           SnackBar(
-          //             backgroundColor: Color.fromARGB(255, 57, 112, 195),
-          //             content: Center(
-          //               child: Text("Photo was successfully"),
-          //             ),
-          //             duration: Duration(seconds: 2),
-          //           ),
-          //         );
-          //       }
+                final tempDir = await getTemporaryDirectory();
+                File file = await File('${tempDir.path}/image.png').create();
+                file.writeAsBytesSync(imageInUnit8List!);
+                var compressed = await FlutterImageCompress.compressAndGetFile(
+                  file.absolute.path,
+                  file.path + 'compressed.jpg',
+                  quality: 10,
+                );
+                // XFile file = await imagePath.writeAsBytes(_imageFile);
+                String uniqueFileName =
+                    DateTime.now().millisecondsSinceEpoch.toString();
+                Reference referenceRoot = FirebaseStorage.instance.ref();
+                Reference referenceDirImages =
+                    referenceRoot.child('${widget.c_id}+m');
+                Reference referenceImageToUpload =
+                    referenceDirImages.child('name');
+                try {
+                  await referenceImageToUpload.putFile(File(compressed!.path));
+                  imageUrl = await referenceImageToUpload.getDownloadURL();
+                } catch (error) {}
+                if (imageUrl != null) {
+                  setState(() {
+                    Map<String, String> dataToSend = {
+                      'com_id': widget.c_id,
+                      'lat&lng': requestModel.lat + "/" + requestModel.lng,
+                      'image': imageUrl,
+                    };
+                    _reference.add(dataToSend);
+                    data = [
+                      {
+                        'adding_price': adding_price,
+                        'address': sendAddrress,
+                        'lat': requestModel.lat,
+                        'lng': requestModel.lng
+                      }
+                    ];
+                  });
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   SnackBar(
+                  //     backgroundColor: Color.fromARGB(255, 57, 112, 195),
+                  //     content: Center(
+                  //       child: Text("Photo was successfully"),
+                  //     ),
+                  //     duration: Duration(seconds: 2),
+                  //   ),
+                  // );
+                }
 
-          //       Navigator.pop(context, data);
-          //     },
-          //   ),
-          // ],
+                Navigator.pop(context, data);
+              },
+            ),
+          ],
         ),
         backgroundColor: kPrimaryColor,
         body: Container(
@@ -357,7 +390,9 @@ class _HomePageState extends State<HomePage> {
               (lat != null)
                   ? GoogleMap(
                       // markers: getmarkers(),
-                      markers: Set<Marker>.of(markers.values),
+                      markers: ((num > 0)
+                          ? Set<Marker>.of(markers.values)
+                          : getmarkers()),
                       //Map widget from google_maps_flutter package
                       zoomGesturesEnabled: true, //enable Zoom in, out on map
                       initialCameraPosition: CameraPosition(
@@ -384,12 +419,13 @@ class _HomePageState extends State<HomePage> {
                       // },
                       onMapCreated: (GoogleMapController controller) {
                         // _mapController.complete(controller);
-                        // takeSnapShot();
+                        takeSnapShot();
                         setState(() async {
-                          Future<void>.delayed(const Duration(seconds: 25),
+                          Future<void>.delayed(const Duration(seconds: 10),
                               () async {
                             imageInUnit8List = await controller.takeSnapshot();
                           });
+
                           // imageInUnit8List = await controller.takeSnapshot();
                           mapController = controller;
                         });
@@ -426,7 +462,7 @@ class _HomePageState extends State<HomePage> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: SearchLocation(
                   apiKey:
-                      'AIzaSyCeogkN2j3bqrqyIuv4GD4bT1n_4lpNlnY', // YOUR GOOGLE MAPS API KEY
+                      'AIzaSyAJt0Zghbk3qm_ZClIQOYeUT0AaV5TeOsI', // YOUR GOOGLE MAPS API KEY
                   country: 'KH',
                   onSelected: (Place place) {
                     setState(() {
@@ -1032,11 +1068,20 @@ class _HomePageState extends State<HomePage> {
   ///converts `coordinates` to actual `address` using google map api
   Future<void> getAddress(LatLng latLng) async {
     final coordinates = Coordinates(latLng.latitude, latLng.longitude);
+    // var commune;
+    // List<Placemark> placemarks =
+    //     await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+    // Placemark placeMark = placemarks[0];
+    // setState(() {
+    //   commune = placeMark.subAdministrativeArea;
+    // });
     try {
       final address = await geocoder.findAddressesFromCoordinates(coordinates);
-      var message = address.first.addressLine;
+      var message = address.first.subLocality;
+      // final commune=  await geocoder.findAddressesFromQuery(address);
       if (message == null) return;
       sendAddrress = message;
+      widget.district(address.first.subLocality);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Address: ${message}"),

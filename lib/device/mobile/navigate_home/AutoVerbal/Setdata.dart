@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
+import 'package:getwidget/components/dropdown/gf_dropdown.dart';
 import 'package:http/http.dart' as http;
 import 'package:admin/Customs/formTwinN.dart';
 import 'package:admin/Customs/responsive.dart';
@@ -56,6 +57,14 @@ class _AddState extends State<Add> {
     'Male',
     'Other',
   ];
+
+  var district;
+
+  late List<dynamic> list_Khan;
+
+  int id_khan = 0;
+
+  var a;
 
   @override
   void initState() {
@@ -256,7 +265,7 @@ class _AddState extends State<Add> {
     );
   }
 
-  Column addVerbal(BuildContext context) {
+  Widget addVerbal(BuildContext context) {
     return Column(
       // ignore: prefer_const_literals_to_create_immutables, duplicate_ignore
       children: [
@@ -496,18 +505,35 @@ class _AddState extends State<Add> {
                     ),
                   ]),
                 ),
-                SizedBox(
-                  height: 400,
-                  child: LandBuilding(
-                    asking_price: asking_price,
-                    opt: opt,
-                    address: address,
-                    list: (value) {
-                      requestModelAuto.verbal = value;
-                    },
-                    landId: code.toString(),
+
+                if (id_khan != 0)
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 800,
+                        child: LandBuilding(
+                          khan: id_khan.toString(),
+                          asking_price: asking_price,
+                          opt: opt,
+                          address: address,
+                          list: (value) {
+                            requestModelAuto.verbal = value;
+                          },
+                          landId: code.toString(),
+                          Avt: (value) {
+                            a = value;
+                            setState(() {
+                              print(
+                                  "///////////////////////////>$a<///////////////");
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 200,
+                      ),
+                    ],
                   ),
-                ),
               ],
             ),
           ),
@@ -516,17 +542,24 @@ class _AddState extends State<Add> {
     );
   }
 
+  var dropdown;
+  String? options;
+  //MAP
   Future<void> SlideUp(BuildContext context) async {
-    setState(() {
-      requestModelAuto.image = code.toString();
-    });
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => HomePage(
                 c_id: code.toString(),
+                district: (value) {
+                  district = value;
+                },
               )),
     );
+    setState(() {
+      requestModelAuto.image = code.toString();
+      Load_khan();
+    });
     if (!mounted) return;
     asking_price = result[0]['adding_price'];
     address = result[0]['address'];
@@ -605,4 +638,21 @@ class _AddState extends State<Add> {
   CollectionReference _reference =
       FirebaseFirestore.instance.collection('Image_KFA_2@23');
   String imageUrl = '';
+  //get khan
+  void Load_khan() async {
+    setState(() {});
+    var rs = await http.get(Uri.parse(
+        'https://www.oneclickonedollar.com/laravel_kfa_2023/public/api/khan'));
+    if (rs.statusCode == 200) {
+      var jsonData = jsonDecode(rs.body);
+      setState(() {
+        list_Khan = jsonData;
+        for (int i = 0; i < list_Khan.length; i++) {
+          if (list_Khan[i]['Khan_Name'] == district) {
+            id_khan = int.parse(list_Khan[i]['Khan_ID']);
+          }
+        }
+      });
+    }
+  }
 }

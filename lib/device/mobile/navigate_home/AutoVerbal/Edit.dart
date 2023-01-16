@@ -439,6 +439,7 @@ class _EditState extends State<Edit> {
       MaterialPageRoute(
           builder: (context) => HomePage(
                 c_id: code.toString(),
+                district: (value) {},
               )),
     );
     if (!mounted) return;

@@ -25,8 +25,8 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
             fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20)),
   ];
   List<Icon> optionIconList = const [
-    Icon(Icons.data_saver_on),
-    Icon(Icons.list_alt_outlined),
+    Icon(Icons.data_saver_on, color: Colors.white),
+    Icon(Icons.list_alt_outlined, color: Colors.white),
   ];
   @override
   Widget build(BuildContext context) {
@@ -86,10 +86,10 @@ class _MenuAutoVerbalState extends State<MenuAutoVerbal> {
                             blurStyle: BlurStyle.outer)
                       ]),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(2.0),
                         child: optionIconList.elementAt(i),
                       ),
                       Padding(
